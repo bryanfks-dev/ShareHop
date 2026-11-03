@@ -1,0 +1,12 @@
+cli:
+  # The default file or directory to output generated snippets.
+  snippet-output: lib/presentation/widgets/snippets
+
+  # The default file or directory to output generated widget styles.
+  style-output: lib/presentation/theme/styles
+
+  # The default file or directory to output generated themes.
+  theme-output: lib/presentation/theme/theme.dart
+
+  # The default directory to download preset font assets into.
+  fonts-output: assets/fonts
