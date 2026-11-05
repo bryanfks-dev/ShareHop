@@ -105,8 +105,10 @@ extension FColorsExtensions on FColors {
 
 /// Custom color tokens unique to your app.
 ///
-/// Add your fields below, then implement [copyWith], [lerp], [==], and [hashCode].
+/// Add your fields below, then implement [copyWith], [lerp], [==],
+/// and [hashCode].
 /// See https://api.flutter.dev/flutter/material/ThemeExtension-class.html.
+@immutable
 class AppColors extends ThemeExtension<AppColors> {
   const new({
     required this.warning,

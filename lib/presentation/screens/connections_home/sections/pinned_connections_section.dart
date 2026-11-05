@@ -1,38 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/theme.dart';
 import 'package:forui/widgets/button.dart';
-import 'package:sharehop/core/models/connection_model.dart';
+import 'package:sharehop/presentation/controllers/manage_pinned_connections_controller.dart';
+import 'package:sharehop/presentation/router/navigator_extension.dart';
+import 'package:sharehop/presentation/screens/manage_pinned_connections/screen.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
 import 'package:sharehop/presentation/widgets/connection/connection_list_empty_state.dart';
 import 'package:sharehop/presentation/widgets/connection/connection_list_tile.dart';
 
-final _mockConnection = [
-  ConnectionModel(
-    id: '1',
-    displayName: 'Studio NAS',
-    remoteAddress: '192.168.1.42',
-    protocol: .sftp,
-    createdAt: DateTime(2023, 5, 12),
-    updatedAt: DateTime(2023, 5, 12),
-  ),
-  ConnectionModel(
-    id: '2',
-    displayName: 'Mary Smith',
-    remoteAddress: 'prod.relaydock.io',
-    protocol: .ftp,
-    createdAt: DateTime(2023, 5, 12),
-    updatedAt: DateTime(2023, 5, 12),
-  ),
-];
-
-class PinnedConnectionsSection extends StatelessWidget {
+class PinnedConnectionsSection extends ConsumerWidget {
   const new({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = context.theme;
+    final state = ref.watch(managePinnedConnectionsControllerProvider);
+    final pinnedConnections = state.pinnedConnections;
 
-    void handleOnPressManage() {}
+    void handleOnPressManage() {
+      context.navigator.push(
+        MaterialPageRoute<void>(
+          builder: (context) => const ManagePinnedConnectionsScreen(),
+        ),
+      );
+    }
 
     return Column(
       spacing: Spacing.sm,
@@ -64,10 +56,10 @@ class PinnedConnectionsSection extends StatelessWidget {
         ),
         Builder(
           builder: (context) {
-            if (_mockConnection.isEmpty) {
+            if (pinnedConnections.isEmpty) {
               return const ConnectionListEmptyState();
             }
-            return ConnectionListTile(connections: _mockConnection);
+            return ConnectionListTile(connections: pinnedConnections);
           },
         ),
       ],

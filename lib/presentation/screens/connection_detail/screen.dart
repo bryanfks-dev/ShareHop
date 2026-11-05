@@ -30,7 +30,7 @@ class ConnectionDetailScreen extends StatelessWidget {
             mainAxisSize: .min,
             children: [
               ConnectionIdentitySection(connection: connection),
-              const StorageUsageSection(),
+              StorageUsageSection(connection: connection),
               const QuickActionsSection(),
               const RecentFoldersAndFilesSection(),
               LandscapeWorkspacePathSection(connection: connection),

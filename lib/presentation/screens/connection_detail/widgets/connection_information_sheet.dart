@@ -52,6 +52,18 @@ class _ConnectionInformationSheetContent extends StatelessWidget {
       }
     }
 
+    Color statusColor;
+    switch (connectionStatus) {
+      case .online:
+        statusColor = theme.colors.app.success;
+      case .ready:
+        statusColor = theme.colors.app.accentBlue;
+      case .idle:
+        statusColor = theme.colors.app.accentTeal;
+      case .offline:
+        statusColor = theme.colors.mutedForeground;
+    }
+
     return Container(
       width: double.maxFinite,
       padding: .symmetric(
@@ -93,6 +105,7 @@ class _ConnectionInformationSheetContent extends StatelessWidget {
                 children: [
                   ConnectionProtocolGlyph(
                     connectionProtocol: connection.protocol,
+                    status: connectionStatus,
                     size: 48,
                   ),
                   Expanded(
@@ -134,18 +147,14 @@ class _ConnectionInformationSheetContent extends StatelessWidget {
                           width: 8,
                           height: 8,
                           decoration: BoxDecoration(
-                            color: connectionStatus == ConnectionStatus.online
-                                ? theme.colors.app.success
-                                : theme.colors.mutedForeground,
+                            color: statusColor,
                             shape: .circle,
                           ),
                         ),
                         Text(
                           connectionStatus.label,
                           style: theme.typography.body.xs.copyWith(
-                            color: connectionStatus == ConnectionStatus.online
-                                ? theme.colors.app.success
-                                : theme.colors.mutedForeground,
+                            color: statusColor,
                             fontWeight: .w600,
                           ),
                         ),

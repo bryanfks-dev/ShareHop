@@ -83,3 +83,7 @@ Exceptions:
 - The function name SHOULD follow the pattern of `show<EventName>Sheet` (e.g. `showConfirmationSheet`, `showInformationSheet`, `showSelectionSheet`) for specific widget usage.
 - The function name SHOULD follow the pattern of `show<EventName><Action>Sheet` (e.g. `showConfirmationDeleteSheet`, `showInformationSuccessSheet`, `showSelectionFilterSheet`) for widget that contains multiple same actions.
 - DO NOT use past tense for function name (e.g. `showConfirmationDeletedSheet`, `showInformationSuccessedSheet`, `showSelectionFilteredSheet`), instead use present tense (e.g. `showConfirmationDeleteSheet`, `showInformationSuccessSheet`, `showSelectionFilterSheet`).
+
+# Builder Widget
+
+- USE `Builder` widget if there are multiple conditionally rendered widgets in the same widget tree.

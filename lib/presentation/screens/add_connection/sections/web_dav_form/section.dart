@@ -41,7 +41,7 @@ class WebDavFormSection extends HookConsumerWidget {
     }
 
     Future<void> handleOnPressTestAndSave() async {
-      if (formKey.currentState == null || formKey.currentState!.validate()) {
+      if (formKey.currentState == null || !formKey.currentState!.validate()) {
         return;
       }
 

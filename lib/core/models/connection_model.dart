@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sharehop/core/enums/connection_protocol.dart';
+import 'package:sharehop/core/enums/connection_status.dart';
 import 'package:sharehop/core/models/base_model.dart';
 
 part 'connection_model.freezed.dart';
@@ -14,6 +15,7 @@ abstract class ConnectionModel with _$ConnectionModel implements BaseModel {
     @JsonKey(name: 'remote_address') required String remoteAddress,
     @JsonKey(name: 'created_at') required DateTime createdAt,
     @JsonKey(name: 'updated_at') required DateTime updatedAt,
+    @Default(ConnectionStatus.online) ConnectionStatus status,
   }) = _ConnectionModel;
 
   const new _();

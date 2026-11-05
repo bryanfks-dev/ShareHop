@@ -199,6 +199,53 @@ final class WebDavStorageServiceProvider
 String _$webDavStorageServiceHash() =>
     r'89a1a239b12b3356bb0635d4a26b850873fa6747';
 
+@ProviderFor(smbStorageService)
+final smbStorageServiceProvider = SmbStorageServiceProvider._();
+
+final class SmbStorageServiceProvider
+    extends
+        $FunctionalProvider<
+          SmbStorageService,
+          SmbStorageService,
+          SmbStorageService
+        >
+    with $Provider<SmbStorageService> {
+  SmbStorageServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'smbStorageServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$smbStorageServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<SmbStorageService> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  SmbStorageService create(Ref ref) {
+    return smbStorageService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SmbStorageService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SmbStorageService>(value),
+    );
+  }
+}
+
+String _$smbStorageServiceHash() => r'f2446543856558903b65aee592f5c574e48577e3';
+
 @ProviderFor(createConnectionUseCase)
 final createConnectionUseCaseProvider = CreateConnectionUseCaseProvider._();
 
@@ -295,3 +342,52 @@ final class TestWebDavConnectionUseCaseProvider
 
 String _$testWebDavConnectionUseCaseHash() =>
     r'ab0444474766ef4a2bc91105de456caf1b556748';
+
+@ProviderFor(getSmbStorageStatusUseCase)
+final getSmbStorageStatusUseCaseProvider =
+    GetSmbStorageStatusUseCaseProvider._();
+
+final class GetSmbStorageStatusUseCaseProvider
+    extends
+        $FunctionalProvider<
+          GetSmbStorageStatusUseCase,
+          GetSmbStorageStatusUseCase,
+          GetSmbStorageStatusUseCase
+        >
+    with $Provider<GetSmbStorageStatusUseCase> {
+  GetSmbStorageStatusUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getSmbStorageStatusUseCaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getSmbStorageStatusUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetSmbStorageStatusUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetSmbStorageStatusUseCase create(Ref ref) {
+    return getSmbStorageStatusUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetSmbStorageStatusUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetSmbStorageStatusUseCase>(value),
+    );
+  }
+}
+
+String _$getSmbStorageStatusUseCaseHash() =>
+    r'f87d618873dcc0c08033a32abfb2a2110ede599f';

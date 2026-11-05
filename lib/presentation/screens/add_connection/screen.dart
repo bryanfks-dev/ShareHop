@@ -36,7 +36,34 @@ class AddConnectionScreen extends HookWidget {
                 onChange: (val) =>
                     handleOnChangeConnectionProtocol(connectionProtocol: val),
               ),
-              const IndexedStack(children: [WebDavFormSection()]),
+              if (selectedConnectionProtocol.value == .webdav)
+                const WebDavFormSection()
+              else
+                Padding(
+                  padding: .symmetric(
+                    horizontal: theme.style.pagePadding.horizontal,
+                  ),
+                  child: Column(
+                    spacing: Spacing.sm,
+                    children: [
+                      Text(
+                        '${selectedConnectionProtocol.value.name} is not '
+                        'supported yet',
+                        style: theme.typography.display.xs.copyWith(
+                          fontWeight: .w600,
+                        ),
+                      ),
+                      Text(
+                        'Currently only WebDAV protocol is supported. '
+                        'Please select WebDAV to configure your connection.',
+                        style: theme.typography.body.sm.copyWith(
+                          color: theme.colors.mutedForeground,
+                        ),
+                        textAlign: .center,
+                      ),
+                    ],
+                  ),
+                ),
             ],
           ),
         ),

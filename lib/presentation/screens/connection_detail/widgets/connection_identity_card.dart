@@ -4,28 +4,28 @@ import 'package:sharehop/core/enums/connection_status.dart';
 import 'package:sharehop/core/models/connection_model.dart';
 import 'package:sharehop/presentation/screens/connection_detail/widgets/connection_information_sheet.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
-import 'package:sharehop/presentation/theme/theme.dart';
 import 'package:sharehop/presentation/widgets/connection/connection_protocol_glyph.dart';
 
 class ConnectionIdentityCard extends StatelessWidget {
   const new({
     required this.connection,
-    this.connectionStatus = .online,
+    this.connectionStatus,
     super.key,
   });
 
   final ConnectionModel connection;
-  final ConnectionStatus connectionStatus;
+  final ConnectionStatus? connectionStatus;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
+    final effectiveStatus = connectionStatus ?? connection.status;
 
     Future<void> handleOnPressInfo() async {
       await showConnectionInformationSheet(
         context,
         connection: connection,
-        connectionStatus: connectionStatus,
+        connectionStatus: effectiveStatus,
       );
     }
 
@@ -41,6 +41,7 @@ class ConnectionIdentityCard extends StatelessWidget {
                   children: [
                     ConnectionProtocolGlyph(
                       connectionProtocol: connection.protocol,
+                      status: effectiveStatus,
                       size: 52,
                     ),
                     Expanded(
@@ -49,27 +50,6 @@ class ConnectionIdentityCard extends StatelessWidget {
                         mainAxisSize: .min,
                         spacing: Spacing.xs2,
                         children: [
-                          Row(
-                            mainAxisSize: .min,
-                            spacing: Spacing.xs,
-                            children: [
-                              Container(
-                                width: 8,
-                                height: 8,
-                                decoration: BoxDecoration(
-                                  color: theme.colors.app.success,
-                                  shape: .circle,
-                                ),
-                              ),
-                              Text(
-                                connectionStatus.label,
-                                style: theme.typography.body.xs2.copyWith(
-                                  color: theme.colors.app.success,
-                                  fontWeight: .w600,
-                                ),
-                              ),
-                            ],
-                          ),
                           Text(
                             connection.displayName,
                             maxLines: 1,

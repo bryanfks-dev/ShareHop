@@ -14,6 +14,9 @@ _ConnectionModel _$ConnectionModelFromJson(Map<String, dynamic> json) =>
       remoteAddress: json['remote_address'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
+      status:
+          $enumDecodeNullable(_$ConnectionStatusEnumMap, json['status']) ??
+          ConnectionStatus.online,
     );
 
 Map<String, dynamic> _$ConnectionModelToJson(_ConnectionModel instance) =>
@@ -24,6 +27,7 @@ Map<String, dynamic> _$ConnectionModelToJson(_ConnectionModel instance) =>
       'remote_address': instance.remoteAddress,
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
+      'status': _$ConnectionStatusEnumMap[instance.status]!,
     };
 
 const _$ConnectionProtocolEnumMap = {
@@ -33,4 +37,11 @@ const _$ConnectionProtocolEnumMap = {
   ConnectionProtocol.ftps: 'ftps',
   ConnectionProtocol.nfs: 'nfs',
   ConnectionProtocol.smb: 'smb',
+};
+
+const _$ConnectionStatusEnumMap = {
+  ConnectionStatus.online: 'online',
+  ConnectionStatus.ready: 'ready',
+  ConnectionStatus.idle: 'idle',
+  ConnectionStatus.offline: 'offline',
 };

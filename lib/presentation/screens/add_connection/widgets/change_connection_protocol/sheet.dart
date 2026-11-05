@@ -50,8 +50,6 @@ class _ChangeConnectionProtocolSheetContent extends HookWidget {
       context.navigator.pop();
     }
 
-    void handleOnPressWebDav() => handleOnPress(connectionProtocol: .webdav);
-
     return Container(
       width: double.maxFinite,
       padding: .symmetric(
@@ -78,11 +76,13 @@ class _ChangeConnectionProtocolSheetContent extends HookWidget {
                 mainAxisSize: .min,
                 spacing: Spacing.md,
                 children: [
-                  _ChangeConnectionProtocolSheetItem(
-                    connectionProtocol: .webdav,
-                    value: innerSelectedConnectionProtocol.value == .webdav,
-                    onPress: handleOnPressWebDav,
-                  ),
+                  for (final protocol in ConnectionProtocol.values)
+                    _ChangeConnectionProtocolSheetItem(
+                      connectionProtocol: protocol,
+                      value: innerSelectedConnectionProtocol.value == protocol,
+                      onPress: () =>
+                          handleOnPress(connectionProtocol: protocol),
+                    ),
                 ],
               ),
             ],
