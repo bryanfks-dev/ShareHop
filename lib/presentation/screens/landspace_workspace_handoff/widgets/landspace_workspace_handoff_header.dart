@@ -24,6 +24,11 @@ class LandspaceWorkspaceHandoffHeader extends StatelessWidget {
           FButton.icon(
             size: .sm,
             onPress: handleOnPressBack,
+            style: .delta(
+              decoration: .delta([
+                .all(const .shapeDelta(shape: CircleBorder())),
+              ]),
+            ),
             child: const Icon(FLucideIcons.chevronLeft),
           ),
           Column(
