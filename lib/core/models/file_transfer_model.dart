@@ -9,7 +9,7 @@ part 'file_transfer_model.g.dart';
 abstract class FileTransferModel with _$FileTransferModel implements BaseModel {
   const factory({
     required String id,
-    required String fileName,
+    @JsonKey(name: 'file_name') required String fileName,
     @JsonKey(name: 'file_size') required int fileSize,
     @JsonKey(name: 'file_mime_type') required String fileMimeType,
     @JsonKey(name: 'source_name') required String sourceName,

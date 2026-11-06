@@ -13,11 +13,11 @@ class SecuritySection extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appConfig = ref.watch(appConfigControllerProvider);
     final appConfigController = ref.watch(appConfigControllerProvider.notifier);
-    final biometricService = ref.watch(biometricLockServiceProvider);
+    final biometricGateway = ref.watch(biometricLockGatewayProvider);
 
     Future<void> handleOnProceedEnableBiometricLock() async {
       try {
-        final authenticated = await biometricService.authenticateUser(
+        final authenticated = await biometricGateway.authenticateUser(
           localizedMessage: 'Authenticate to enable biometric lock',
         );
 
@@ -31,7 +31,7 @@ class SecuritySection extends HookConsumerWidget {
 
     Future<void> handleOnChangeBiometricLock({required bool value}) async {
       try {
-        final isSupported = await biometricService.checkDeviceSupported();
+        final isSupported = await biometricGateway.checkDeviceSupported();
         if (!context.mounted) {
           return;
         }
@@ -47,7 +47,7 @@ class SecuritySection extends HookConsumerWidget {
             onProceed: handleOnProceedEnableBiometricLock,
           );
         } else {
-          final authenticated = await biometricService.authenticateUser(
+          final authenticated = await biometricGateway.authenticateUser(
             localizedMessage: 'Authenticate to disable biometric lock',
           );
 
@@ -60,13 +60,17 @@ class SecuritySection extends HookConsumerWidget {
       }
     }
 
+    final isBiometricLockEnabled =
+        appConfig.value?.isBiometricLockEnabled ?? false;
+
     return SettingsSection(
       title: 'SECURITY',
       children: [
         SettingsSectionTileWithSwitchSuffix(
           title: 'Biometric lock',
-          value: appConfig.value?.isBiometricLockEnabled ?? false,
-          onChange: (value) => handleOnChangeBiometricLock(value: value),
+          subtitle: 'Require biometric authentication to open app',
+          value: isBiometricLockEnabled,
+          onChange: (val) => handleOnChangeBiometricLock(value: val),
         ),
       ],
     );

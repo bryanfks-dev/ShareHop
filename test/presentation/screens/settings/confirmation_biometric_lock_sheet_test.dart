@@ -6,13 +6,13 @@ import 'package:sharehop/core/enums/app_theme.dart';
 import 'package:sharehop/core/enums/on_file_conflicts_resolution.dart';
 import 'package:sharehop/core/models/app_config_model.dart';
 import 'package:sharehop/core/repositories/app_config_repository.dart';
-import 'package:sharehop/core/services/biometric_lock_service.dart';
+import 'package:sharehop/core/gateways/biometric_lock_gateway.dart';
 import 'package:sharehop/di/app_config_di.dart';
 import 'package:sharehop/presentation/screens/settings/sections/security_section.dart';
 import 'package:sharehop/presentation/screens/settings/widgets/confirmation_biometric_lock_sheet.dart';
 import 'package:sharehop/presentation/theme/theme.dart';
 
-class FakeBiometricLockService implements BiometricLockService {
+class FakeBiometricLockGateway implements BiometricLockGateway {
   new({
     this.isSupported = true,
     this.authenticatedResult = true,
@@ -142,13 +142,13 @@ void main() {
     'authenticates on proceed',
     (tester) async {
       final fakeRepo = FakeAppConfigRepository();
-      final fakeBiometricService = FakeBiometricLockService();
+      final fakeBiometricService = FakeBiometricLockGateway();
 
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
             appConfigRepositoryProvider.overrideWithValue(fakeRepo),
-            biometricLockServiceProvider.overrideWithValue(
+            biometricLockGatewayProvider.overrideWithValue(
               fakeBiometricService,
             ),
           ],

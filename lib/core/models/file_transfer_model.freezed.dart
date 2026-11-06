@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FileTransferModel {
 
- String get id; String get fileName;@JsonKey(name: 'file_size') int get fileSize;@JsonKey(name: 'file_mime_type') String get fileMimeType;@JsonKey(name: 'source_name') String get sourceName;@JsonKey(name: 'destination_name') String get destinationName; FileTransferStatus get status;@JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'updated_at') DateTime get updatedAt;
+ String get id;@JsonKey(name: 'file_name') String get fileName;@JsonKey(name: 'file_size') int get fileSize;@JsonKey(name: 'file_mime_type') String get fileMimeType;@JsonKey(name: 'source_name') String get sourceName;@JsonKey(name: 'destination_name') String get destinationName; FileTransferStatus get status;@JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'updated_at') DateTime get updatedAt;
 /// Create a copy of FileTransferModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -54,7 +54,7 @@ abstract mixin class $FileTransferModelCopyWith<$Res>  {
   factory $FileTransferModelCopyWith(FileTransferModel value, $Res Function(FileTransferModel) _then) = _$FileTransferModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String fileName,@JsonKey(name: 'file_size') int fileSize,@JsonKey(name: 'file_mime_type') String fileMimeType,@JsonKey(name: 'source_name') String sourceName,@JsonKey(name: 'destination_name') String destinationName, FileTransferStatus status,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt
+ String id,@JsonKey(name: 'file_name') String fileName,@JsonKey(name: 'file_size') int fileSize,@JsonKey(name: 'file_mime_type') String fileMimeType,@JsonKey(name: 'source_name') String sourceName,@JsonKey(name: 'destination_name') String destinationName, FileTransferStatus status,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt
 });
 
 
@@ -167,7 +167,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String fileName, @JsonKey(name: 'file_size')  int fileSize, @JsonKey(name: 'file_mime_type')  String fileMimeType, @JsonKey(name: 'source_name')  String sourceName, @JsonKey(name: 'destination_name')  String destinationName,  FileTransferStatus status, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'file_name')  String fileName, @JsonKey(name: 'file_size')  int fileSize, @JsonKey(name: 'file_mime_type')  String fileMimeType, @JsonKey(name: 'source_name')  String sourceName, @JsonKey(name: 'destination_name')  String destinationName,  FileTransferStatus status, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FileTransferModel() when $default != null:
 return $default(_that.id,_that.fileName,_that.fileSize,_that.fileMimeType,_that.sourceName,_that.destinationName,_that.status,_that.createdAt,_that.updatedAt);case _:
@@ -188,7 +188,7 @@ return $default(_that.id,_that.fileName,_that.fileSize,_that.fileMimeType,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String fileName, @JsonKey(name: 'file_size')  int fileSize, @JsonKey(name: 'file_mime_type')  String fileMimeType, @JsonKey(name: 'source_name')  String sourceName, @JsonKey(name: 'destination_name')  String destinationName,  FileTransferStatus status, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'file_name')  String fileName, @JsonKey(name: 'file_size')  int fileSize, @JsonKey(name: 'file_mime_type')  String fileMimeType, @JsonKey(name: 'source_name')  String sourceName, @JsonKey(name: 'destination_name')  String destinationName,  FileTransferStatus status, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _FileTransferModel():
 return $default(_that.id,_that.fileName,_that.fileSize,_that.fileMimeType,_that.sourceName,_that.destinationName,_that.status,_that.createdAt,_that.updatedAt);case _:
@@ -208,7 +208,7 @@ return $default(_that.id,_that.fileName,_that.fileSize,_that.fileMimeType,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String fileName, @JsonKey(name: 'file_size')  int fileSize, @JsonKey(name: 'file_mime_type')  String fileMimeType, @JsonKey(name: 'source_name')  String sourceName, @JsonKey(name: 'destination_name')  String destinationName,  FileTransferStatus status, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'file_name')  String fileName, @JsonKey(name: 'file_size')  int fileSize, @JsonKey(name: 'file_mime_type')  String fileMimeType, @JsonKey(name: 'source_name')  String sourceName, @JsonKey(name: 'destination_name')  String destinationName,  FileTransferStatus status, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _FileTransferModel() when $default != null:
 return $default(_that.id,_that.fileName,_that.fileSize,_that.fileMimeType,_that.sourceName,_that.destinationName,_that.status,_that.createdAt,_that.updatedAt);case _:
@@ -223,11 +223,11 @@ return $default(_that.id,_that.fileName,_that.fileSize,_that.fileMimeType,_that.
 @JsonSerializable()
 
 class _FileTransferModel extends FileTransferModel {
-  const _FileTransferModel({required this.id, required this.fileName, @JsonKey(name: 'file_size') required this.fileSize, @JsonKey(name: 'file_mime_type') required this.fileMimeType, @JsonKey(name: 'source_name') required this.sourceName, @JsonKey(name: 'destination_name') required this.destinationName, required this.status, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'updated_at') required this.updatedAt}): super._();
+  const _FileTransferModel({required this.id, @JsonKey(name: 'file_name') required this.fileName, @JsonKey(name: 'file_size') required this.fileSize, @JsonKey(name: 'file_mime_type') required this.fileMimeType, @JsonKey(name: 'source_name') required this.sourceName, @JsonKey(name: 'destination_name') required this.destinationName, required this.status, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'updated_at') required this.updatedAt}): super._();
   factory _FileTransferModel.fromJson(Map<String, dynamic> json) => _$FileTransferModelFromJson(json);
 
 @override final  String id;
-@override final  String fileName;
+@override@JsonKey(name: 'file_name') final  String fileName;
 @override@JsonKey(name: 'file_size') final  int fileSize;
 @override@JsonKey(name: 'file_mime_type') final  String fileMimeType;
 @override@JsonKey(name: 'source_name') final  String sourceName;
@@ -271,7 +271,7 @@ abstract mixin class _$FileTransferModelCopyWith<$Res> implements $FileTransferM
   factory _$FileTransferModelCopyWith(_FileTransferModel value, $Res Function(_FileTransferModel) _then) = __$FileTransferModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String fileName,@JsonKey(name: 'file_size') int fileSize,@JsonKey(name: 'file_mime_type') String fileMimeType,@JsonKey(name: 'source_name') String sourceName,@JsonKey(name: 'destination_name') String destinationName, FileTransferStatus status,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt
+ String id,@JsonKey(name: 'file_name') String fileName,@JsonKey(name: 'file_size') int fileSize,@JsonKey(name: 'file_mime_type') String fileMimeType,@JsonKey(name: 'source_name') String sourceName,@JsonKey(name: 'destination_name') String destinationName, FileTransferStatus status,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt
 });
 
 

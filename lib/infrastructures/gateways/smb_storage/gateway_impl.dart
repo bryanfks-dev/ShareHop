@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:sharehop/core/data/dto/storage_status_dto.dart';
+import 'package:sharehop/core/gateways/smb_storage_gateway.dart';
 import 'package:sharehop/core/models/connection_model.dart';
-import 'package:sharehop/core/services/smb_storage_service.dart';
-import 'package:sharehop/infrastructures/services/smb_storage/error.dart';
+import 'package:sharehop/data/dto/storage_status_dto.dart';
+import 'package:sharehop/infrastructures/gateways/smb_storage/error.dart';
 
-class SmbStorageServiceImpl implements SmbStorageService {
+class SmbStorageGatewayImpl implements SmbStorageGateway {
   const new();
 
   @override

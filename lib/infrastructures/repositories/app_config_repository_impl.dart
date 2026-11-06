@@ -6,7 +6,7 @@ import 'package:sharehop/core/models/app_config_model.dart';
 import 'package:sharehop/core/repositories/app_config_repository.dart';
 
 class AppConfigRepositoryImpl implements AppConfigRepository {
-  final prefs = SharedPreferencesAsync();
+  final _prefs = SharedPreferencesAsync();
 
   @override
   Future<AppConfigModel> getConfig() async {
@@ -19,13 +19,13 @@ class AppConfigRepositoryImpl implements AppConfigRepository {
       downloadDestinationPath,
       appAppearance,
     ] = await Future.wait([
-      prefs.getBool('isWifiOnlyTransfersEnabled'),
-      prefs.getBool('isBackgroundTransfersEnabled'),
-      prefs.getInt('simultaneousTransfersLimit'),
-      prefs.getString('onFileConflictsResolution'),
-      prefs.getBool('isBiometricLockEnabled'),
-      prefs.getString('downloadDestinationPath'),
-      prefs.getString('appAppearance'),
+      _prefs.getBool('isWifiOnlyTransfersEnabled'),
+      _prefs.getBool('isBackgroundTransfersEnabled'),
+      _prefs.getInt('simultaneousTransfersLimit'),
+      _prefs.getString('onFileConflictsResolution'),
+      _prefs.getBool('isBiometricLockEnabled'),
+      _prefs.getString('downloadDestinationPath'),
+      _prefs.getString('appAppearance'),
     ]);
     return AppConfigModel(
       isWifiOnlyTransfersEnabled: isWifiOnlyTransfersEnabled as bool?,
@@ -46,24 +46,24 @@ class AppConfigRepositoryImpl implements AppConfigRepository {
 
   @override
   Future<void> setIsWifiOnlyTransfersEnabled({required bool enabled}) async {
-    return await prefs.setBool('isWifiOnlyTransfersEnabled', enabled);
+    return await _prefs.setBool('isWifiOnlyTransfersEnabled', enabled);
   }
 
   @override
   Future<void> setIsBackgroundTransfersEnabled({required bool enabled}) async {
-    return await prefs.setBool('isBackgroundTransfersEnabled', enabled);
+    return await _prefs.setBool('isBackgroundTransfersEnabled', enabled);
   }
 
   @override
   Future<void> setSimultaneousTransfersLimit({required int limit}) async {
-    return await prefs.setInt('simultaneousTransfersLimit', limit);
+    return await _prefs.setInt('simultaneousTransfersLimit', limit);
   }
 
   @override
   Future<void> setOnFileConflictsResolution({
     required OnFileConflictsResolution resolution,
   }) async {
-    return await prefs.setString(
+    return await _prefs.setString(
       'onFileConflictsResolution',
       resolution.persistentValue,
     );
@@ -71,16 +71,16 @@ class AppConfigRepositoryImpl implements AppConfigRepository {
 
   @override
   Future<void> setIsBiometricLockEnabled({required bool enabled}) async {
-    return await prefs.setBool('isBiometricLockEnabled', enabled);
+    return await _prefs.setBool('isBiometricLockEnabled', enabled);
   }
 
   @override
   Future<void> setDownloadDestinationPath({required String path}) async {
-    return await prefs.setString('downloadDestinationPath', path);
+    return await _prefs.setString('downloadDestinationPath', path);
   }
 
   @override
   Future<void> setAppAppearance({required AppTheme theme}) async {
-    return await prefs.setString('appAppearance', theme.persistentValue);
+    return await _prefs.setString('appAppearance', theme.persistentValue);
   }
 }

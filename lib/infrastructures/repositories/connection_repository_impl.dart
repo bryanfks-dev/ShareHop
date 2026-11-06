@@ -1,17 +1,18 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:sharehop/core/errors/connection.dart';
 import 'package:sharehop/core/models/connection_model.dart';
-import 'package:sharehop/core/repositories/connection/dto.dart';
-import 'package:sharehop/core/repositories/connection/repository.dart';
+import 'package:sharehop/core/repositories/connection_repository.dart';
+import 'package:sharehop/data/dto/connection_dto.dart';
+import 'package:sharehop/data/mapper/connection_mapper.dart';
 import 'package:sharehop/infrastructures/database/manager.dart';
-import 'package:sharehop/infrastructures/repositories/connection/error.dart';
-import 'package:sharehop/infrastructures/repositories/connection/factory.dart';
-import 'package:sharehop/infrastructures/repositories/connection/mapper.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ConnectionRepositoryImpl implements ConnectionRepository {
-  const new();
+  const new(this.connectionMapper);
+
+  final ConnectionMapper connectionMapper;
 
   @override
   Future<List<ConnectionModel>> getAll() async {
@@ -70,12 +71,12 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
   }
 
   @override
-  Future<ConnectionModel> create(ConnectionDraftDto draft) async {
+  Future<ConnectionModel> create(ConnectionDraftDto connection) async {
     log('Create connection started', name: 'ConnectionRepositoryImpl.create');
 
     try {
       final db = await DatabaseManager.instance.database;
-      final model = buildConnectionDraftDtoFromConnectionModel(draft);
+      final model = connectionMapper.toConnectionModel(connection);
       await db.insert(
         ConnectionModel.tableName,
         model.toJson(),
@@ -97,7 +98,7 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
   }
 
   @override
-  Future<ConnectionModel?> update(ConnectionRevisionDto revision) async {
+  Future<ConnectionModel?> update(ConnectionModel connection) async {
     log('Update connection started', name: 'ConnectionRepositoryImpl.update');
 
     if (await checkIfExists(revision.id) == null) {

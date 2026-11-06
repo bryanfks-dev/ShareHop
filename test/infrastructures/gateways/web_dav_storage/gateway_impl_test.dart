@@ -4,8 +4,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sharehop/core/models/web_dav_credential_model.dart';
-import 'package:sharehop/infrastructures/services/web_dav_storage/error.dart';
-import 'package:sharehop/infrastructures/services/web_dav_storage/service_impl.dart';
+import 'package:sharehop/infrastructures/gateways/web_dav_storage/error.dart';
+import 'package:sharehop/infrastructures/gateways/web_dav_storage/gateway_impl.dart';
 import 'package:sharehop/infrastructures/web_dav/web_dav_client_manager.dart';
 import 'package:sharehop/infrastructures/web_dav/web_dav_client_pool.dart';
 import 'package:webdav_client/webdav_client.dart' as webdav;
@@ -57,11 +57,11 @@ class FakeWebDavClientManager extends WebDavClientManager {
 }
 
 void main() {
-  group('WebDavStorageServiceImpl.getStatus', () {
+  group('WebDavStorageGatewayImpl.getStatus', () {
     late FakeWdDio fakeDio;
     late webdav.Client fakeClient;
     late FakeWebDavClientManager fakeClientManager;
-    late WebDavStorageServiceImpl service;
+    late WebDavStorageGatewayImpl service;
 
     final credential = WebDavCredentialModel(
       url: Uri.parse('https://example.com/dav'),
@@ -77,7 +77,7 @@ void main() {
         auth: const webdav.Auth(user: '', pwd: ''),
       );
       fakeClientManager = FakeWebDavClientManager(fakeClient);
-      service = WebDavStorageServiceImpl(fakeClientManager);
+      service = WebDavStorageGatewayImpl(fakeClientManager);
     });
 
     test('returns parsed storage status when response contains quota bytes',

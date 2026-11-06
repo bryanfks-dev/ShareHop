@@ -57,53 +57,53 @@ final class AppConfigRepositoryProvider
 String _$appConfigRepositoryHash() =>
     r'1836027647fcd45a23373f841af4ed9423daf70f';
 
-@ProviderFor(biometricLockService)
-final biometricLockServiceProvider = BiometricLockServiceProvider._();
+@ProviderFor(biometricLockGateway)
+final biometricLockGatewayProvider = BiometricLockGatewayProvider._();
 
-final class BiometricLockServiceProvider
+final class BiometricLockGatewayProvider
     extends
         $FunctionalProvider<
-          BiometricLockService,
-          BiometricLockService,
-          BiometricLockService
+          BiometricLockGateway,
+          BiometricLockGateway,
+          BiometricLockGateway
         >
-    with $Provider<BiometricLockService> {
-  BiometricLockServiceProvider._()
+    with $Provider<BiometricLockGateway> {
+  BiometricLockGatewayProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'biometricLockServiceProvider',
+        name: r'biometricLockGatewayProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$biometricLockServiceHash();
+  String debugGetCreateSourceHash() => _$biometricLockGatewayHash();
 
   @$internal
   @override
-  $ProviderElement<BiometricLockService> $createElement(
+  $ProviderElement<BiometricLockGateway> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  BiometricLockService create(Ref ref) {
-    return biometricLockService(ref);
+  BiometricLockGateway create(Ref ref) {
+    return biometricLockGateway(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(BiometricLockService value) {
+  Override overrideWithValue(BiometricLockGateway value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<BiometricLockService>(value),
+      providerOverride: $SyncValueProvider<BiometricLockGateway>(value),
     );
   }
 }
 
-String _$biometricLockServiceHash() =>
-    r'afead9c329d1526e24c40afb668beaaddd9601cf';
+String _$biometricLockGatewayHash() =>
+    r'ca8d1cefe6cef467ce00c1937d091fcd4f6d610c';
 
 @ProviderFor(getAppConfigUseCase)
 final getAppConfigUseCaseProvider = GetAppConfigUseCaseProvider._();

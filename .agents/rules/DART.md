@@ -31,7 +31,7 @@ Don't:
 - ALWAYS use named parameters for function parameters.
 - NEVER use positional parameters for function parameters.
 - Use named parameters for model or DTO classes.
-- DO NOT use named parameters for controller, use case, service, or repository classes.
+- DO NOT use named parameters for mapper classes.
 - DO NOT use named parameters for `BuildContext` parameters in funcitons or methods.
 
 # Single Line If Statements

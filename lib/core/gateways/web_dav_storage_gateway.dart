@@ -1,9 +1,9 @@
 import 'package:flutter/services.dart';
-import 'package:sharehop/core/data/dto/storage_status_dto.dart';
 import 'package:sharehop/core/models/web_dav_credential_model.dart';
+import 'package:sharehop/data/dto/storage_status_dto.dart';
 import 'package:webdav_client/webdav_client.dart';
 
-abstract interface class WebDavStorageService {
+abstract interface class WebDavStorageGateway {
   Future<List<File>> list({
     required WebDavCredentialModel credential,
     required String path,
@@ -53,9 +53,7 @@ abstract interface class WebDavStorageService {
     required String path,
   });
 
-  Future<void> testConnection({
-    required WebDavCredentialModel credential,
-  });
+  Future<void> testConnection({required WebDavCredentialModel credential});
 
   Future<StorageStatusDto> getStatus({
     required WebDavCredentialModel credential,

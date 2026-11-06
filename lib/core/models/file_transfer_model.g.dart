@@ -9,7 +9,7 @@ part of 'file_transfer_model.dart';
 _FileTransferModel _$FileTransferModelFromJson(Map<String, dynamic> json) =>
     _FileTransferModel(
       id: json['id'] as String,
-      fileName: json['fileName'] as String,
+      fileName: json['file_name'] as String,
       fileSize: (json['file_size'] as num).toInt(),
       fileMimeType: json['file_mime_type'] as String,
       sourceName: json['source_name'] as String,
@@ -22,7 +22,7 @@ _FileTransferModel _$FileTransferModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$FileTransferModelToJson(_FileTransferModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'fileName': instance.fileName,
+      'file_name': instance.fileName,
       'file_size': instance.fileSize,
       'file_mime_type': instance.fileMimeType,
       'source_name': instance.sourceName,

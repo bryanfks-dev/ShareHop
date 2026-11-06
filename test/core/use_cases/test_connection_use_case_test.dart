@@ -5,12 +5,12 @@ import 'package:sharehop/core/data/dto/storage_status_dto.dart';
 import 'package:sharehop/core/enums/connection_protocol.dart';
 import 'package:sharehop/core/models/connection_credential_model.dart';
 import 'package:sharehop/core/models/web_dav_credential_model.dart';
-import 'package:sharehop/core/services/web_dav_storage_service.dart';
+import 'package:sharehop/core/gateways/web_dav_storage_gateway.dart';
 import 'package:sharehop/core/use_cases/test_connection_use_case.dart';
-import 'package:sharehop/infrastructures/services/web_dav_storage/error.dart';
+import 'package:sharehop/infrastructures/gateways/web_dav_storage/error.dart';
 import 'package:webdav_client/webdav_client.dart';
 
-class FakeWebDavStorageService implements WebDavStorageService {
+class FakeWebDavStorageGateway implements WebDavStorageGateway {
   bool shouldThrow = false;
   WebDavCredentialModel? passedCredential;
 
@@ -103,8 +103,8 @@ class FakeUnsupportedCredentialModel implements ConnectionCredentialModel {
 
 void main() {
   group('TestConnectionUseCase', () {
-    test('calls testConnection on WebDavStorageService successfully', () async {
-      final fakeService = FakeWebDavStorageService();
+    test('calls testConnection on WebDavStorageGateway successfully', () async {
+      final fakeService = FakeWebDavStorageGateway();
       final useCase = TestConnectionUseCase(fakeService);
 
       final credential = WebDavCredentialModel(
@@ -118,8 +118,8 @@ void main() {
       expect(fakeService.passedCredential, credential);
     });
 
-    test('rethrows error when WebDavStorageService fails', () async {
-      final fakeService = FakeWebDavStorageService()..shouldThrow = true;
+    test('rethrows error when WebDavStorageGateway fails', () async {
+      final fakeService = FakeWebDavStorageGateway()..shouldThrow = true;
       final useCase = TestConnectionUseCase(fakeService);
 
       final credential = WebDavCredentialModel(
@@ -136,7 +136,7 @@ void main() {
 
     test('throws UnimplementedError for unsupported credential protocol',
         () async {
-      final fakeService = FakeWebDavStorageService();
+      final fakeService = FakeWebDavStorageGateway();
       final useCase = TestConnectionUseCase(fakeService);
 
       final credential = FakeUnsupportedCredentialModel();

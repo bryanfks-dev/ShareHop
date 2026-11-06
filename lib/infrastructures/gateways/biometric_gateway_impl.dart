@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:local_auth/local_auth.dart';
 import 'package:sharehop/core/errors/auth.dart';
-import 'package:sharehop/core/services/biometric_lock_service.dart';
+import 'package:sharehop/core/gateways/biometric_lock_gateway.dart';
 
-class BiometricLockServiceImpl implements BiometricLockService {
+class BiometricLockGatewayImpl implements BiometricLockGateway {
   final _authentication = LocalAuthentication();
 
   @override
@@ -19,7 +19,7 @@ class BiometricLockServiceImpl implements BiometricLockService {
   Future<bool> authenticateUser({required String localizedMessage}) async {
     log(
       'Authenticate user started',
-      name: 'BiometricServiceImpl.authenticateUser',
+      name: 'BiometricLockGatewayImpl.authenticateUser',
     );
 
     try {
@@ -34,7 +34,7 @@ class BiometricLockServiceImpl implements BiometricLockService {
     } on Exception catch (e, st) {
       log(
         'Authenticate user failed',
-        name: 'BiometricServiceImpl.authenticateUser',
+        name: 'BiometricLockGatewayImpl.authenticateUser',
         error: e,
         stackTrace: st,
       );

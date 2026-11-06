@@ -12,11 +12,12 @@ _ConnectionModel _$ConnectionModelFromJson(Map<String, dynamic> json) =>
       protocol: $enumDecode(_$ConnectionProtocolEnumMap, json['protocol']),
       displayName: json['display_name'] as String,
       remoteAddress: json['remote_address'] as String,
+      username: json['username'] as String,
+      password: EncryptedValueModel.fromJson(
+        json['password'] as Map<String, dynamic>,
+      ),
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
-      status:
-          $enumDecodeNullable(_$ConnectionStatusEnumMap, json['status']) ??
-          ConnectionStatus.online,
     );
 
 Map<String, dynamic> _$ConnectionModelToJson(_ConnectionModel instance) =>
@@ -25,9 +26,10 @@ Map<String, dynamic> _$ConnectionModelToJson(_ConnectionModel instance) =>
       'protocol': _$ConnectionProtocolEnumMap[instance.protocol]!,
       'display_name': instance.displayName,
       'remote_address': instance.remoteAddress,
+      'username': instance.username,
+      'password': instance.password,
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
-      'status': _$ConnectionStatusEnumMap[instance.status]!,
     };
 
 const _$ConnectionProtocolEnumMap = {
@@ -37,11 +39,4 @@ const _$ConnectionProtocolEnumMap = {
   ConnectionProtocol.ftps: 'ftps',
   ConnectionProtocol.nfs: 'nfs',
   ConnectionProtocol.smb: 'smb',
-};
-
-const _$ConnectionStatusEnumMap = {
-  ConnectionStatus.online: 'online',
-  ConnectionStatus.ready: 'ready',
-  ConnectionStatus.idle: 'idle',
-  ConnectionStatus.offline: 'offline',
 };

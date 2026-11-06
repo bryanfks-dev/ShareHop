@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:sharehop/core/gateways/biometric_lock_gateway.dart';
 import 'package:sharehop/core/repositories/app_config_repository.dart';
-import 'package:sharehop/core/services/biometric_lock_service.dart';
 import 'package:sharehop/core/use_cases/clear_cache_use_case.dart';
 import 'package:sharehop/core/use_cases/get_app_config_use_case.dart';
 import 'package:sharehop/core/use_cases/get_cache_size_use_case.dart';
@@ -11,8 +11,8 @@ import 'package:sharehop/core/use_cases/set_is_biometric_lock_enabled_use_case.d
 import 'package:sharehop/core/use_cases/set_is_wifi_only_transfers_enabled_use_case.dart';
 import 'package:sharehop/core/use_cases/set_on_file_conflicts_resolution_use_case.dart';
 import 'package:sharehop/core/use_cases/set_simultaneous_transfers_limit_use_case.dart';
+import 'package:sharehop/infrastructures/gateways/biometric_gateway_impl.dart';
 import 'package:sharehop/infrastructures/repositories/app_config_repository_impl.dart';
-import 'package:sharehop/infrastructures/services/biometric_service_impl.dart';
 
 part 'app_config_di.g.dart';
 
@@ -20,8 +20,8 @@ part 'app_config_di.g.dart';
 AppConfigRepository appConfigRepository(Ref ref) => AppConfigRepositoryImpl();
 
 @Riverpod(keepAlive: true)
-BiometricLockService biometricLockService(Ref ref) =>
-    BiometricLockServiceImpl();
+BiometricLockGateway biometricLockGateway(Ref ref) =>
+    BiometricLockGatewayImpl();
 
 @Riverpod(keepAlive: true)
 GetAppConfigUseCase getAppConfigUseCase(Ref ref) =>

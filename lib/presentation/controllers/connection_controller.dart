@@ -1,7 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sharehop/core/models/connection_model.dart';
-import 'package:sharehop/core/models/web_dav_credential_model.dart';
-import 'package:sharehop/core/repositories/connection/dto.dart';
+import 'package:sharehop/data/dto/connection_dto.dart';
 import 'package:sharehop/di/connection_di.dart';
 
 part 'connection_controller.g.dart';
@@ -21,31 +20,19 @@ class ConnectionController extends _$ConnectionController {
     state = const AsyncLoading();
 
     try {
-      final parsedUri = Uri.parse(serverUrl);
-      final credential = WebDavCredentialModel(
-        url: parsedUri,
-        username: username,
-        password: password,
-      );
-
-      await ref
-          .read(testConnectionUseCaseProvider)
-          .call(credential: credential);
-
-      final draft = ConnectionDraftDto(
+      final connection = ConnectionDto(
         connectionProtocol: .webdav,
         remoteAddress: serverUrl,
-        displayName: displayName != null && displayName.trim().isNotEmpty
-            ? displayName.trim()
-            : null,
+        username: username,
+        password: password,
+        displayName: displayName,
       );
-
-      final connection = await ref
+      final savedConnection = await ref
           .read(createConnectionUseCaseProvider)
-          .call(draft: draft);
+          .call(connection: connection);
 
-      state = AsyncData(connection);
-      return connection;
+      state = AsyncData(savedConnection);
+      return savedConnection;
     } on Object catch (e, st) {
       state = AsyncError(e, st);
       rethrow;

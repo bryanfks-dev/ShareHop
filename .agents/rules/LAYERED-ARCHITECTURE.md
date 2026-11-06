@@ -8,7 +8,7 @@ This projects follows the clean architecture principles, with a layered architec
 
 ## Layers
 
-Controller -> Use Case (Business Rules) -> Repository or Service. Never skip any single layer.
+Controller -> Use Case (Business Rules) -> Service (Optional) -> Repository or Gateways.
 
 ## Controller
 
@@ -23,7 +23,8 @@ Controller -> Use Case (Business Rules) -> Repository or Service. Never skip any
 
 - Use Case layer contains the business rules of the application.
 - Use Case layer is the only layer that contains business logic.
-- Use Case layer is the only layer that can call repository or service layer.
+- Use Case layer is the only layer that can call service layer for shared business logic that can be reused across multiple use cases.
+- Use Case layer is the only layer that can call repository or gateway layer.
 - Use Case layer placed in `lib/core/use_cases` directory.
 - Use Case class should always have a single public method named `call` that contains the main business logic of the use case.
 
@@ -36,6 +37,29 @@ Controller -> Use Case (Business Rules) -> Repository or Service. Never skip any
   - Good: `CreateUserUseCase`, `GetPaymentUseCase`, `TransferFileUseCase`
   - Bad: `UserUseCase`, `PaymentUseCase`, `FileTransferUseCase`
 - Use Case file and class name SHOULD be matched.
+
+## Service
+
+- Service layer is an OPTIONAL layer that contains shared business logic that can be reused across multiple use cases.
+- Service layer is the only layer that can call gateway layer.
+- Service layer placed in `lib/core/services` directory.
+- Service layer's methods should be named after the action that the service is performing, and the model name that the service is acting on.
+  - Good: `createUser`, `getPayment`, `transferFile`
+  - Bad: `user`, `payment`, `fileTransfer`
+- Service layer should be named after the action that the service is performing, and the aggregate root model name that the service is acting on.
+  - Good: `UserService`, `PaymentService`, `FileTransferService`
+  - Bad: `CreateUserService`, `GetPaymentService`, `TransferFileService`
+- Service layer should be used for shared business logic that can be reused across multiple use cases, such as sending emails, generating reports, or processing payments.
+
+### Service Naming Convention
+
+- Service class MUST have a name ending with `Service`.
+  - Good: `UserService`, `PaymentService`, `FileTransferService`
+  - Bad: `CreateUserService`, `GetPaymentService`, `TransferFileService`
+- Service class named after the action that the service is peforming, and the aggregate root model name that the service is acting on.
+  - Good: `UserService`, `PaymentService`, `FileTransferService`
+  - Bad: `CreateUserService`, `GetPaymentService`, `TransferFileService`
+- Service file and class name SHOULD be matched.
 
 ## Repository
 
@@ -72,27 +96,27 @@ Controller -> Use Case (Business Rules) -> Repository or Service. Never skip any
   - Good: `findUserById`, `findPaymentById`, `findFileTransferById`
   - Bad: `user`, `payment`, `fileTransfer`
 
-## Service
+## Gateway
 
-- Port of service layer live in `lib/core/services`.
-- Adapter of service layer live in `lib/infrastructures/services`.
+- Port of gateway layer live in `lib/core/gateways`.
+- Adapter of gateway layer live in `lib/infrastructures/gateways`.
 - ALL external API calls (HTTP clients, third-party SDKs, webhooks) live here and ONLY here.
-- Services NOT contains any business logic.
+- Gateway NOT contains any business logic.
 - Wrap external response in typed DTOs; never leak raw third-party payloads to the upper layer (use case, controller).
 - Handle timeouts, retries, and error handling here.
-- If the exposed service method's parameters exceed count of `3`, create a DTO class that contains the function parameters inside the port service layer directory.
-- Use Case must call external API through service layer, never directly access the external API from use case layer.
+- If the exposed gateway method's parameters exceed count of `3`, create a DTO class that contains the function parameters inside the port gateway layer directory.
+- Use Case must call external API through gateway layer, never directly access the external API from use case layer.
 
-### Service Naming Convention
+### Gateway Naming Convention
 
-- Port of service class MUST have a name ending with `Service`.
-  - Good: `UserService`, `PaymentService`, `FileTransferService`
+- Port of gateway class MUST have a name ending with `Gateway`.
+  - Good: `UserGateway`, `PaymentGateway`, `FileTransferGateway`
   - Bad: `User`, `Payment`, `FileTransfer`
-- Service class should be placed inside a directory named after the aggregate root model name like `user`, `payment`, `file_transfer`.
-- Adapter of service layer MUST have a suffix `Impl` as the mark of implementation of port service.
-  - Good: `UserServiceImpl`, `PaymentServiceImpl`, `FileTransferServiceImpl`
-  - Bad: `UserService`, `PaymentService`, `FileTransferService`
-- Service exposed methods name should be named after the action that the service is performing, and the model name that the service is acting on.
+- Gateway class should be placed inside a directory named after the aggregate root model name like `user`, `payment`, `file_transfer`.
+- Adapter of gateway layer MUST have a suffix `Impl` as the mark of implementation of port gateway.
+  - Good: `UserGatewayImpl`, `PaymentGatewayImpl`, `FileTransferGatewayImpl`
+  - Bad: `UserGateway`, `PaymentGateway`, `FileTransferGateway`
+- Gateway exposed methods name should be named after the action that the gateway is performing, and the model name that the gateway is acting on.
   - Good: `createUser`, `getPayment`, `transferFile`
   - Bad: `user`, `payment`, `fileTransfer`
 

@@ -1,14 +1,14 @@
 import 'dart:developer';
 
 import 'package:flutter/services.dart';
-import 'package:sharehop/core/data/dto/storage_status_dto.dart';
+import 'package:sharehop/core/gateways/web_dav_storage_gateway.dart';
 import 'package:sharehop/core/models/web_dav_credential_model.dart';
-import 'package:sharehop/core/services/web_dav_storage_service.dart';
-import 'package:sharehop/infrastructures/services/web_dav_storage/error.dart';
+import 'package:sharehop/data/dto/storage_status_dto.dart';
+import 'package:sharehop/infrastructures/gateways/web_dav_storage/error.dart';
 import 'package:sharehop/infrastructures/web_dav/web_dav_client_manager.dart';
 import 'package:webdav_client/webdav_client.dart';
 
-class WebDavStorageServiceImpl implements WebDavStorageService {
+class WebDavStorageGatewayImpl implements WebDavStorageGateway {
   const new(this.clientManager);
 
   final WebDavClientManager clientManager;
@@ -245,8 +245,7 @@ class WebDavStorageServiceImpl implements WebDavStorageService {
           );
         }
 
-        final rawAvailable =
-            int.tryParse(availableMatch?.group(1) ?? '') ?? 0;
+        final rawAvailable = int.tryParse(availableMatch?.group(1) ?? '') ?? 0;
         final rawUsed = int.tryParse(usedMatch?.group(1) ?? '') ?? 0;
 
         final availableBytes = rawAvailable < 0 ? 0 : rawAvailable;
