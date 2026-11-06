@@ -7,7 +7,13 @@ class GetSmbStorageStatusUseCase {
 
   final SmbStorageService _smbStorageService;
 
-  Future<StorageStatusDto> call({required ConnectionModel connection}) async {
-    return await _smbStorageService.getStorageStatus(connection: connection);
+  Future<StorageStatusDto> call({
+    required ConnectionModel connection,
+    String path = '/',
+  }) async {
+    return await _smbStorageService.getStatus(
+      connection: connection,
+      path: path,
+    );
   }
 }

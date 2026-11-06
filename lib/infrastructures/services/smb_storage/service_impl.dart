@@ -11,8 +11,9 @@ class SmbStorageServiceImpl implements SmbStorageService {
   const new();
 
   @override
-  Future<StorageStatusDto> getStorageStatus({
+  Future<StorageStatusDto> getStatus({
     required ConnectionModel connection,
+    String path = '/',
   }) async {
     try {
       // Connect to SMB host on port 445 (standard SMB/CIFS port)

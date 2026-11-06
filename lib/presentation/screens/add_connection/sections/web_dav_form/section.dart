@@ -4,7 +4,7 @@ import 'package:forui/forui.dart';
 import 'package:forui_hooks/forui_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sharehop/core/errors/app.dart';
-import 'package:sharehop/presentation/controllers/add_connection_controller.dart';
+import 'package:sharehop/presentation/controllers/connection_controller.dart';
 import 'package:sharehop/presentation/router/navigator_extension.dart';
 import 'package:sharehop/presentation/screens/add_connection/sections/web_dav_form/connection_sub_section.dart';
 import 'package:sharehop/presentation/screens/add_connection/sections/web_dav_form/credential_sub_section.dart';
@@ -29,8 +29,8 @@ class WebDavFormSection extends HookConsumerWidget {
       length: kWebDavFormSecurityAuthenticationMethods.length,
     );
 
-    final addConnectionState = ref.watch(addConnectionControllerProvider);
-    final isLoading = addConnectionState.isLoading;
+    final connectionState = ref.watch(connectionControllerProvider);
+    final isLoading = connectionState.isLoading;
 
     void handleOnChangeValidateCertificate({required bool value}) {
       validateCertificate.value = value;
@@ -47,7 +47,7 @@ class WebDavFormSection extends HookConsumerWidget {
 
       try {
         await ref
-            .read(addConnectionControllerProvider.notifier)
+            .read(connectionControllerProvider.notifier)
             .addWebDavConnection(
               serverUrl: serverUrlController.text.trim(),
               rootPath: rootPathController.text.trim(),

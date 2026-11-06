@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS connections (
     protocol TEXT NOT NULL CHECK (protocol IN ('ftp', 'sftp', 'ftps', 'webdav', 'smb', 'nfs')),
     display_name TEXT NOT NULL,
     remote_address TEXT NOT NULL,
-    status TEXT NOT NULL DEFAULT 'offline' CHECK (status IN ('online', 'offline')),
+    status TEXT NOT NULL DEFAULT 'offline' CHECK (status IN ('online', 'ready', 'idle', 'offline')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

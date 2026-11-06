@@ -53,7 +53,7 @@ final class SmbStorageStatusControllerProvider
 }
 
 String _$smbStorageStatusControllerHash() =>
-    r'4aae5ab174cdc761d91f8eb3e3038e718040914b';
+    r'8ccef645514b9f258ae8bd37b6fe0eb05f1712da';
 
 final class SmbStorageStatusControllerFamily extends $Family
     with

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'add_connection_controller.dart';
+part of 'connection_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,32 +9,29 @@ part of 'add_connection_controller.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(AddConnectionController)
-final addConnectionControllerProvider = AddConnectionControllerProvider._();
+@ProviderFor(ConnectionController)
+final connectionControllerProvider = ConnectionControllerProvider._();
 
-final class AddConnectionControllerProvider
+final class ConnectionControllerProvider
     extends
-        $NotifierProvider<
-          AddConnectionController,
-          AsyncValue<ConnectionModel?>
-        > {
-  AddConnectionControllerProvider._()
+        $NotifierProvider<ConnectionController, AsyncValue<ConnectionModel?>> {
+  ConnectionControllerProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'addConnectionControllerProvider',
+        name: r'connectionControllerProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$addConnectionControllerHash();
+  String debugGetCreateSourceHash() => _$connectionControllerHash();
 
   @$internal
   @override
-  AddConnectionController create() => AddConnectionController();
+  ConnectionController create() => ConnectionController();
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(AsyncValue<ConnectionModel?> value) {
@@ -45,10 +42,10 @@ final class AddConnectionControllerProvider
   }
 }
 
-String _$addConnectionControllerHash() =>
-    r'3f319128d41b9fafac8f980b4d0a138613ac7c0f';
+String _$connectionControllerHash() =>
+    r'a779806a1e0bfc2e19b29585fa9c91d20342d6b1';
 
-abstract class _$AddConnectionController
+abstract class _$ConnectionController
     extends $Notifier<AsyncValue<ConnectionModel?>> {
   AsyncValue<ConnectionModel?> build();
   @$mustCallSuper

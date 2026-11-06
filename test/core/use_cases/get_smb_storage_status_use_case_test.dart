@@ -7,8 +7,9 @@ import 'package:sharehop/core/use_cases/get_smb_storage_status_use_case.dart';
 
 class FakeSmbStorageService implements SmbStorageService {
   @override
-  Future<StorageStatusDto> getStorageStatus({
+  Future<StorageStatusDto> getStatus({
     required ConnectionModel connection,
+    String path = '/',
   }) async {
     return const StorageStatusDto(
       totalBytes: 500 * 1024 * 1024 * 1024,

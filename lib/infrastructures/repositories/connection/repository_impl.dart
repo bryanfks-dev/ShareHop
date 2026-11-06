@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:sharehop/core/models/connection_model.dart';
@@ -7,15 +8,17 @@ import 'package:sharehop/infrastructures/database/manager.dart';
 import 'package:sharehop/infrastructures/repositories/connection/error.dart';
 import 'package:sharehop/infrastructures/repositories/connection/factory.dart';
 import 'package:sharehop/infrastructures/repositories/connection/mapper.dart';
+import 'package:sqflite/sqflite.dart';
 
 class ConnectionRepositoryImpl implements ConnectionRepository {
+  const new();
+
   @override
   Future<List<ConnectionModel>> getAll() async {
     log('Get all connections started', name: 'ConnectionRepositoryImpl.getAll');
 
     try {
       final db = await DatabaseManager.instance.database;
-
       final results = await db.query(ConnectionModel.tableName);
 
       log('Get all connections done', name: 'ConnectionRepositoryImpl.getAll');
@@ -41,7 +44,6 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
 
     try {
       final db = await DatabaseManager.instance.database;
-
       final results = await db.query(
         ConnectionModel.tableName,
         where: 'id = ?',
@@ -73,9 +75,12 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
 
     try {
       final db = await DatabaseManager.instance.database;
-
       final model = buildConnectionDraftDtoFromConnectionModel(draft);
-      await db.insert(ConnectionModel.tableName, model.toJson());
+      await db.insert(
+        ConnectionModel.tableName,
+        model.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
 
       log('Create connection done', name: 'ConnectionRepositoryImpl.create');
 
@@ -101,7 +106,6 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
 
     try {
       final db = await DatabaseManager.instance.database;
-
       final updateValues = mapConnectionRevisionDtoToUpdateValues(revision);
       await db.update(
         ConnectionModel.tableName,
@@ -133,7 +137,6 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
 
     try {
       final db = await DatabaseManager.instance.database;
-
       final results = await db.query(
         ConnectionModel.tableName,
         columns: ['id'],
@@ -157,7 +160,6 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
 
     try {
       final db = await DatabaseManager.instance.database;
-
       await db.delete(
         ConnectionModel.tableName,
         where: 'id = ?',
@@ -183,7 +185,6 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
 
     try {
       final db = await DatabaseManager.instance.database;
-
       final batch = db.batch();
       for (final id in ids) {
         batch.delete(

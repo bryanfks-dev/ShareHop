@@ -55,7 +55,7 @@ final class ConnectionRepositoryProvider
 }
 
 String _$connectionRepositoryHash() =>
-    r'd3928d39c0a0adac2224fd690e47aef0587147c6';
+    r'7cd5ed812fa6a4ef10dbac4bd3fa8ad4b85d19af';
 
 @ProviderFor(webDavClientPool)
 final webDavClientPoolProvider = WebDavClientPoolProvider._();
@@ -292,56 +292,55 @@ final class CreateConnectionUseCaseProvider
 }
 
 String _$createConnectionUseCaseHash() =>
-    r'35b6d68b8bfb12d96e3df384cb7bf14ec5d24aef';
+    r'fab3abc7f94fe3bd58d9bfd533e0faa6ca755d18';
 
-@ProviderFor(testWebDavConnectionUseCase)
-final testWebDavConnectionUseCaseProvider =
-    TestWebDavConnectionUseCaseProvider._();
+@ProviderFor(testConnectionUseCase)
+final testConnectionUseCaseProvider = TestConnectionUseCaseProvider._();
 
-final class TestWebDavConnectionUseCaseProvider
+final class TestConnectionUseCaseProvider
     extends
         $FunctionalProvider<
-          TestWebDavConnectionUseCase,
-          TestWebDavConnectionUseCase,
-          TestWebDavConnectionUseCase
+          TestConnectionUseCase,
+          TestConnectionUseCase,
+          TestConnectionUseCase
         >
-    with $Provider<TestWebDavConnectionUseCase> {
-  TestWebDavConnectionUseCaseProvider._()
+    with $Provider<TestConnectionUseCase> {
+  TestConnectionUseCaseProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'testWebDavConnectionUseCaseProvider',
+        name: r'testConnectionUseCaseProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$testWebDavConnectionUseCaseHash();
+  String debugGetCreateSourceHash() => _$testConnectionUseCaseHash();
 
   @$internal
   @override
-  $ProviderElement<TestWebDavConnectionUseCase> $createElement(
+  $ProviderElement<TestConnectionUseCase> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  TestWebDavConnectionUseCase create(Ref ref) {
-    return testWebDavConnectionUseCase(ref);
+  TestConnectionUseCase create(Ref ref) {
+    return testConnectionUseCase(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(TestWebDavConnectionUseCase value) {
+  Override overrideWithValue(TestConnectionUseCase value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<TestWebDavConnectionUseCase>(value),
+      providerOverride: $SyncValueProvider<TestConnectionUseCase>(value),
     );
   }
 }
 
-String _$testWebDavConnectionUseCaseHash() =>
-    r'ab0444474766ef4a2bc91105de456caf1b556748';
+String _$testConnectionUseCaseHash() =>
+    r'06125f69da59d6165efb2dc01df6ec443cfb1922';
 
 @ProviderFor(getSmbStorageStatusUseCase)
 final getSmbStorageStatusUseCaseProvider =

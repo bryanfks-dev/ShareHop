@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forui/forui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sharehop/core/data/dto/storage_status_dto.dart';
 import 'package:sharehop/core/enums/connection_protocol.dart';
 import 'package:sharehop/core/models/connection_model.dart';
 import 'package:sharehop/core/models/web_dav_credential_model.dart';
@@ -11,7 +12,7 @@ import 'package:sharehop/core/repositories/connection/dto.dart';
 import 'package:sharehop/core/repositories/connection/repository.dart';
 import 'package:sharehop/core/services/web_dav_storage_service.dart';
 import 'package:sharehop/core/use_cases/create_connection_use_case.dart';
-import 'package:sharehop/core/use_cases/test_web_dav_connection_use_case.dart';
+import 'package:sharehop/core/use_cases/test_connection_use_case.dart';
 import 'package:sharehop/di/connection_di.dart';
 import 'package:sharehop/infrastructures/repositories/connection/factory.dart';
 import 'package:sharehop/infrastructures/services/web_dav_storage/error.dart';
@@ -93,6 +94,16 @@ class FakeWebDavStorageService implements WebDavStorageService {
     required String path,
   }) async =>
       throw UnimplementedError();
+
+  @override
+  Future<StorageStatusDto> getStatus({
+    required WebDavCredentialModel credential,
+    String path = '/',
+  }) async =>
+      const StorageStatusDto(
+        totalBytes: 500 * 1024 * 1024 * 1024,
+        freeBytes: 64 * 1024 * 1024 * 1024,
+      );
 }
 
 class FakeConnectionRepository implements ConnectionRepository {
@@ -132,8 +143,8 @@ Widget createTestApp({
 }) {
   return ProviderScope(
     overrides: [
-      testWebDavConnectionUseCaseProvider.overrideWithValue(
-        TestWebDavConnectionUseCase(fakeService),
+      testConnectionUseCaseProvider.overrideWithValue(
+        TestConnectionUseCase(fakeService),
       ),
       createConnectionUseCaseProvider.overrideWithValue(
         CreateConnectionUseCase(fakeRepo),

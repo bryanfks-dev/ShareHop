@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -27,7 +28,11 @@ class DatabaseManager {
 
   Future<void> _createDatabase(Database db, int version) async {
     final schemaFile = await rootBundle.loadString(_kDatabaseSchemaFilePath);
-    final statements = schemaFile.split(';').map((s) => s.trim());
+    await applySchema(db, schemaFile);
+  }
+
+  static Future<void> applySchema(Database db, String schemaSql) async {
+    final statements = schemaSql.split(';').map((s) => s.trim());
 
     for (final statement in statements) {
       if (statement.isEmpty) {
@@ -38,7 +43,16 @@ class DatabaseManager {
   }
 
   Future<void> close() async {
-    final database = await instance.database;
-    await database.close();
+    if (_database == null) {
+      return;
+    }
+    await _database!.close();
+    _database = null;
+  }
+
+  @visibleForTesting
+  // ignore: avoid_setters_without_getters Getter already defined in database
+  static set databaseForTesting(Database? db) {
+    _database = db;
   }
 }

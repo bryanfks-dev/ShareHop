@@ -4,10 +4,10 @@ import 'package:sharehop/core/models/web_dav_credential_model.dart';
 import 'package:sharehop/core/repositories/connection/dto.dart';
 import 'package:sharehop/di/connection_di.dart';
 
-part 'add_connection_controller.g.dart';
+part 'connection_controller.g.dart';
 
 @riverpod
-class AddConnectionController extends _$AddConnectionController {
+class ConnectionController extends _$ConnectionController {
   @override
   AsyncValue<ConnectionModel?> build() => const AsyncData(null);
 
@@ -29,7 +29,7 @@ class AddConnectionController extends _$AddConnectionController {
       );
 
       await ref
-          .read(testWebDavConnectionUseCaseProvider)
+          .read(testConnectionUseCaseProvider)
           .call(credential: credential);
 
       final draft = ConnectionDraftDto(

@@ -10,6 +10,15 @@ This projects follows the clean architecture principles, with a layered architec
 
 Controller -> Use Case (Business Rules) -> Repository or Service. Never skip any single layer.
 
+## Controller
+
+- Controller layer is the entry point of the application.
+- Controller layer is the only layer that can call use case layer.
+- Controller layer placed in `lib/presentation/controllers` directory.
+- Controller layer should be named after the aggregate root model name that the controller is acting on, and the action that the controller is performing.
+  - Good: `UserController`, `PaymentController`, `FileTransferController`
+  - Bad: `CreateUserController`, `GetPaymentController`, `TransferFileController`
+
 ## Use Case
 
 - Use Case layer contains the business rules of the application.

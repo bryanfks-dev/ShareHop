@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/services.dart';
+import 'package:sharehop/core/data/dto/storage_status_dto.dart';
 import 'package:sharehop/core/models/web_dav_credential_model.dart';
 import 'package:sharehop/core/services/web_dav_storage_service.dart';
 import 'package:sharehop/infrastructures/services/web_dav_storage/error.dart';
@@ -196,6 +197,73 @@ class WebDavStorageServiceImpl implements WebDavStorageService {
     } on Exception catch (e) {
       log('Failed to test WebDAV connection', error: e);
       throw WebDavOperationFailedError('Failed to connect to WebDAV server');
+    }
+  }
+
+  @override
+  Future<StorageStatusDto> getStatus({
+    required WebDavCredentialModel credential,
+    String path = '/',
+  }) async {
+    try {
+      return await clientManager.useClientWithDisposal((client) async {
+        const quotaXmlStr = '''
+<d:propfind xmlns:d="DAV:">
+  <d:prop>
+    <d:quota-available-bytes/>
+    <d:quota-used-bytes/>
+  </d:prop>
+</d:propfind>''';
+
+        final normalizedPath = path.isEmpty || path == '/'
+            ? '/'
+            : (path.startsWith('/') ? path : '/$path');
+
+        final response = await client.c.wdPropfind(
+          client,
+          normalizedPath,
+          false,
+          quotaXmlStr,
+        );
+
+        final xmlData = response.data.toString();
+
+        final availableMatch = RegExp(
+          r'<(?:\w+:)?quota-available-bytes[^>]*>\s*(-?[0-9]+)\s*<\/(?:\w+:)?quota-available-bytes>',
+          caseSensitive: false,
+        ).firstMatch(xmlData);
+
+        final usedMatch = RegExp(
+          r'<(?:\w+:)?quota-used-bytes[^>]*>\s*(-?[0-9]+)\s*<\/(?:\w+:)?quota-used-bytes>',
+          caseSensitive: false,
+        ).firstMatch(xmlData);
+
+        if (availableMatch == null && usedMatch == null) {
+          throw WebDavOperationFailedError(
+            'Failed to parse storage status: quota properties not found '
+            'in response',
+          );
+        }
+
+        final rawAvailable =
+            int.tryParse(availableMatch?.group(1) ?? '') ?? 0;
+        final rawUsed = int.tryParse(usedMatch?.group(1) ?? '') ?? 0;
+
+        final availableBytes = rawAvailable < 0 ? 0 : rawAvailable;
+        final usedBytes = rawUsed < 0 ? 0 : rawUsed;
+        final totalBytes = availableBytes + usedBytes;
+
+        return StorageStatusDto(
+          totalBytes: totalBytes,
+          freeBytes: availableBytes,
+          updatedAt: DateTime.now(),
+        );
+      }, credential: credential);
+    } on WebDavOperationFailedError {
+      rethrow;
+    } on Exception catch (e) {
+      log('Failed to get storage status for path: $path', error: e);
+      throw WebDavOperationFailedError('Failed to get storage status');
     }
   }
 }
