@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sharehop/core/enums/app_theme.dart';
-import 'package:sharehop/core/enums/on_file_conflicts_resolution.dart';
+import 'package:sharehop/core/enums/file_conflicts_resolution.dart';
 import 'package:sharehop/core/models/app_config_model.dart';
 import 'package:sharehop/di/app_config_di.dart';
 
@@ -23,7 +23,7 @@ class AppConfigController extends _$AppConfigController {
 
     try {
       await ref
-          .read(setIsWifiOnlyTransfersEnabledUseCaseProvider)
+          .read(updateIsWifiOnlyTransfersEnabledUseCaseProvider)
           .call(enabled: enabled);
     } on Exception {
       state = previous;
@@ -41,7 +41,7 @@ class AppConfigController extends _$AppConfigController {
 
     try {
       await ref
-          .read(setIsBackgroundTransfersEnabledUseCaseProvider)
+          .read(updateIsBackgroundTransfersEnabledUseCaseProvider)
           .call(enabled: enabled);
     } on Exception {
       state = previous;
@@ -59,7 +59,7 @@ class AppConfigController extends _$AppConfigController {
 
     try {
       await ref
-          .read(setSimultaneousTransfersLimitUseCaseProvider)
+          .read(updateSimultaneousTransfersLimitUseCaseProvider)
           .call(limit: limit);
     } on Exception {
       state = previous;
@@ -67,7 +67,7 @@ class AppConfigController extends _$AppConfigController {
   }
 
   Future<void> setOnFileConflictsResolution({
-    required OnFileConflictsResolution resolution,
+    required FileConflictsResolution resolution,
   }) async {
     final current = state.value;
     if (current == null) {
@@ -79,7 +79,7 @@ class AppConfigController extends _$AppConfigController {
 
     try {
       await ref
-          .read(setOnFileConflictsResolutionUseCaseProvider)
+          .read(updateOnFileConflictsResolutionUseCaseProvider)
           .call(resolution: resolution);
     } on Exception {
       state = previous;
@@ -97,7 +97,7 @@ class AppConfigController extends _$AppConfigController {
 
     try {
       await ref
-          .read(setIsBiometricLockEnabledUseCaseProvider)
+          .read(updateIsBiometricLockEnabledUseCaseProvider)
           .call(enabled: enabled);
     } on Exception {
       state = previous;
@@ -115,7 +115,7 @@ class AppConfigController extends _$AppConfigController {
 
     try {
       await ref
-          .read(setDownloadDestinationPathUseCaseProvider)
+          .read(updateDownloadDestinationPathUseCaseProvider)
           .call(path: path);
     } on Exception {
       state = previous;
@@ -136,7 +136,7 @@ class AppConfigController extends _$AppConfigController {
     state = AsyncData(current.copyWith(appAppearance: theme));
 
     try {
-      await ref.read(setAppAppearanceUseCaseProvider).call(theme: theme);
+      await ref.read(updateAppAppearanceUseCaseProvider).call(theme: theme);
     } on Exception {
       state = previous;
     }

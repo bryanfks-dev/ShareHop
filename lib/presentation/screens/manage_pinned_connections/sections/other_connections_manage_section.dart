@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
-import 'package:sharehop/core/models/connection_model.dart';
 import 'package:sharehop/presentation/controllers/manage_pinned_connections_controller.dart';
-import 'package:sharehop/presentation/router/navigator_extension.dart';
+import 'package:sharehop/presentation/extensions/router/navigator_extension.dart';
 import 'package:sharehop/presentation/screens/connection_detail/screen.dart';
 import 'package:sharehop/presentation/screens/manage_pinned_connections/widgets/manage_other_connections_empty_state.dart';
 import 'package:sharehop/presentation/screens/manage_pinned_connections/widgets/manage_other_connections_tile_group.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
+import 'package:sharehop/presentation/view_models/connection_view_model.dart';
 
 class OtherConnectionsManageSection extends ConsumerWidget {
   const new({super.key});
@@ -18,7 +18,7 @@ class OtherConnectionsManageSection extends ConsumerWidget {
     final state = ref.watch(managePinnedConnectionsControllerProvider);
     final other = state.otherConnections;
 
-    void handleOnPressPin({required ConnectionModel connection}) {
+    void handleOnPressPin({required ConnectionViewModel connection}) {
       final success = ref
           .read(managePinnedConnectionsControllerProvider.notifier)
           .pin(connection.id);
@@ -31,7 +31,7 @@ class OtherConnectionsManageSection extends ConsumerWidget {
       }
     }
 
-    void handleOnPressEdit({required ConnectionModel connection}) {
+    void handleOnPressEdit({required ConnectionViewModel connection}) {
       context.navigator.push(
         MaterialPageRoute<ConnectionDetailScreen>(
           builder: (context) => ConnectionDetailScreen(connection: connection),

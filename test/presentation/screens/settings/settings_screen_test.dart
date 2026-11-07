@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:forui/forui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sharehop/core/enums/app_theme.dart';
-import 'package:sharehop/core/enums/on_file_conflicts_resolution.dart';
+import 'package:sharehop/core/enums/file_conflicts_resolution.dart';
 import 'package:sharehop/core/models/app_config_model.dart';
 import 'package:sharehop/core/repositories/app_config_repository.dart';
 import 'package:sharehop/di/app_config_di.dart';
@@ -15,7 +15,7 @@ class FakeAppConfigRepository implements AppConfigRepository {
     isWifiOnlyTransfersEnabled: true,
     isBackgroundTransfersEnabled: false,
     simultaneousTransfersLimit: 4,
-    onFileConflictsResolution: OnFileConflictsResolution.overwrite,
+    onFileConflictsResolution: FileConflictsResolution.overwrite,
     isBiometricLockEnabled: false,
     downloadDestinationPath: '/test/downloads',
     appAppearance: AppTheme.dark,
@@ -25,39 +25,42 @@ class FakeAppConfigRepository implements AppConfigRepository {
   Future<AppConfigModel> getConfig() async => model;
 
   @override
-  Future<void> setAppAppearance({required AppTheme theme}) async {
+  Future<String> getEncryptionKey() async => 'test-key';
+
+  @override
+  Future<void> setAppTheme({required AppTheme theme}) async {
     model = model.copyWith(appAppearance: theme);
   }
 
   @override
-  Future<void> setDownloadDestinationPath({required String path}) async {
+  Future<void> setDownloadPath({required String path}) async {
     model = model.copyWith(downloadDestinationPath: path);
   }
 
   @override
-  Future<void> setIsBackgroundTransfersEnabled({required bool enabled}) async {
+  Future<void> setBackgroundTransfersEnabled({required bool enabled}) async {
     model = model.copyWith(isBackgroundTransfersEnabled: enabled);
   }
 
   @override
-  Future<void> setIsBiometricLockEnabled({required bool enabled}) async {
+  Future<void> setBiometricLockEnabled({required bool enabled}) async {
     model = model.copyWith(isBiometricLockEnabled: enabled);
   }
 
   @override
-  Future<void> setIsWifiOnlyTransfersEnabled({required bool enabled}) async {
+  Future<void> setWifiOnlyTransfersEnabled({required bool enabled}) async {
     model = model.copyWith(isWifiOnlyTransfersEnabled: enabled);
   }
 
   @override
-  Future<void> setOnFileConflictsResolution({
-    required OnFileConflictsResolution resolution,
+  Future<void> setFileConflictResolution({
+    required FileConflictsResolution resolution,
   }) async {
     model = model.copyWith(onFileConflictsResolution: resolution);
   }
 
   @override
-  Future<void> setSimultaneousTransfersLimit({required int limit}) async {
+  Future<void> setMaxSimultaneousTransfers({required int limit}) async {
     model = model.copyWith(simultaneousTransfersLimit: limit);
   }
 }
@@ -70,9 +73,7 @@ void main() {
 
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [
-          appConfigRepositoryProvider.overrideWithValue(fakeRepo),
-        ],
+        overrides: [appConfigRepositoryProvider.overrideWithValue(fakeRepo)],
         child: MaterialApp(
           localizationsDelegates: const [
             ...FLocalizations.localizationsDelegates,
@@ -132,7 +133,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(
       fakeRepo.model.onFileConflictsResolution,
-      OnFileConflictsResolution.skip,
+      FileConflictsResolution.skip,
     );
     expect(find.text('Skip files'), findsOneWidget);
 

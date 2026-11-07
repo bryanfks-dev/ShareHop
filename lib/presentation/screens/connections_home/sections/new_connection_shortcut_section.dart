@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forui/theme.dart';
 import 'package:sharehop/core/enums/connection_protocol.dart';
-import 'package:sharehop/presentation/router/navigator_extension.dart';
+import 'package:sharehop/presentation/extensions/router/navigator_extension.dart';
 import 'package:sharehop/presentation/screens/add_connection/screen.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
 import 'package:sharehop/presentation/widgets/connection/connection_protocol_glyph_with_undertext.dart';
@@ -38,7 +38,7 @@ class NewConnectionShortcutSection extends StatelessWidget {
       mainAxisSize: .min,
       children: [
         Text(
-          'NEW CONNECTION',
+          'New Connection',
           style: theme.typography.display.xs.copyWith(
             color: theme.colors.foreground,
             fontWeight: .w700,

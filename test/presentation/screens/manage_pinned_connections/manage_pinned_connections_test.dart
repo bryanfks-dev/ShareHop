@@ -170,7 +170,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        expect(find.text('PINNED CONNECTIONS'), findsOneWidget);
+        expect(find.text('Pinned Connections'), findsOneWidget);
         final manageButton = find.text('Manage');
         expect(manageButton, findsOneWidget);
 
@@ -184,7 +184,7 @@ void main() {
         await tester.tap(find.byIcon(FLucideIcons.chevronLeft));
         await tester.pumpAndSettle();
 
-        expect(find.text('PINNED CONNECTIONS'), findsOneWidget);
+        expect(find.text('Pinned Connections'), findsOneWidget);
       },
     );
 

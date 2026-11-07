@@ -1,42 +1,34 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
-import 'package:intl/intl.dart';
-import 'package:sharehop/core/enums/connection_status.dart';
-import 'package:sharehop/core/models/connection_model.dart';
-import 'package:sharehop/presentation/router/navigator_extension.dart';
+import 'package:sharehop/presentation/extensions/enums/connection_protocol_extension.dart';
+import 'package:sharehop/presentation/extensions/enums/connection_status_extension.dart';
+import 'package:sharehop/presentation/extensions/router/navigator_extension.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
 import 'package:sharehop/presentation/theme/theme.dart';
+import 'package:sharehop/presentation/view_models/connection_view_model.dart';
 import 'package:sharehop/presentation/widgets/connection/connection_protocol_glyph.dart';
 
 Future<void> showConnectionInformationSheet(
   BuildContext context, {
-  required ConnectionModel connection,
-  ConnectionStatus connectionStatus = ConnectionStatus.online,
+  required ConnectionViewModel connection,
 }) async {
   await showFSheet<void>(
     context: context,
     side: .btt,
-    builder: (sheetContext) => _ConnectionInformationSheetContent(
-      connection: connection,
-      connectionStatus: connectionStatus,
-    ),
+    builder: (sheetContext) =>
+        _ConnectionInformationSheetContent(connection: connection),
   );
 }
 
 class _ConnectionInformationSheetContent extends StatelessWidget {
-  const new({
-    required this.connection,
-    required this.connectionStatus,
-  });
+  const new({required this.connection});
 
-  final ConnectionModel connection;
-  final ConnectionStatus connectionStatus;
+  final ConnectionViewModel connection;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    final dateFormatter = DateFormat('MMM d, yyyy · hh:mm a');
 
     void handleOnPressClose() {
       context.navigator.pop();
@@ -45,15 +37,12 @@ class _ConnectionInformationSheetContent extends StatelessWidget {
     Future<void> handleOnCopy(String label, String value) async {
       await Clipboard.setData(ClipboardData(text: value));
       if (context.mounted) {
-        showFToast(
-          context: context,
-          title: Text('$label copied to clipboard'),
-        );
+        showFToast(context: context, title: Text('$label copied to clipboard'));
       }
     }
 
     Color statusColor;
-    switch (connectionStatus) {
+    switch (connection.status) {
       case .online:
         statusColor = theme.colors.app.success;
       case .ready:
@@ -105,7 +94,7 @@ class _ConnectionInformationSheetContent extends StatelessWidget {
                 children: [
                   ConnectionProtocolGlyph(
                     connectionProtocol: connection.protocol,
-                    status: connectionStatus,
+                    status: connection.status,
                     size: 48,
                   ),
                   Expanded(
@@ -124,7 +113,7 @@ class _ConnectionInformationSheetContent extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          connection.protocol.name,
+                          connection.protocol.displayName,
                           style: theme.typography.body.xs2.copyWith(
                             color: theme.colors.mutedForeground,
                           ),
@@ -152,7 +141,7 @@ class _ConnectionInformationSheetContent extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          connectionStatus.label,
+                          connection.status.label,
                           style: theme.typography.body.xs.copyWith(
                             color: statusColor,
                             fontWeight: .w600,
@@ -176,18 +165,7 @@ class _ConnectionInformationSheetContent extends StatelessWidget {
                   _ConnectionInformationDetailTile(
                     label: 'Connection ID',
                     value: connection.id,
-                    onCopy: () => handleOnCopy(
-                      'Connection ID',
-                      connection.id,
-                    ),
-                  ),
-                  _ConnectionInformationDetailTile(
-                    label: 'Created At',
-                    value: dateFormatter.format(connection.createdAt.toLocal()),
-                  ),
-                  _ConnectionInformationDetailTile(
-                    label: 'Updated At',
-                    value: dateFormatter.format(connection.updatedAt.toLocal()),
+                    onCopy: () => handleOnCopy('Connection ID', connection.id),
                   ),
                 ],
               ),
@@ -209,14 +187,8 @@ class _ConnectionInformationSheetContent extends StatelessWidget {
   }
 }
 
-class _ConnectionInformationDetailTile extends StatelessWidget
-    with FTileMixin {
-  const new({
-    required this.label,
-    this.value,
-    this.valueWidget,
-    this.onCopy,
-  });
+class _ConnectionInformationDetailTile extends StatelessWidget with FTileMixin {
+  const new({required this.label, this.value, this.valueWidget, this.onCopy});
 
   final String label;
   final String? value;

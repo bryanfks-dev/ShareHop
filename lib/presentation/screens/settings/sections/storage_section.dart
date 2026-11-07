@@ -18,8 +18,7 @@ class StorageSection extends HookConsumerWidget {
     final appConfigController = ref.watch(appConfigControllerProvider.notifier);
     final getCacheSizeUseCase = ref.watch(getCacheSizeUseCaseProvider);
 
-    final downloadDestination =
-        appConfig.value?.downloadDestinationPath ?? '/';
+    final downloadDestination = appConfig.value?.downloadDestinationPath ?? '/';
 
     final cacheSizeBytes = useState<int>(0);
 

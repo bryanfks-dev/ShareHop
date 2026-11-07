@@ -13,11 +13,10 @@ _ConnectionModel _$ConnectionModelFromJson(Map<String, dynamic> json) =>
       displayName: json['display_name'] as String,
       remoteAddress: json['remote_address'] as String,
       username: json['username'] as String,
-      password: EncryptedValueModel.fromJson(
-        json['password'] as Map<String, dynamic>,
-      ),
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
+      passwordId: json['password'] as String? ?? '',
+      rootPath: json['root_path'] as String? ?? '/',
     );
 
 Map<String, dynamic> _$ConnectionModelToJson(_ConnectionModel instance) =>
@@ -27,9 +26,10 @@ Map<String, dynamic> _$ConnectionModelToJson(_ConnectionModel instance) =>
       'display_name': instance.displayName,
       'remote_address': instance.remoteAddress,
       'username': instance.username,
-      'password': instance.password,
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
+      'password': instance.passwordId,
+      'root_path': instance.rootPath,
     };
 
 const _$ConnectionProtocolEnumMap = {

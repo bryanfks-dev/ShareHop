@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:sharehop/core/errors/connection.dart';
 import 'package:sharehop/core/models/connection_model.dart';
+import 'package:sharehop/core/models/encrypted_value_model.dart';
 import 'package:sharehop/core/repositories/connection_repository.dart';
 import 'package:sharehop/data/dto/connection_dto.dart';
 import 'package:sharehop/data/mapper/connection_mapper.dart';
@@ -10,9 +11,9 @@ import 'package:sharehop/infrastructures/database/manager.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ConnectionRepositoryImpl implements ConnectionRepository {
-  const new(this.connectionMapper);
+  const new({required this._connectionMapper});
 
-  final ConnectionMapper connectionMapper;
+  final ConnectionMapper _connectionMapper;
 
   @override
   Future<List<ConnectionModel>> getAll() async {
@@ -22,9 +23,19 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
       final db = await DatabaseManager.instance.database;
       final results = await db.query(ConnectionModel.tableName);
 
+      final connections = await Future.wait(
+        results.map((row) async {
+          final password = await _getEncryptedValue(
+            db: db,
+            id: row['password']! as String,
+          );
+          return ConnectionModel.fromJson(row).copyWith(password: password);
+        }),
+      );
+
       log('Get all connections done', name: 'ConnectionRepositoryImpl.getAll');
 
-      return results.map(ConnectionModel.fromJson).toList();
+      return connections;
     } on Exception catch (e, st) {
       log(
         'Failed to get all connections',
@@ -37,7 +48,7 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
   }
 
   @override
-  Future<ConnectionModel?> getOne(String id) async {
+  Future<ConnectionModel?> getOne({required String id}) async {
     log(
       'Get one connection started with id $id',
       name: 'ConnectionRepositoryImpl.getOne',
@@ -51,14 +62,23 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
         whereArgs: [id],
       );
 
+      if (results.isEmpty) {
+        return null;
+      }
+
+      final row = results.first;
+      final password = await _getEncryptedValue(
+        db: db,
+        id: row['password']! as String,
+      );
+      final model = ConnectionModel.fromJson(row).copyWith(password: password);
+
       log(
         'Get one connection with id $id done',
         name: 'ConnectionRepositoryImpl.getOne',
       );
 
-      return results.isNotEmpty
-          ? ConnectionModel.fromJson(results.first)
-          : null;
+      return model;
     } on Exception catch (e, st) {
       log(
         'Get on connection with id $id failed',
@@ -71,12 +91,21 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
   }
 
   @override
-  Future<ConnectionModel> create(ConnectionDraftDto connection) async {
+  Future<ConnectionModel> create({
+    required ConnectionDraftDto connection,
+  }) async {
     log('Create connection started', name: 'ConnectionRepositoryImpl.create');
 
     try {
       final db = await DatabaseManager.instance.database;
-      final model = connectionMapper.toConnectionModel(connection);
+      final model = _connectionMapper.toConnectionModel(connection);
+      if (model.password != null) {
+        await db.insert(
+          EncryptedValueModel.tableName,
+          model.password!.toJson(),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      }
       await db.insert(
         ConnectionModel.tableName,
         model.toJson(),
@@ -98,26 +127,32 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
   }
 
   @override
-  Future<ConnectionModel?> update(ConnectionModel connection) async {
+  Future<ConnectionModel?> update({required ConnectionModel model}) async {
     log('Update connection started', name: 'ConnectionRepositoryImpl.update');
 
-    if (await checkIfExists(revision.id) == null) {
+    if (await checkIfExists(id: model.id) == null) {
       return null;
     }
 
     try {
       final db = await DatabaseManager.instance.database;
-      final updateValues = mapConnectionRevisionDtoToUpdateValues(revision);
+      if (model.password != null) {
+        await db.insert(
+          EncryptedValueModel.tableName,
+          model.password!.toJson(),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      }
       await db.update(
         ConnectionModel.tableName,
-        updateValues,
+        model.toJson(),
         where: 'id = ?',
-        whereArgs: [revision.id],
+        whereArgs: [model.id],
       );
 
       log('Update connection done', name: 'ConnectionRepositoryImpl.update');
 
-      return await getOne(revision.id);
+      return await getOne(id: model.id);
     } on Exception catch (e, st) {
       log(
         'Update connection failed',
@@ -130,7 +165,7 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
   }
 
   @override
-  Future<String?> checkIfExists(String id) async {
+  Future<String?> checkIfExists({required String id}) async {
     log(
       'Check if exists started for id $id',
       name: 'ConnectionRepositoryImpl.checkIfExists',
@@ -153,7 +188,7 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
   }
 
   @override
-  Future<void> remove(String id) async {
+  Future<void> remove({required String id}) async {
     log(
       'Remove connection started for id $id',
       name: 'ConnectionRepositoryImpl.remove',
@@ -161,6 +196,22 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
 
     try {
       final db = await DatabaseManager.instance.database;
+      final results = await db.query(
+        ConnectionModel.tableName,
+        columns: ['password'],
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      if (results.isNotEmpty) {
+        final passwordId = results.first['password'] as String?;
+        if (passwordId != null && passwordId.isNotEmpty) {
+          await db.delete(
+            EncryptedValueModel.tableName,
+            where: 'id = ?',
+            whereArgs: [passwordId],
+          );
+        }
+      }
       await db.delete(
         ConnectionModel.tableName,
         where: 'id = ?',
@@ -178,16 +229,36 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
   }
 
   @override
-  Future<void> batchRemove(Set<String> ids) async {
+  Future<void> batchRemove({required Set<String> ids}) async {
     log(
       'Batch remove connections started for ids $ids',
       name: 'ConnectionRepositoryImpl.batchRemove',
     );
 
+    if (ids.isEmpty) {
+      return;
+    }
+
     try {
       final db = await DatabaseManager.instance.database;
       final batch = db.batch();
       for (final id in ids) {
+        final results = await db.query(
+          ConnectionModel.tableName,
+          columns: ['password'],
+          where: 'id = ?',
+          whereArgs: [id],
+        );
+        if (results.isNotEmpty) {
+          final passwordId = results.first['password'] as String?;
+          if (passwordId != null && passwordId.isNotEmpty) {
+            batch.delete(
+              EncryptedValueModel.tableName,
+              where: 'id = ?',
+              whereArgs: [passwordId],
+            );
+          }
+        }
         batch.delete(
           ConnectionModel.tableName,
           where: 'id = ?',
@@ -208,5 +279,31 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
       );
       throw RemoveConnectionFailedError();
     }
+  }
+
+  Future<EncryptedValueModel> _getEncryptedValue({
+    required Database db,
+    required String id,
+  }) async {
+    final results = await db.query(
+      EncryptedValueModel.tableName,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    if (results.isNotEmpty) {
+      return EncryptedValueModel.fromJson(results.first);
+    }
+
+    final now = DateTime.now().toUtc();
+    return EncryptedValueModel(
+      id: id,
+      salt: '',
+      nonce: '',
+      cipherText: '',
+      mac: '',
+      createdAt: now,
+      updatedAt: now,
+    );
   }
 }

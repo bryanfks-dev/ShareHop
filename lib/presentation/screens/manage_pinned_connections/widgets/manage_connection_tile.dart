@@ -1,21 +1,19 @@
 import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
-import 'package:sharehop/core/models/connection_model.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
+import 'package:sharehop/presentation/view_models/connection_view_model.dart';
 import 'package:sharehop/presentation/widgets/connection/connection_protocol_glyph.dart';
 
 class ManageConnectionTile extends StatelessWidget with FTileMixin {
   const new({
     required this.connection,
-    required this.isPinned,
     this.onPressPin,
     this.onPressUnpin,
     this.onPressEdit,
     super.key,
   });
 
-  final ConnectionModel connection;
-  final bool isPinned;
+  final ConnectionViewModel connection;
   final VoidCallback? onPressPin;
   final VoidCallback? onPressUnpin;
   final VoidCallback? onPressEdit;
@@ -62,7 +60,7 @@ class ManageConnectionTile extends StatelessWidget with FTileMixin {
         mainAxisSize: .min,
         spacing: Spacing.sm,
         children: [
-          if (isPinned)
+          if (connection.isPinned)
             FButton.icon(
               size: .sm,
               variant: .secondary,

@@ -55,7 +55,7 @@ final class ConnectionRepositoryProvider
 }
 
 String _$connectionRepositoryHash() =>
-    r'8458ebc239ba11afbb30e2dd8c47f5748c00638d';
+    r'bec08968c0b6563f17b1a3d17224ffd6ef40c0ce';
 
 @ProviderFor(webDavClientPool)
 final webDavClientPoolProvider = WebDavClientPoolProvider._();
@@ -149,7 +149,7 @@ final class WebDavClientManagerProvider
 }
 
 String _$webDavClientManagerHash() =>
-    r'ceb6e5463232be5fbe828a7cfa964190bd6c11b5';
+    r'bc3fce35d476144b97f683a66afc9fda18ad4d76';
 
 @ProviderFor(webDavStorageGateway)
 final webDavStorageGatewayProvider = WebDavStorageGatewayProvider._();
@@ -197,7 +197,7 @@ final class WebDavStorageGatewayProvider
 }
 
 String _$webDavStorageGatewayHash() =>
-    r'e8c019d48594b9ecd28ac70375b33cc746705a6c';
+    r'405bf2eb3f12b5a5499dd823e56f7fe1747987c4';
 
 @ProviderFor(connectionService)
 final connectionServiceProvider = ConnectionServiceProvider._();
@@ -244,7 +244,7 @@ final class ConnectionServiceProvider
   }
 }
 
-String _$connectionServiceHash() => r'd2e2678e7aa120215a91d700f58aa7662c30df9a';
+String _$connectionServiceHash() => r'748d34c91c14ee7ff878ec9c9266f1a4b83c88cb';
 
 @ProviderFor(createConnectionUseCase)
 final createConnectionUseCaseProvider = CreateConnectionUseCaseProvider._();
@@ -292,7 +292,7 @@ final class CreateConnectionUseCaseProvider
 }
 
 String _$createConnectionUseCaseHash() =>
-    r'e7ca37adf0d53375968418ea202817b8affec114';
+    r'de9aa9788a94f32219f4009ca035c4379020640b';
 
 @ProviderFor(connectionCredentialMapper)
 final connectionCredentialMapperProvider =

@@ -51,7 +51,7 @@ abstract mixin class $AppConfigModelCopyWith<$Res>  {
   factory $AppConfigModelCopyWith(AppConfigModel value, $Res Function(AppConfigModel) _then) = _$AppConfigModelCopyWithImpl;
 @useResult
 $Res call({
- bool? isWifiOnlyTransfersEnabled, bool? isBackgroundTransfersEnabled, int? simultaneousTransfersLimit, OnFileConflictsResolution? onFileConflictsResolution, bool? isBiometricLockEnabled, String? downloadDestinationPath, AppTheme? appAppearance
+ bool? isWifiOnlyTransfersEnabled, bool? isBackgroundTransfersEnabled, int? simultaneousTransfersLimit, FileConflictsResolution? onFileConflictsResolution, bool? isBiometricLockEnabled, String? downloadDestinationPath, AppTheme? appAppearance
 });
 
 
@@ -74,7 +74,7 @@ isWifiOnlyTransfersEnabled: freezed == isWifiOnlyTransfersEnabled ? _self.isWifi
 as bool?,isBackgroundTransfersEnabled: freezed == isBackgroundTransfersEnabled ? _self.isBackgroundTransfersEnabled! : isBackgroundTransfersEnabled // ignore: cast_nullable_to_non_nullable
 as bool?,simultaneousTransfersLimit: freezed == simultaneousTransfersLimit ? _self.simultaneousTransfersLimit! : simultaneousTransfersLimit // ignore: cast_nullable_to_non_nullable
 as int?,onFileConflictsResolution: freezed == onFileConflictsResolution ? _self.onFileConflictsResolution! : onFileConflictsResolution // ignore: cast_nullable_to_non_nullable
-as OnFileConflictsResolution?,isBiometricLockEnabled: freezed == isBiometricLockEnabled ? _self.isBiometricLockEnabled! : isBiometricLockEnabled // ignore: cast_nullable_to_non_nullable
+as FileConflictsResolution?,isBiometricLockEnabled: freezed == isBiometricLockEnabled ? _self.isBiometricLockEnabled! : isBiometricLockEnabled // ignore: cast_nullable_to_non_nullable
 as bool?,downloadDestinationPath: freezed == downloadDestinationPath ? _self.downloadDestinationPath! : downloadDestinationPath // ignore: cast_nullable_to_non_nullable
 as String?,appAppearance: freezed == appAppearance ? _self.appAppearance! : appAppearance // ignore: cast_nullable_to_non_nullable
 as AppTheme?,

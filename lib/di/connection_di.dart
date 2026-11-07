@@ -15,31 +15,34 @@ import 'package:sharehop/infrastructures/web_dav/web_dav_client_pool.dart';
 part 'connection_di.g.dart';
 
 @Riverpod(keepAlive: true)
-ConnectionRepository connectionRepository(Ref ref) =>
-    ConnectionRepositoryImpl(ref.watch(connectionMapperProvider));
+ConnectionRepository connectionRepository(Ref ref) => ConnectionRepositoryImpl(
+  connectionMapper: ref.watch(connectionMapperProvider),
+);
 
 @Riverpod(keepAlive: true)
 WebDavClientPool webDavClientPool(Ref ref) => WebDavClientPool();
 
 @Riverpod(keepAlive: true)
 WebDavClientManager webDavClientManager(Ref ref) =>
-    WebDavClientManager(ref.watch(webDavClientPoolProvider));
+    WebDavClientManager(clientPool: ref.watch(webDavClientPoolProvider));
 
 @Riverpod(keepAlive: true)
-WebDavStorageGateway webDavStorageGateway(Ref ref) =>
-    WebDavStorageGatewayImpl(ref.watch(webDavClientManagerProvider));
+WebDavStorageGateway webDavStorageGateway(Ref ref) => WebDavStorageGatewayImpl(
+  clientManager: ref.watch(webDavClientManagerProvider),
+);
 
 @Riverpod(keepAlive: true)
-ConnectionService connectionService(Ref ref) =>
-    ConnectionServiceImpl(ref.watch(webDavStorageGatewayProvider));
+ConnectionService connectionService(Ref ref) => ConnectionServiceImpl(
+  webDavStorageGateway: ref.watch(webDavStorageGatewayProvider),
+);
 
 @Riverpod(keepAlive: true)
 CreateConnectionUseCase createConnectionUseCase(Ref ref) =>
     CreateConnectionUseCase(
-      ref.watch(connectionRepositoryProvider),
-      ref.watch(connectionServiceProvider),
-      ref.watch(connectionCredentialMapperProvider),
-      ref.watch(connectionMapperProvider),
+      connectionRepository: ref.watch(connectionRepositoryProvider),
+      connectionService: ref.watch(connectionServiceProvider),
+      connectionCredentialMapper: ref.watch(connectionCredentialMapperProvider),
+      connectionMapper: ref.watch(connectionMapperProvider),
     );
 
 @Riverpod(keepAlive: true)

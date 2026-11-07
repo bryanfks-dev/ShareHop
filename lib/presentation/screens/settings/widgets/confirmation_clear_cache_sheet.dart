@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
-import 'package:sharehop/presentation/router/navigator_extension.dart';
+import 'package:sharehop/presentation/extensions/router/navigator_extension.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
 
 Future<void> showConfirmationClearCacheSheet(

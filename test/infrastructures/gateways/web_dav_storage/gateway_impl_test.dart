@@ -3,7 +3,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sharehop/core/models/web_dav_credential_model.dart';
+import 'package:sharehop/data/dto/web_dav_credential_dto.dart';
 import 'package:sharehop/infrastructures/gateways/web_dav_storage/error.dart';
 import 'package:sharehop/infrastructures/gateways/web_dav_storage/gateway_impl.dart';
 import 'package:sharehop/infrastructures/web_dav/web_dav_client_manager.dart';
@@ -43,14 +43,14 @@ class FakeWdDio extends webdav.WdDio {
 }
 
 class FakeWebDavClientManager extends WebDavClientManager {
-  new(this.client) : super(WebDavClientPool());
+  new(this.client) : super(clientPool: WebDavClientPool());
 
   final webdav.Client client;
 
   @override
   Future<T> useClientWithDisposal<T>(
     Future<T> Function(webdav.Client client) action, {
-    required WebDavCredentialModel credential,
+    required WebDavCredentialDto credential,
   }) async {
     return await action(client);
   }
@@ -63,7 +63,7 @@ void main() {
     late FakeWebDavClientManager fakeClientManager;
     late WebDavStorageGatewayImpl service;
 
-    final credential = WebDavCredentialModel(
+    final credential = WebDavCredentialDto(
       url: Uri.parse('https://example.com/dav'),
       username: 'user',
       password: 'password',
@@ -77,15 +77,16 @@ void main() {
         auth: const webdav.Auth(user: '', pwd: ''),
       );
       fakeClientManager = FakeWebDavClientManager(fakeClient);
-      service = WebDavStorageGatewayImpl(fakeClientManager);
+      service = WebDavStorageGatewayImpl(clientManager: fakeClientManager);
     });
 
-    test('returns parsed storage status when response contains quota bytes',
-        () async {
-      fakeDio.propfindResponse = Response(
-        requestOptions: RequestOptions(path: '/'),
-        statusCode: 207,
-        data: '''
+    test(
+      'returns parsed storage status when response contains quota bytes',
+      () async {
+        fakeDio.propfindResponse = Response(
+          requestOptions: RequestOptions(path: '/'),
+          statusCode: 207,
+          data: '''
 <?xml version="1.0" encoding="utf-8" ?>
 <D:multistatus xmlns:D="DAV:">
   <D:response>
@@ -98,16 +99,17 @@ void main() {
     </D:propstat>
   </D:response>
 </D:multistatus>''',
-      );
+        );
 
-      final status = await service.getStatus(credential: credential);
+        final status = await service.getStatus(credential: credential);
 
-      expect(status.freeBytes, 68719476736);
-      expect(status.usedBytes, 468159184896);
-      expect(status.totalBytes, 536878661632);
-      expect(fakeDio.capturedPath, '/');
-      expect(fakeDio.capturedDepth, isFalse);
-    });
+        expect(status.freeBytes, 68719476736);
+        expect(status.usedBytes, 468159184896);
+        expect(status.totalBytes, 536878661632);
+        expect(fakeDio.capturedPath, '/');
+        expect(fakeDio.capturedDepth, isFalse);
+      },
+    );
 
     test('normalizes custom path correctly', () async {
       fakeDio.propfindResponse = Response(
@@ -161,12 +163,13 @@ void main() {
       expect(status.totalBytes, 5000);
     });
 
-    test('throws WebDavOperationFailedError when quota properties missing',
-        () async {
-      fakeDio.propfindResponse = Response(
-        requestOptions: RequestOptions(path: '/'),
-        statusCode: 207,
-        data: '''
+    test(
+      'throws WebDavOperationFailedError when quota properties missing',
+      () async {
+        fakeDio.propfindResponse = Response(
+          requestOptions: RequestOptions(path: '/'),
+          statusCode: 207,
+          data: '''
 <d:multistatus xmlns:d="DAV:">
   <d:response>
     <d:propstat>
@@ -176,13 +179,14 @@ void main() {
     </d:propstat>
   </d:response>
 </d:multistatus>''',
-      );
+        );
 
-      expect(
-        () => service.getStatus(credential: credential),
-        throwsA(isA<WebDavOperationFailedError>()),
-      );
-    });
+        expect(
+          () => service.getStatus(credential: credential),
+          throwsA(isA<WebDavOperationFailedError>()),
+        );
+      },
+    );
 
     test('throws WebDavOperationFailedError when request fails', () async {
       fakeDio.shouldThrow = true;

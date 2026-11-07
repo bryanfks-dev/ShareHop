@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:sharehop/core/enums/connection_protocol.dart';
+import 'package:sharehop/presentation/extensions/enums/connection_protocol_extension.dart';
 import 'package:sharehop/presentation/screens/add_connection/widgets/change_connection_protocol/sheet.dart';
 import 'package:sharehop/presentation/widgets/connection/connection_protocol_glyph.dart';
 
@@ -25,7 +26,7 @@ class ChangeConnectionProtocolSelector extends StatelessWidget {
     return FTile(
       prefix: ConnectionProtocolGlyph(connectionProtocol: value),
       title: Text(
-        value.name,
+        value.displayName,
         style: theme.typography.display.xs.copyWith(
           color: theme.colors.foreground,
           fontWeight: .w600,

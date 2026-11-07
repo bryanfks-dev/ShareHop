@@ -3,7 +3,8 @@ import 'package:forui/forui.dart';
 
 class ManagePinnedEmptyState extends StatelessWidget {
   const new({
-    this.message = 'No pinned connections.\n'
+    this.message =
+        'No pinned connections.\n'
         'Tap the pin icon below to pin a connection.',
     super.key,
   });

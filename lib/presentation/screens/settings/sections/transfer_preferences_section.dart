@@ -1,7 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sharehop/core/enums/on_file_conflicts_resolution.dart';
+import 'package:sharehop/core/enums/file_conflicts_resolution.dart';
 import 'package:sharehop/presentation/controllers/app_config_controller.dart';
+import 'package:sharehop/presentation/extensions/enums/file_conflicts_resolution_extension.dart';
 import 'package:sharehop/presentation/screens/settings/widgets/change_on_file_conflicts_resolution_sheet.dart';
 import 'package:sharehop/presentation/screens/settings/widgets/change_simultaneous_transfers_limit_sheet.dart';
 import 'package:sharehop/presentation/screens/settings/widgets/settings_section.dart';
@@ -55,7 +56,7 @@ class TransferPreferencesSection extends HookConsumerWidget {
           title: 'File conflicts',
           suffixText:
               appConfig.value?.onFileConflictsResolution.label ??
-              OnFileConflictsResolution.askeverytime.label,
+              FileConflictsResolution.askeverytime.label,
         ),
       ],
     );

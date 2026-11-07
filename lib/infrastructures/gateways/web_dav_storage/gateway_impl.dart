@@ -2,20 +2,20 @@ import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:sharehop/core/gateways/web_dav_storage_gateway.dart';
-import 'package:sharehop/core/models/web_dav_credential_model.dart';
 import 'package:sharehop/data/dto/storage_status_dto.dart';
+import 'package:sharehop/data/dto/web_dav_credential_dto.dart';
 import 'package:sharehop/infrastructures/gateways/web_dav_storage/error.dart';
 import 'package:sharehop/infrastructures/web_dav/web_dav_client_manager.dart';
 import 'package:webdav_client/webdav_client.dart';
 
 class WebDavStorageGatewayImpl implements WebDavStorageGateway {
-  const new(this.clientManager);
+  const new({required this.clientManager});
 
   final WebDavClientManager clientManager;
 
   @override
   Future<List<File>> list({
-    required WebDavCredentialModel credential,
+    required WebDavCredentialDto credential,
     required String path,
   }) async {
     try {
@@ -25,13 +25,15 @@ class WebDavStorageGatewayImpl implements WebDavStorageGateway {
       );
     } on Exception catch (e) {
       log('Failed to list files in path: $path', error: e);
-      throw WebDavOperationFailedError('Failed to list files in path: $path');
+      throw WebDavOperationFailedError(
+        message: 'Failed to list files in path: $path',
+      );
     }
   }
 
   @override
   Future<void> createDirectory({
-    required WebDavCredentialModel credential,
+    required WebDavCredentialDto credential,
     required String path,
   }) async {
     try {
@@ -42,14 +44,14 @@ class WebDavStorageGatewayImpl implements WebDavStorageGateway {
     } on Exception catch (e) {
       log('Failed to create directory at path: $path', error: e);
       throw WebDavOperationFailedError(
-        'Failed to create directory at path: $path',
+        message: 'Failed to create directory at path: $path',
       );
     }
   }
 
   @override
   Future<void> delete({
-    required WebDavCredentialModel credential,
+    required WebDavCredentialDto credential,
     required String path,
   }) async {
     try {
@@ -60,14 +62,14 @@ class WebDavStorageGatewayImpl implements WebDavStorageGateway {
     } on Exception catch (e) {
       log('Failed to delete file or directory at path: $path', error: e);
       throw WebDavOperationFailedError(
-        'Failed to delete file or directory at path: $path',
+        message: 'Failed to delete file or directory at path: $path',
       );
     }
   }
 
   @override
   Future<void> uploadFile({
-    required WebDavCredentialModel credential,
+    required WebDavCredentialDto credential,
     required String path,
     required Uint8List fileBytes,
   }) async {
@@ -78,13 +80,15 @@ class WebDavStorageGatewayImpl implements WebDavStorageGateway {
       );
     } on Exception catch (e) {
       log('Failed to upload file to path: $path', error: e);
-      throw WebDavOperationFailedError('Failed to upload file to path: $path');
+      throw WebDavOperationFailedError(
+        message: 'Failed to upload file to path: $path',
+      );
     }
   }
 
   @override
   Future<Uint8List> downloadFile({
-    required WebDavCredentialModel credential,
+    required WebDavCredentialDto credential,
     required String path,
   }) async {
     try {
@@ -96,14 +100,14 @@ class WebDavStorageGatewayImpl implements WebDavStorageGateway {
     } on Exception catch (e) {
       log('Failed to download file from path: $path', error: e);
       throw WebDavOperationFailedError(
-        'Failed to download file from path: $path',
+        message: 'Failed to download file from path: $path',
       );
     }
   }
 
   @override
   Future<void> rename({
-    required WebDavCredentialModel credential,
+    required WebDavCredentialDto credential,
     required String oldPath,
     required String newPath,
   }) async {
@@ -118,14 +122,14 @@ class WebDavStorageGatewayImpl implements WebDavStorageGateway {
         error: e,
       );
       throw WebDavOperationFailedError(
-        'Failed to rename file or directory from $oldPath to $newPath',
+        message: 'Failed to rename file or directory from $oldPath to $newPath',
       );
     }
   }
 
   @override
   Future<void> copy({
-    required WebDavCredentialModel credential,
+    required WebDavCredentialDto credential,
     required String sourcePath,
     required String destinationPath,
   }) async {
@@ -140,14 +144,16 @@ class WebDavStorageGatewayImpl implements WebDavStorageGateway {
         error: e,
       );
       throw WebDavOperationFailedError(
-        'Failed to move file or directory from $sourcePath to $destinationPath',
+        message:
+            'Failed to move file or directory '
+            'from $sourcePath to $destinationPath',
       );
     }
   }
 
   @override
   Future<void> move({
-    required WebDavCredentialModel credential,
+    required WebDavCredentialDto credential,
     required String sourcePath,
     required String destinationPath,
   }) async {
@@ -162,14 +168,16 @@ class WebDavStorageGatewayImpl implements WebDavStorageGateway {
         error: e,
       );
       throw WebDavOperationFailedError(
-        'Failed to move file or directory from $sourcePath to $destinationPath',
+        message:
+            'Failed to move file or directory '
+            'from $sourcePath to $destinationPath',
       );
     }
   }
 
   @override
   Future<File> getFileProperties({
-    required WebDavCredentialModel credential,
+    required WebDavCredentialDto credential,
     required String path,
   }) async {
     try {
@@ -180,14 +188,14 @@ class WebDavStorageGatewayImpl implements WebDavStorageGateway {
     } on Exception catch (e) {
       log('Failed to get file properties for path: $path', error: e);
       throw WebDavOperationFailedError(
-        'Failed to get file properties for path: $path',
+        message: 'Failed to get file properties for path: $path',
       );
     }
   }
 
   @override
   Future<void> testConnection({
-    required WebDavCredentialModel credential,
+    required WebDavCredentialDto credential,
   }) async {
     try {
       await clientManager.useClientWithDisposal(
@@ -196,13 +204,15 @@ class WebDavStorageGatewayImpl implements WebDavStorageGateway {
       );
     } on Exception catch (e) {
       log('Failed to test WebDAV connection', error: e);
-      throw WebDavOperationFailedError('Failed to connect to WebDAV server');
+      throw WebDavOperationFailedError(
+        message: 'Failed to connect to WebDAV server',
+      );
     }
   }
 
   @override
   Future<StorageStatusDto> getStatus({
-    required WebDavCredentialModel credential,
+    required WebDavCredentialDto credential,
     String path = '/',
   }) async {
     try {
@@ -240,8 +250,9 @@ class WebDavStorageGatewayImpl implements WebDavStorageGateway {
 
         if (availableMatch == null && usedMatch == null) {
           throw WebDavOperationFailedError(
-            'Failed to parse storage status: quota properties not found '
-            'in response',
+            message:
+                'Failed to parse storage status: '
+                'quota properties not found in response',
           );
         }
 
@@ -262,7 +273,7 @@ class WebDavStorageGatewayImpl implements WebDavStorageGateway {
       rethrow;
     } on Exception catch (e) {
       log('Failed to get storage status for path: $path', error: e);
-      throw WebDavOperationFailedError('Failed to get storage status');
+      throw WebDavOperationFailedError(message: 'Failed to get storage status');
     }
   }
 }

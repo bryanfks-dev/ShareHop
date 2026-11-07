@@ -60,20 +60,15 @@ extension FStyleExtensions on FStyle {
 /// See https://api.flutter.dev/flutter/material/ThemeExtension-class.html.
 @immutable
 class AppStyle extends ThemeExtension<AppStyle> {
-  const new({
-    this.sheetIllustrationHeight = 120,
-  });
+  const new({this.sheetIllustrationHeight = 120});
 
   final double sheetIllustrationHeight;
 
   @override
-  AppStyle copyWith({
-    double? sheetIllustrationHeight,
-  }) =>
-      AppStyle(
-        sheetIllustrationHeight:
-            sheetIllustrationHeight ?? this.sheetIllustrationHeight,
-      );
+  AppStyle copyWith({double? sheetIllustrationHeight}) => AppStyle(
+    sheetIllustrationHeight:
+        sheetIllustrationHeight ?? this.sheetIllustrationHeight,
+  );
 
   @override
   AppStyle lerp(covariant AppStyle? other, double t) {
@@ -81,7 +76,8 @@ class AppStyle extends ThemeExtension<AppStyle> {
       return this;
     }
     return AppStyle(
-      sheetIllustrationHeight: lerpDouble(
+      sheetIllustrationHeight:
+          lerpDouble(
             sheetIllustrationHeight,
             other.sheetIllustrationHeight,
             t,

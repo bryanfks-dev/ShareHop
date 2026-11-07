@@ -3,14 +3,14 @@ import 'package:forui/theme.dart';
 import 'package:forui/widgets/button.dart';
 import 'package:forui/widgets/header.dart';
 import 'package:forui_lucide/forui_lucide.dart';
-import 'package:sharehop/core/models/connection_model.dart';
-import 'package:sharehop/presentation/router/navigator_extension.dart';
+import 'package:sharehop/presentation/extensions/router/navigator_extension.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
+import 'package:sharehop/presentation/view_models/connection_view_model.dart';
 
 class ConnectionDetailHeader extends StatelessWidget {
   const new({required this.connection, super.key});
 
-  final ConnectionModel connection;
+  final ConnectionViewModel connection;
 
   @override
   Widget build(BuildContext context) {

@@ -1,22 +1,29 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sharehop/core/enums/connection_protocol.dart';
-import 'package:sharehop/core/models/base_model.dart';
 import 'package:sharehop/core/models/encrypted_value_model.dart';
+import 'package:sharehop/core/models/mixins/id_mixin.dart';
+import 'package:sharehop/core/models/mixins/timestamp_mixin.dart';
+import 'package:sharehop/core/models/persistence_model.dart';
 
 part 'connection_model.freezed.dart';
 part 'connection_model.g.dart';
 
-@Freezed(copyWith: false)
-abstract class ConnectionModel with _$ConnectionModel implements BaseModel {
+@freezed
+abstract class ConnectionModel
+    with _$ConnectionModel, IdMixin, TimestampMixin
+    implements PersistenceModel {
   const factory({
     required String id,
     required ConnectionProtocol protocol,
     @JsonKey(name: 'display_name') required String displayName,
     @JsonKey(name: 'remote_address') required String remoteAddress,
     required String username,
-    required EncryptedValueModel password,
     @JsonKey(name: 'created_at') required DateTime createdAt,
     @JsonKey(name: 'updated_at') required DateTime updatedAt,
+    @JsonKey(name: 'password') @Default('') String passwordId,
+    @JsonKey(name: 'root_path') @Default('/') String rootPath,
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    EncryptedValueModel? password,
   }) = _ConnectionModel;
 
   const new _();
@@ -25,22 +32,4 @@ abstract class ConnectionModel with _$ConnectionModel implements BaseModel {
       _$ConnectionModelFromJson(json);
 
   static String get tableName => 'connections';
-
-  ConnectionModel copyWith({
-    String? displayName,
-    String? remoteAddress,
-    String? username,
-    EncryptedValueModel? password,
-  }) {
-    return ConnectionModel(
-      id: id,
-      protocol: protocol,
-      displayName: displayName ?? this.displayName,
-      remoteAddress: remoteAddress ?? this.remoteAddress,
-      username: username ?? this.username,
-      password: password ?? this.password,
-      createdAt: createdAt,
-      updatedAt: DateTime.now().toUtc(),
-    );
-  }
 }

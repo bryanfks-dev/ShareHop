@@ -1,17 +1,17 @@
 import 'package:sharehop/core/gateways/web_dav_storage_gateway.dart';
-import 'package:sharehop/core/models/connection_credential_model.dart';
-import 'package:sharehop/core/models/web_dav_credential_model.dart';
 import 'package:sharehop/core/services/connection_service.dart';
+import 'package:sharehop/data/dto/connection_credential_dto.dart';
+import 'package:sharehop/data/dto/web_dav_credential_dto.dart';
 
 class ConnectionServiceImpl implements ConnectionService {
-  const new(this.webDavStorageGateway);
+  const new({required this.webDavStorageGateway});
 
   final WebDavStorageGateway webDavStorageGateway;
 
   @override
-  Future<void> verify({required ConnectionCredentialModel credential}) async {
+  Future<void> verify({required ConnectionCredentialDto credential}) async {
     switch (credential) {
-      case final WebDavCredentialModel webDavCredential:
+      case final WebDavCredentialDto webDavCredential:
         await webDavStorageGateway.testConnection(credential: webDavCredential);
       default:
         throw UnimplementedError(

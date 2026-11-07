@@ -1,14 +1,12 @@
 import 'package:sharehop/core/enums/base_enum.dart';
 
 enum ConnectionStatus implements BaseEnum {
-  online(label: 'Online', persistentValue: 'online'),
-  ready(label: 'Ready', persistentValue: 'ready'),
-  idle(label: 'Idle', persistentValue: 'idle'),
-  offline(label: 'Offline', persistentValue: 'offline');
+  online(persistentValue: 'online'),
+  ready(persistentValue: 'ready'),
+  idle(persistentValue: 'idle'),
+  offline(persistentValue: 'offline');
 
-  new({required this.label, required this.persistentValue});
-
-  final String label;
+  new({required this.persistentValue});
 
   @override
   final String persistentValue;

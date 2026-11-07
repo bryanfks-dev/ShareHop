@@ -1,9 +1,9 @@
 import 'package:sharehop/core/models/encrypted_value_model.dart';
-import 'package:sharehop/data/value_object/encrypted_value_vo.dart';
+import 'package:sharehop/data/utils/encrypted_value.dart';
 import 'package:uuid/uuid.dart';
 
 class EncryptedValueMapper {
-  EncryptedValueModel toEncryptedValueModel(EncryptedValueVo value) {
+  EncryptedValueModel toEncryptedValueModel(EncryptedValue value) {
     final now = DateTime.now().toUtc();
 
     return EncryptedValueModel(

@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:path/path.dart';
+import 'package:sharehop/infrastructures/database/schema_manager_extension.dart';
 import 'package:sqflite/sqflite.dart';
+
+export 'package:sharehop/infrastructures/database/schema_manager_extension.dart';
 
 class DatabaseManager {
   new _init();
@@ -10,36 +12,24 @@ class DatabaseManager {
   static Database? _database;
 
   static const String _kDatabaseFilePath = 'sharehop.db';
-  static const String _kDatabaseSchemaFilePath = 'assets/database/schema.sql';
 
   Future<Database> get database async {
     if (_database != null) {
       return _database!;
     }
-    return await _initializeDatabase(_kDatabaseFilePath);
+    return await _initializeDatabase(filePath: _kDatabaseFilePath);
   }
 
-  Future<Database> _initializeDatabase(String filePath) async {
+  Future<Database> _initializeDatabase({required String filePath}) async {
     final databasePath = await getDatabasesPath();
     final path = join(databasePath, filePath);
 
-    return await openDatabase(path, version: 1, onCreate: _createDatabase);
-  }
-
-  Future<void> _createDatabase(Database db, int version) async {
-    final schemaFile = await rootBundle.loadString(_kDatabaseSchemaFilePath);
-    await applySchema(db, schemaFile);
-  }
-
-  static Future<void> applySchema(Database db, String schemaSql) async {
-    final statements = schemaSql.split(';').map((s) => s.trim());
-
-    for (final statement in statements) {
-      if (statement.isEmpty) {
-        continue;
-      }
-      await db.execute(statement);
-    }
+    return await openDatabase(
+      path,
+      version: 1,
+      onCreate: (db, version) async =>
+          await createDatabase(db: db, version: version),
+    );
   }
 
   Future<void> close() async {

@@ -2,10 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
 
 class ManageOtherConnectionsEmptyState extends StatelessWidget {
-  const new({
-    this.message = 'No other connections available.',
-    super.key,
-  });
+  const new({this.message = 'No other connections available.', super.key});
 
   final String message;
 

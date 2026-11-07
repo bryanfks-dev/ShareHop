@@ -1,13 +1,15 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sharehop/core/models/base_model.dart';
+import 'package:sharehop/core/models/mixins/id_mixin.dart';
+import 'package:sharehop/core/models/mixins/timestamp_mixin.dart';
+import 'package:sharehop/core/models/persistence_model.dart';
 
 part 'encrypted_value_model.freezed.dart';
 part 'encrypted_value_model.g.dart';
 
 @freezed
 abstract class EncryptedValueModel
-    with _$EncryptedValueModel
-    implements BaseModel {
+    with _$EncryptedValueModel, IdMixin, TimestampMixin
+    implements PersistenceModel {
   const factory({
     required String id,
     required String salt,

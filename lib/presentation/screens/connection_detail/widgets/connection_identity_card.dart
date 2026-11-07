@@ -1,32 +1,21 @@
 import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
-import 'package:sharehop/core/enums/connection_status.dart';
-import 'package:sharehop/core/models/connection_model.dart';
 import 'package:sharehop/presentation/screens/connection_detail/widgets/connection_information_sheet.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
+import 'package:sharehop/presentation/view_models/connection_view_model.dart';
 import 'package:sharehop/presentation/widgets/connection/connection_protocol_glyph.dart';
 
 class ConnectionIdentityCard extends StatelessWidget {
-  const new({
-    required this.connection,
-    this.connectionStatus,
-    super.key,
-  });
+  const new({required this.connection, super.key});
 
-  final ConnectionModel connection;
-  final ConnectionStatus? connectionStatus;
+  final ConnectionViewModel connection;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    final effectiveStatus = connectionStatus ?? connection.status;
 
     Future<void> handleOnPressInfo() async {
-      await showConnectionInformationSheet(
-        context,
-        connection: connection,
-        connectionStatus: effectiveStatus,
-      );
+      await showConnectionInformationSheet(context, connection: connection);
     }
 
     return FCard(
@@ -41,7 +30,6 @@ class ConnectionIdentityCard extends StatelessWidget {
                   children: [
                     ConnectionProtocolGlyph(
                       connectionProtocol: connection.protocol,
-                      status: effectiveStatus,
                       size: 52,
                     ),
                     Expanded(

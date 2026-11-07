@@ -1,6 +1,6 @@
-import 'package:sharehop/data/value_object/encrypted_value_vo.dart';
+import 'package:sharehop/data/utils/encrypted_value.dart';
 
 abstract interface class SecretCipher {
-  Future<EncryptedValueVo> encrypt(String text);
-  Future<String> decrypt(EncryptedValueVo value);
+  Future<EncryptedValue> encrypt(String text);
+  Future<String> decrypt(EncryptedValue value);
 }

@@ -15,9 +15,16 @@ Controller -> Use Case (Business Rules) -> Service (Optional) -> Repository or G
 - Controller layer is the entry point of the application.
 - Controller layer is the only layer that can call use case layer.
 - Controller layer placed in `lib/presentation/controllers` directory.
-- Controller layer should be named after the aggregate root model name that the controller is acting on, and the action that the controller is performing.
-  - Good: `UserController`, `PaymentController`, `FileTransferController`
-  - Bad: `CreateUserController`, `GetPaymentController`, `TransferFileController`
+
+## Controller Naming Convention
+
+- Controller class MUST have a name ending with `Controller`.
+  - Good: `LoginController`, `ProfileController`, `PaymentController`
+  - Bad: `Login`, `Profile`, `Payment`
+- Controller class named after the screen that the controller is handling.
+  - Good: `LoginController`, `ProfileController`, `PaymentController`
+  - Bad: `Login`, `Profile`, `Payment`
+- Controller file and class name SHOULD be matched.
 
 ## Use Case
 

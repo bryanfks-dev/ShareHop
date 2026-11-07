@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cryptography/cryptography.dart';
 import 'package:sharehop/core/security/secret_cipher.dart';
-import 'package:sharehop/data/value_object/encrypted_value_vo.dart';
+import 'package:sharehop/data/utils/encrypted_value.dart';
 
 class DerivedKeySecretChiper implements SecretCipher {
   new(this.secret);
@@ -17,12 +17,12 @@ class DerivedKeySecretChiper implements SecretCipher {
   );
 
   @override
-  Future<EncryptedValueVo> encrypt(String text) async {
+  Future<EncryptedValue> encrypt(String text) async {
     final salt = _aes.newNonce();
     final key = await _deriveKey(salt);
     final box = await _aes.encrypt(text.codeUnits, secretKey: key, nonce: salt);
 
-    return EncryptedValueVo(
+    return EncryptedValue(
       salt: base64Encode(salt),
       nonce: base64Encode(box.nonce),
       cipherText: base64Encode(box.cipherText),
@@ -31,13 +31,14 @@ class DerivedKeySecretChiper implements SecretCipher {
   }
 
   @override
-  Future<String> decrypt(EncryptedValueVo encryptedValue) async {
-    final key = await _deriveKey(base64Decode(encryptedValue.salt));
+  Future<String> decrypt(EncryptedValue value) async {
+    final salt = base64Decode(value.salt);
+    final key = await _deriveKey(salt);
     final clear = await _aes.decrypt(
       SecretBox(
-        base64Decode(encryptedValue.cipherText),
-        nonce: base64Decode(encryptedValue.nonce),
-        mac: Mac(base64Decode(encryptedValue.mac)),
+        base64Decode(value.cipherText),
+        nonce: base64Decode(value.nonce),
+        mac: Mac(base64Decode(value.mac)),
       ),
       secretKey: key,
     );

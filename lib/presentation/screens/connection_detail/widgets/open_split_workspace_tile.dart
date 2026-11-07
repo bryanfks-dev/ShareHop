@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:forui/assets.dart';
 import 'package:forui/theme.dart';
 import 'package:forui/widgets/tile.dart';
-import 'package:sharehop/core/models/connection_model.dart';
 import 'package:sharehop/presentation/theme/theme.dart';
+import 'package:sharehop/presentation/view_models/connection_view_model.dart';
 
 class OpenSplitWorkspaceTile extends StatelessWidget {
   const new({required this.connection, super.key});
 
-  final ConnectionModel connection;
+  final ConnectionViewModel connection;
 
   @override
   Widget build(BuildContext context) {

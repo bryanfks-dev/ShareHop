@@ -9,6 +9,47 @@ part of 'app_config_di.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
+@ProviderFor(secureRandom)
+final secureRandomProvider = SecureRandomProvider._();
+
+final class SecureRandomProvider
+    extends $FunctionalProvider<SecureRandom, SecureRandom, SecureRandom>
+    with $Provider<SecureRandom> {
+  SecureRandomProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'secureRandomProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$secureRandomHash();
+
+  @$internal
+  @override
+  $ProviderElement<SecureRandom> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  SecureRandom create(Ref ref) {
+    return secureRandom(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SecureRandom value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SecureRandom>(value),
+    );
+  }
+}
+
+String _$secureRandomHash() => r'0cb52bb76efad328678856f2395b0542994cc32d';
+
 @ProviderFor(appConfigRepository)
 final appConfigRepositoryProvider = AppConfigRepositoryProvider._();
 
@@ -55,7 +96,7 @@ final class AppConfigRepositoryProvider
 }
 
 String _$appConfigRepositoryHash() =>
-    r'1836027647fcd45a23373f841af4ed9423daf70f';
+    r'322fdbbb4ecdf43e7a221c0a95f32f8440ca8bcb';
 
 @ProviderFor(biometricLockGateway)
 final biometricLockGatewayProvider = BiometricLockGatewayProvider._();
@@ -151,26 +192,26 @@ final class GetAppConfigUseCaseProvider
 }
 
 String _$getAppConfigUseCaseHash() =>
-    r'941ec78a95af0a295e02e6109ea97b483622e273';
+    r'3d831864aa46c9dfbe736b84c482d55240752080';
 
-@ProviderFor(setIsWifiOnlyTransfersEnabledUseCase)
-final setIsWifiOnlyTransfersEnabledUseCaseProvider =
-    SetIsWifiOnlyTransfersEnabledUseCaseProvider._();
+@ProviderFor(updateIsWifiOnlyTransfersEnabledUseCase)
+final updateIsWifiOnlyTransfersEnabledUseCaseProvider =
+    UpdateIsWifiOnlyTransfersEnabledUseCaseProvider._();
 
-final class SetIsWifiOnlyTransfersEnabledUseCaseProvider
+final class UpdateIsWifiOnlyTransfersEnabledUseCaseProvider
     extends
         $FunctionalProvider<
-          SetIsWifiOnlyTransfersEnabledUseCase,
-          SetIsWifiOnlyTransfersEnabledUseCase,
-          SetIsWifiOnlyTransfersEnabledUseCase
+          UpdateIsWifiOnlyTransfersEnabledUseCase,
+          UpdateIsWifiOnlyTransfersEnabledUseCase,
+          UpdateIsWifiOnlyTransfersEnabledUseCase
         >
-    with $Provider<SetIsWifiOnlyTransfersEnabledUseCase> {
-  SetIsWifiOnlyTransfersEnabledUseCaseProvider._()
+    with $Provider<UpdateIsWifiOnlyTransfersEnabledUseCase> {
+  UpdateIsWifiOnlyTransfersEnabledUseCaseProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'setIsWifiOnlyTransfersEnabledUseCaseProvider',
+        name: r'updateIsWifiOnlyTransfersEnabledUseCaseProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
@@ -178,50 +219,50 @@ final class SetIsWifiOnlyTransfersEnabledUseCaseProvider
 
   @override
   String debugGetCreateSourceHash() =>
-      _$setIsWifiOnlyTransfersEnabledUseCaseHash();
+      _$updateIsWifiOnlyTransfersEnabledUseCaseHash();
 
   @$internal
   @override
-  $ProviderElement<SetIsWifiOnlyTransfersEnabledUseCase> $createElement(
+  $ProviderElement<UpdateIsWifiOnlyTransfersEnabledUseCase> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  SetIsWifiOnlyTransfersEnabledUseCase create(Ref ref) {
-    return setIsWifiOnlyTransfersEnabledUseCase(ref);
+  UpdateIsWifiOnlyTransfersEnabledUseCase create(Ref ref) {
+    return updateIsWifiOnlyTransfersEnabledUseCase(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SetIsWifiOnlyTransfersEnabledUseCase value) {
+  Override overrideWithValue(UpdateIsWifiOnlyTransfersEnabledUseCase value) {
     return $ProviderOverride(
       origin: this,
       providerOverride:
-          $SyncValueProvider<SetIsWifiOnlyTransfersEnabledUseCase>(value),
+          $SyncValueProvider<UpdateIsWifiOnlyTransfersEnabledUseCase>(value),
     );
   }
 }
 
-String _$setIsWifiOnlyTransfersEnabledUseCaseHash() =>
-    r'3605c326f5c24bd97f83829f4f6d519bbe4c13f5';
+String _$updateIsWifiOnlyTransfersEnabledUseCaseHash() =>
+    r'992d7e9a9d8e31124a4a39efc4cf298aa9ff1bfc';
 
-@ProviderFor(setIsBackgroundTransfersEnabledUseCase)
-final setIsBackgroundTransfersEnabledUseCaseProvider =
-    SetIsBackgroundTransfersEnabledUseCaseProvider._();
+@ProviderFor(updateIsBackgroundTransfersEnabledUseCase)
+final updateIsBackgroundTransfersEnabledUseCaseProvider =
+    UpdateIsBackgroundTransfersEnabledUseCaseProvider._();
 
-final class SetIsBackgroundTransfersEnabledUseCaseProvider
+final class UpdateIsBackgroundTransfersEnabledUseCaseProvider
     extends
         $FunctionalProvider<
-          SetIsBackgroundTransfersEnabledUseCase,
-          SetIsBackgroundTransfersEnabledUseCase,
-          SetIsBackgroundTransfersEnabledUseCase
+          UpdateIsBackgroundTransfersEnabledUseCase,
+          UpdateIsBackgroundTransfersEnabledUseCase,
+          UpdateIsBackgroundTransfersEnabledUseCase
         >
-    with $Provider<SetIsBackgroundTransfersEnabledUseCase> {
-  SetIsBackgroundTransfersEnabledUseCaseProvider._()
+    with $Provider<UpdateIsBackgroundTransfersEnabledUseCase> {
+  UpdateIsBackgroundTransfersEnabledUseCaseProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'setIsBackgroundTransfersEnabledUseCaseProvider',
+        name: r'updateIsBackgroundTransfersEnabledUseCaseProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
@@ -229,50 +270,50 @@ final class SetIsBackgroundTransfersEnabledUseCaseProvider
 
   @override
   String debugGetCreateSourceHash() =>
-      _$setIsBackgroundTransfersEnabledUseCaseHash();
+      _$updateIsBackgroundTransfersEnabledUseCaseHash();
 
   @$internal
   @override
-  $ProviderElement<SetIsBackgroundTransfersEnabledUseCase> $createElement(
+  $ProviderElement<UpdateIsBackgroundTransfersEnabledUseCase> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  SetIsBackgroundTransfersEnabledUseCase create(Ref ref) {
-    return setIsBackgroundTransfersEnabledUseCase(ref);
+  UpdateIsBackgroundTransfersEnabledUseCase create(Ref ref) {
+    return updateIsBackgroundTransfersEnabledUseCase(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SetIsBackgroundTransfersEnabledUseCase value) {
+  Override overrideWithValue(UpdateIsBackgroundTransfersEnabledUseCase value) {
     return $ProviderOverride(
       origin: this,
       providerOverride:
-          $SyncValueProvider<SetIsBackgroundTransfersEnabledUseCase>(value),
+          $SyncValueProvider<UpdateIsBackgroundTransfersEnabledUseCase>(value),
     );
   }
 }
 
-String _$setIsBackgroundTransfersEnabledUseCaseHash() =>
-    r'314b1f94e4b37e13d740aa12d5d337af000ea20d';
+String _$updateIsBackgroundTransfersEnabledUseCaseHash() =>
+    r'655b28522e71ddb463dc14abdaa832b55b94bc75';
 
-@ProviderFor(setSimultaneousTransfersLimitUseCase)
-final setSimultaneousTransfersLimitUseCaseProvider =
-    SetSimultaneousTransfersLimitUseCaseProvider._();
+@ProviderFor(updateSimultaneousTransfersLimitUseCase)
+final updateSimultaneousTransfersLimitUseCaseProvider =
+    UpdateSimultaneousTransfersLimitUseCaseProvider._();
 
-final class SetSimultaneousTransfersLimitUseCaseProvider
+final class UpdateSimultaneousTransfersLimitUseCaseProvider
     extends
         $FunctionalProvider<
-          SetSimultaneousTransfersLimitUseCase,
-          SetSimultaneousTransfersLimitUseCase,
-          SetSimultaneousTransfersLimitUseCase
+          UpdateSimultaneousTransfersLimitUseCase,
+          UpdateSimultaneousTransfersLimitUseCase,
+          UpdateSimultaneousTransfersLimitUseCase
         >
-    with $Provider<SetSimultaneousTransfersLimitUseCase> {
-  SetSimultaneousTransfersLimitUseCaseProvider._()
+    with $Provider<UpdateSimultaneousTransfersLimitUseCase> {
+  UpdateSimultaneousTransfersLimitUseCaseProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'setSimultaneousTransfersLimitUseCaseProvider',
+        name: r'updateSimultaneousTransfersLimitUseCaseProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
@@ -280,50 +321,50 @@ final class SetSimultaneousTransfersLimitUseCaseProvider
 
   @override
   String debugGetCreateSourceHash() =>
-      _$setSimultaneousTransfersLimitUseCaseHash();
+      _$updateSimultaneousTransfersLimitUseCaseHash();
 
   @$internal
   @override
-  $ProviderElement<SetSimultaneousTransfersLimitUseCase> $createElement(
+  $ProviderElement<UpdateSimultaneousTransfersLimitUseCase> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  SetSimultaneousTransfersLimitUseCase create(Ref ref) {
-    return setSimultaneousTransfersLimitUseCase(ref);
+  UpdateSimultaneousTransfersLimitUseCase create(Ref ref) {
+    return updateSimultaneousTransfersLimitUseCase(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SetSimultaneousTransfersLimitUseCase value) {
+  Override overrideWithValue(UpdateSimultaneousTransfersLimitUseCase value) {
     return $ProviderOverride(
       origin: this,
       providerOverride:
-          $SyncValueProvider<SetSimultaneousTransfersLimitUseCase>(value),
+          $SyncValueProvider<UpdateSimultaneousTransfersLimitUseCase>(value),
     );
   }
 }
 
-String _$setSimultaneousTransfersLimitUseCaseHash() =>
-    r'296ccdd5ff81c8036fdf55aacfcb903bcaf45703';
+String _$updateSimultaneousTransfersLimitUseCaseHash() =>
+    r'a883f62eb833bfed887a8ce9278db668f968c689';
 
-@ProviderFor(setOnFileConflictsResolutionUseCase)
-final setOnFileConflictsResolutionUseCaseProvider =
-    SetOnFileConflictsResolutionUseCaseProvider._();
+@ProviderFor(updateOnFileConflictsResolutionUseCase)
+final updateOnFileConflictsResolutionUseCaseProvider =
+    UpdateOnFileConflictsResolutionUseCaseProvider._();
 
-final class SetOnFileConflictsResolutionUseCaseProvider
+final class UpdateOnFileConflictsResolutionUseCaseProvider
     extends
         $FunctionalProvider<
-          SetOnFileConflictsResolutionUseCase,
-          SetOnFileConflictsResolutionUseCase,
-          SetOnFileConflictsResolutionUseCase
+          UpdateOnFileConflictsResolutionUseCase,
+          UpdateOnFileConflictsResolutionUseCase,
+          UpdateOnFileConflictsResolutionUseCase
         >
-    with $Provider<SetOnFileConflictsResolutionUseCase> {
-  SetOnFileConflictsResolutionUseCaseProvider._()
+    with $Provider<UpdateOnFileConflictsResolutionUseCase> {
+  UpdateOnFileConflictsResolutionUseCaseProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'setOnFileConflictsResolutionUseCaseProvider',
+        name: r'updateOnFileConflictsResolutionUseCaseProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
@@ -331,102 +372,102 @@ final class SetOnFileConflictsResolutionUseCaseProvider
 
   @override
   String debugGetCreateSourceHash() =>
-      _$setOnFileConflictsResolutionUseCaseHash();
+      _$updateOnFileConflictsResolutionUseCaseHash();
 
   @$internal
   @override
-  $ProviderElement<SetOnFileConflictsResolutionUseCase> $createElement(
+  $ProviderElement<UpdateOnFileConflictsResolutionUseCase> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  SetOnFileConflictsResolutionUseCase create(Ref ref) {
-    return setOnFileConflictsResolutionUseCase(ref);
+  UpdateOnFileConflictsResolutionUseCase create(Ref ref) {
+    return updateOnFileConflictsResolutionUseCase(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SetOnFileConflictsResolutionUseCase value) {
+  Override overrideWithValue(UpdateOnFileConflictsResolutionUseCase value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<SetOnFileConflictsResolutionUseCase>(
+      providerOverride:
+          $SyncValueProvider<UpdateOnFileConflictsResolutionUseCase>(value),
+    );
+  }
+}
+
+String _$updateOnFileConflictsResolutionUseCaseHash() =>
+    r'4e409a43dbcd4eff2f28fba61628ce9c91ccc34c';
+
+@ProviderFor(updateIsBiometricLockEnabledUseCase)
+final updateIsBiometricLockEnabledUseCaseProvider =
+    UpdateIsBiometricLockEnabledUseCaseProvider._();
+
+final class UpdateIsBiometricLockEnabledUseCaseProvider
+    extends
+        $FunctionalProvider<
+          UpdateIsBiometricLockEnabledUseCase,
+          UpdateIsBiometricLockEnabledUseCase,
+          UpdateIsBiometricLockEnabledUseCase
+        >
+    with $Provider<UpdateIsBiometricLockEnabledUseCase> {
+  UpdateIsBiometricLockEnabledUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'updateIsBiometricLockEnabledUseCaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() =>
+      _$updateIsBiometricLockEnabledUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<UpdateIsBiometricLockEnabledUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  UpdateIsBiometricLockEnabledUseCase create(Ref ref) {
+    return updateIsBiometricLockEnabledUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UpdateIsBiometricLockEnabledUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UpdateIsBiometricLockEnabledUseCase>(
         value,
       ),
     );
   }
 }
 
-String _$setOnFileConflictsResolutionUseCaseHash() =>
-    r'4ba1256dd34e0dfb3e0223bc30b722e19aedd7c2';
+String _$updateIsBiometricLockEnabledUseCaseHash() =>
+    r'22096e44348e6040604af9760941d604e01936c1';
 
-@ProviderFor(setIsBiometricLockEnabledUseCase)
-final setIsBiometricLockEnabledUseCaseProvider =
-    SetIsBiometricLockEnabledUseCaseProvider._();
+@ProviderFor(updateDownloadDestinationPathUseCase)
+final updateDownloadDestinationPathUseCaseProvider =
+    UpdateDownloadDestinationPathUseCaseProvider._();
 
-final class SetIsBiometricLockEnabledUseCaseProvider
+final class UpdateDownloadDestinationPathUseCaseProvider
     extends
         $FunctionalProvider<
-          SetIsBiometricLockEnabledUseCase,
-          SetIsBiometricLockEnabledUseCase,
-          SetIsBiometricLockEnabledUseCase
+          UpdateDownloadDestinationPathUseCase,
+          UpdateDownloadDestinationPathUseCase,
+          UpdateDownloadDestinationPathUseCase
         >
-    with $Provider<SetIsBiometricLockEnabledUseCase> {
-  SetIsBiometricLockEnabledUseCaseProvider._()
+    with $Provider<UpdateDownloadDestinationPathUseCase> {
+  UpdateDownloadDestinationPathUseCaseProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'setIsBiometricLockEnabledUseCaseProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$setIsBiometricLockEnabledUseCaseHash();
-
-  @$internal
-  @override
-  $ProviderElement<SetIsBiometricLockEnabledUseCase> $createElement(
-    $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
-
-  @override
-  SetIsBiometricLockEnabledUseCase create(Ref ref) {
-    return setIsBiometricLockEnabledUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SetIsBiometricLockEnabledUseCase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<SetIsBiometricLockEnabledUseCase>(
-        value,
-      ),
-    );
-  }
-}
-
-String _$setIsBiometricLockEnabledUseCaseHash() =>
-    r'3cf0119a02ea9f753e392bc5a0a11c65d82af3bb';
-
-@ProviderFor(setDownloadDestinationPathUseCase)
-final setDownloadDestinationPathUseCaseProvider =
-    SetDownloadDestinationPathUseCaseProvider._();
-
-final class SetDownloadDestinationPathUseCaseProvider
-    extends
-        $FunctionalProvider<
-          SetDownloadDestinationPathUseCase,
-          SetDownloadDestinationPathUseCase,
-          SetDownloadDestinationPathUseCase
-        >
-    with $Provider<SetDownloadDestinationPathUseCase> {
-  SetDownloadDestinationPathUseCaseProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'setDownloadDestinationPathUseCaseProvider',
+        name: r'updateDownloadDestinationPathUseCaseProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
@@ -434,32 +475,31 @@ final class SetDownloadDestinationPathUseCaseProvider
 
   @override
   String debugGetCreateSourceHash() =>
-      _$setDownloadDestinationPathUseCaseHash();
+      _$updateDownloadDestinationPathUseCaseHash();
 
   @$internal
   @override
-  $ProviderElement<SetDownloadDestinationPathUseCase> $createElement(
+  $ProviderElement<UpdateDownloadDestinationPathUseCase> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  SetDownloadDestinationPathUseCase create(Ref ref) {
-    return setDownloadDestinationPathUseCase(ref);
+  UpdateDownloadDestinationPathUseCase create(Ref ref) {
+    return updateDownloadDestinationPathUseCase(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SetDownloadDestinationPathUseCase value) {
+  Override overrideWithValue(UpdateDownloadDestinationPathUseCase value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<SetDownloadDestinationPathUseCase>(
-        value,
-      ),
+      providerOverride:
+          $SyncValueProvider<UpdateDownloadDestinationPathUseCase>(value),
     );
   }
 }
 
-String _$setDownloadDestinationPathUseCaseHash() =>
-    r'2caefca04aa351a197c99f72d11ee318e41edd2f';
+String _$updateDownloadDestinationPathUseCaseHash() =>
+    r'fc00ce95bd8425efd9b53d634d621666a833c64f';
 
 @ProviderFor(clearCacheUseCase)
 final clearCacheUseCaseProvider = ClearCacheUseCaseProvider._();
@@ -556,50 +596,51 @@ final class GetCacheSizeUseCaseProvider
 String _$getCacheSizeUseCaseHash() =>
     r'7b9fe88d178986df94093653d4fe670868607575';
 
-@ProviderFor(setAppAppearanceUseCase)
-final setAppAppearanceUseCaseProvider = SetAppAppearanceUseCaseProvider._();
+@ProviderFor(updateAppAppearanceUseCase)
+final updateAppAppearanceUseCaseProvider =
+    UpdateAppAppearanceUseCaseProvider._();
 
-final class SetAppAppearanceUseCaseProvider
+final class UpdateAppAppearanceUseCaseProvider
     extends
         $FunctionalProvider<
-          SetAppAppearanceUseCase,
-          SetAppAppearanceUseCase,
-          SetAppAppearanceUseCase
+          UpdateAppAppearanceUseCase,
+          UpdateAppAppearanceUseCase,
+          UpdateAppAppearanceUseCase
         >
-    with $Provider<SetAppAppearanceUseCase> {
-  SetAppAppearanceUseCaseProvider._()
+    with $Provider<UpdateAppAppearanceUseCase> {
+  UpdateAppAppearanceUseCaseProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'setAppAppearanceUseCaseProvider',
+        name: r'updateAppAppearanceUseCaseProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$setAppAppearanceUseCaseHash();
+  String debugGetCreateSourceHash() => _$updateAppAppearanceUseCaseHash();
 
   @$internal
   @override
-  $ProviderElement<SetAppAppearanceUseCase> $createElement(
+  $ProviderElement<UpdateAppAppearanceUseCase> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  SetAppAppearanceUseCase create(Ref ref) {
-    return setAppAppearanceUseCase(ref);
+  UpdateAppAppearanceUseCase create(Ref ref) {
+    return updateAppAppearanceUseCase(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SetAppAppearanceUseCase value) {
+  Override overrideWithValue(UpdateAppAppearanceUseCase value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<SetAppAppearanceUseCase>(value),
+      providerOverride: $SyncValueProvider<UpdateAppAppearanceUseCase>(value),
     );
   }
 }
 
-String _$setAppAppearanceUseCaseHash() =>
-    r'55489c511d73847148b3dea5c40500c4d20aba03';
+String _$updateAppAppearanceUseCaseHash() =>
+    r'7eeb7e75f981be02afeadd30ebf2abdfa7c679c6';

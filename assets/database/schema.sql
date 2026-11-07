@@ -1,15 +1,29 @@
+CREATE TABLE IF NOT EXISTS encrypted_values (
+    id TEXT PRIMARY KEY,
+    salt TEXT NOT NULL,
+    nonce TEXT NOT NULL,
+    cipher_text TEXT NOT NULL,
+    mac TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS connections (
     id TEXT PRIMARY KEY,
     protocol TEXT NOT NULL CHECK (protocol IN ('ftp', 'sftp', 'ftps', 'webdav', 'smb', 'nfs')),
     display_name TEXT NOT NULL,
     remote_address TEXT NOT NULL,
+    username TEXT NOT NULL DEFAULT '',
+    password TEXT NOT NULL DEFAULT '',
+    root_path TEXT NOT NULL DEFAULT '/',
     status TEXT NOT NULL DEFAULT 'offline' CHECK (status IN ('online', 'ready', 'idle', 'offline')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS file_transfers (
+CREATE TABLE IF NOT EXISTS file_transfer_histories (
     id TEXT PRIMARY KEY,
+    file_name TEXT NOT NULL DEFAULT '',
     file_size INTEGER NOT NULL,
     file_mime_type TEXT NOT NULL,
     source_name TEXT NOT NULL,

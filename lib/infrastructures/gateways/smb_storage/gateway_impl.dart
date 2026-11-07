@@ -40,7 +40,8 @@ class SmbStorageGatewayImpl implements SmbStorageGateway {
         error: e,
       );
       throw SmbOperationFailedError(
-        'Failed to query SMB storage status for ${connection.displayName}',
+        message:
+            'Failed to query SMB storage status for ${connection.displayName}',
       );
     }
   }

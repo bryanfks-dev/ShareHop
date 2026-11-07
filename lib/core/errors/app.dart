@@ -1,5 +1,5 @@
 abstract class AppError implements Exception {
-  new(this.message);
+  new({required this.message});
 
   final String message;
 

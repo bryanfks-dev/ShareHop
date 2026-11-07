@@ -8,14 +8,14 @@ import 'package:sharehop/presentation/theme/spacing.dart';
 class WebDavFormConnectionSubSection extends StatelessWidget {
   const new({
     this.displayNameController,
-    this.serverUrlController,
+    this.remoteAddressController,
     this.rootPathController,
     this.enabled = true,
     super.key,
   });
 
   final TextEditingController? displayNameController;
-  final TextEditingController? serverUrlController;
+  final TextEditingController? remoteAddressController;
   final TextEditingController? rootPathController;
   final bool enabled;
 
@@ -33,7 +33,7 @@ class WebDavFormConnectionSubSection extends StatelessWidget {
           hint: 'Example name',
         ),
         FTextFormField(
-          control: .managed(controller: serverUrlController),
+          control: .managed(controller: remoteAddressController),
           enabled: enabled,
           label: const Text('Server url'),
           hint: 'https://example.com/remote.php/dav',

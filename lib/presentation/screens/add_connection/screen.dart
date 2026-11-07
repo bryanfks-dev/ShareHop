@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
 import 'package:sharehop/core/enums/connection_protocol.dart';
+import 'package:sharehop/presentation/extensions/enums/connection_protocol_extension.dart';
 import 'package:sharehop/presentation/screens/add_connection/sections/web_dav_form/section.dart';
 import 'package:sharehop/presentation/screens/add_connection/widgets/add_connection_header.dart';
 import 'package:sharehop/presentation/screens/add_connection/widgets/change_connection_protocol/selector.dart';
@@ -47,8 +48,8 @@ class AddConnectionScreen extends HookWidget {
                     spacing: Spacing.sm,
                     children: [
                       Text(
-                        '${selectedConnectionProtocol.value.name} is not '
-                        'supported yet',
+                        '${selectedConnectionProtocol.value.displayName} '
+                        'is not supported yet',
                         style: theme.typography.display.xs.copyWith(
                           fontWeight: .w600,
                         ),

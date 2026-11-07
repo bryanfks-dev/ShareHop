@@ -14,9 +14,7 @@ class MainShell extends HookWidget {
   Widget build(BuildContext context) {
     final selectedNavigationTab = useState<NavigationTab>(.connections);
 
-    void handleOnChangeNavigationTab({
-      required NavigationTab navigationTab,
-    }) {
+    void handleOnChangeNavigationTab({required NavigationTab navigationTab}) {
       selectedNavigationTab.value = navigationTab;
     }
 

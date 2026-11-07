@@ -6,8 +6,8 @@ import 'package:sharehop/presentation/screens/settings/sections/security_section
 import 'package:sharehop/presentation/screens/settings/sections/storage_section.dart';
 import 'package:sharehop/presentation/screens/settings/sections/transfer_preferences_section.dart';
 import 'package:sharehop/presentation/screens/settings/widgets/settings_header.dart';
-import 'package:sharehop/presentation/screens/settings/widgets/settings_trademark.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
+import 'package:sharehop/presentation/widgets/primitives/trademark.dart';
 
 class SettingsScreen extends StatelessWidget {
   const new({super.key});
@@ -29,7 +29,7 @@ class SettingsScreen extends StatelessWidget {
               SecuritySection(),
               StorageSection(),
               AppPreferencesSection(),
-              SettingsTrademark(),
+              Trademark(),
             ],
           ),
         ),

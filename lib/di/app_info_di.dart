@@ -9,4 +9,4 @@ AppInfoRepository appInfoRepository(Ref ref) => AppInfoRepositoryImpl();
 
 @Riverpod(keepAlive: true)
 GetAppInfoUseCase getAppVersionUseCase(Ref ref) =>
-    GetAppInfoUseCase(ref.watch(appInfoRepositoryProvider));
+    GetAppInfoUseCase(appInfoRepository: ref.watch(appInfoRepositoryProvider));

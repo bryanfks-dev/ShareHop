@@ -3,8 +3,8 @@ import 'package:forui/forui.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:sharehop/core/enums/app_theme.dart';
 import 'package:sharehop/presentation/controllers/app_config_controller.dart';
+import 'package:sharehop/presentation/screens/splash/screen.dart';
 import 'package:sharehop/presentation/theme/theme.dart';
-import 'package:sharehop/presentation/widgets/layout/main_shell.dart';
 
 void main() {
   runApp(const ProviderScope(child: Application()));
@@ -42,7 +42,7 @@ class Application extends ConsumerWidget {
         child: FToaster(child: FTooltipGroup(child: child!)),
       ),
       // You can also replace FScaffold with Material Scaffold.
-      home: const MainShell(),
+      home: const SplashScreen(),
     );
   }
 }

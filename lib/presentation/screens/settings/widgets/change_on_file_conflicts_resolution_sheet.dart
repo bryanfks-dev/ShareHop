@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sharehop/core/enums/on_file_conflicts_resolution.dart';
+import 'package:sharehop/core/enums/file_conflicts_resolution.dart';
 import 'package:sharehop/presentation/controllers/app_config_controller.dart';
-import 'package:sharehop/presentation/router/navigator_extension.dart';
+import 'package:sharehop/presentation/extensions/enums/file_conflicts_resolution_extension.dart';
+import 'package:sharehop/presentation/extensions/router/navigator_extension.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
 
 Future<void> showChangeOnFileConflictsResolutionSheet(
@@ -25,12 +26,12 @@ class _ChangeOnFileConflictsResolutionSheetContent extends HookConsumerWidget {
     final appConfigController = ref.watch(appConfigControllerProvider.notifier);
 
     final innerSelectedOnFileConflictResolution =
-        useState<OnFileConflictsResolution>(
+        useState<FileConflictsResolution>(
           appConfig.value?.onFileConflictsResolution ?? .askeverytime,
         );
 
     Future<void> handleOnPressResolution({
-      required OnFileConflictsResolution resolution,
+      required FileConflictsResolution resolution,
     }) async {
       innerSelectedOnFileConflictResolution.value = resolution;
       await appConfigController.setOnFileConflictsResolution(
@@ -119,7 +120,7 @@ class _ChangeOnFileConflictsResolutionSheetItem extends StatelessWidget {
     this.value = false,
   });
 
-  final OnFileConflictsResolution resolution;
+  final FileConflictsResolution resolution;
   final bool value;
   final VoidCallback onPress;
 

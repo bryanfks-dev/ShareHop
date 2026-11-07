@@ -1,5 +1,5 @@
-import 'package:sharehop/core/models/connection_credential_model.dart';
+import 'package:sharehop/data/dto/connection_credential_dto.dart';
 
 abstract interface class ConnectionService {
-  Future<void> verify({required ConnectionCredentialModel credential});
+  Future<void> verify({required ConnectionCredentialDto credential});
 }

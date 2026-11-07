@@ -28,7 +28,7 @@ Don't:
 
 ## Named Parameters
 
-- ALWAYS use named parameters for function parameters.
+- Named parameters only used if the function name is descriptive enough to explain the parameter's purpose. For example, `void setUser(User user)` is descriptive enough to not require a named parameter. However, `void setUser(User user, bool isAdmin)` is not descriptive enough and should use named parameters: `void setUser({required User user, required bool isAdmin})`.
 - NEVER use positional parameters for function parameters.
 - Use named parameters for model or DTO classes.
 - DO NOT use named parameters for mapper classes.
@@ -37,3 +37,9 @@ Don't:
 # Single Line If Statements
 
 - DO NOT use single line if statements. Always use braces for if statements, even for single line statements.
+
+# Constant Naming
+
+- Use `camelCase` for constant names. Do not use `ALL_CAPS` for constant names.
+- Use `k` prefix for constant names. For example, `kMyConstant`.
+- Use `const` keyword for constant values. For example, `const kMyConstant = 42;`.

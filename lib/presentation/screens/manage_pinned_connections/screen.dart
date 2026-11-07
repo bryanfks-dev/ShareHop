@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
-import 'package:sharehop/presentation/router/navigator_extension.dart';
+import 'package:sharehop/presentation/extensions/router/navigator_extension.dart';
 import 'package:sharehop/presentation/screens/manage_pinned_connections/sections/other_connections_manage_section.dart';
 import 'package:sharehop/presentation/screens/manage_pinned_connections/sections/pinned_connections_manage_section.dart';
 import 'package:sharehop/presentation/screens/manage_pinned_connections/widgets/manage_pinned_callout_banner.dart';

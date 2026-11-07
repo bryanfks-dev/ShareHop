@@ -6,25 +6,25 @@ import 'package:sharehop/data/mapper/connection_credential_mapper.dart';
 import 'package:sharehop/data/mapper/connection_mapper.dart';
 
 class CreateConnectionUseCase {
-  const new(
-    this.connectionRepository,
-    this.connectionService,
-    this.connectionCredentialMapper,
-    this.connectionMapper,
-  );
+  const new({
+    required this._connectionRepository,
+    required this._connectionService,
+    required this._connectionCredentialMapper,
+    required this._connectionMapper,
+  });
 
-  final ConnectionRepository connectionRepository;
-  final ConnectionService connectionService;
-  final ConnectionCredentialMapper connectionCredentialMapper;
-  final ConnectionMapper connectionMapper;
+  final ConnectionRepository _connectionRepository;
+  final ConnectionService _connectionService;
+  final ConnectionCredentialMapper _connectionCredentialMapper;
+  final ConnectionMapper _connectionMapper;
 
   Future<ConnectionModel> call({required ConnectionDto connection}) async {
-    final credential = connectionCredentialMapper.toWebDavCredentialModel(
+    final credential = _connectionCredentialMapper.toWebDavCredentialDto(
       connection,
     );
-    await connectionService.verify(credential: credential);
+    await _connectionService.verify(credential: credential);
 
-    final draft = connectionMapper.toDraftDto(connection);
-    return await connectionRepository.create(draft);
+    final draft = _connectionMapper.toDraftDto(connection);
+    return await _connectionRepository.create(connection: draft);
   }
 }

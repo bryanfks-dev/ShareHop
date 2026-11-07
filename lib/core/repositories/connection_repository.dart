@@ -3,10 +3,10 @@ import 'package:sharehop/data/dto/connection_dto.dart';
 
 abstract interface class ConnectionRepository {
   Future<List<ConnectionModel>> getAll();
-  Future<ConnectionModel?> getOne(String id);
-  Future<ConnectionModel> create(ConnectionDraftDto connection);
-  Future<ConnectionModel?> update(ConnectionModel connection);
-  Future<void> remove(String id);
-  Future<void> batchRemove(Set<String> ids);
-  Future<String?> checkIfExists(String id);
+  Future<ConnectionModel?> getOne({required String id});
+  Future<ConnectionModel> create({required ConnectionDraftDto connection});
+  Future<ConnectionModel?> update({required ConnectionModel model});
+  Future<void> remove({required String id});
+  Future<void> batchRemove({required Set<String> ids});
+  Future<String?> checkIfExists({required String id});
 }

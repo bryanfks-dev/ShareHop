@@ -1,5 +1,5 @@
-import 'package:sharehop/core/models/web_dav_credential_model.dart';
+import 'package:sharehop/data/dto/web_dav_credential_dto.dart';
 
 abstract interface class WebDavClientSessionGateway {
-  void destroy({required WebDavCredentialModel credential});
+  void destroy({required WebDavCredentialDto credential});
 }

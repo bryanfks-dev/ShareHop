@@ -3,7 +3,7 @@ import 'package:forui/theme.dart';
 import 'package:forui/widgets/button.dart';
 import 'package:forui/widgets/header.dart';
 import 'package:forui_lucide/forui_lucide.dart';
-import 'package:sharehop/presentation/router/navigator_extension.dart';
+import 'package:sharehop/presentation/extensions/router/navigator_extension.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
 
 class AddConnectionHeader extends StatelessWidget {

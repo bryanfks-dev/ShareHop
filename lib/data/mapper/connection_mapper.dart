@@ -1,8 +1,8 @@
-import 'package:cryptography/cryptography.dart';
 import 'package:sharehop/core/models/connection_model.dart';
+import 'package:sharehop/core/models/encrypted_value_model.dart';
 import 'package:sharehop/data/dto/connection_dto.dart';
 import 'package:sharehop/data/mapper/encrypted_value_mapper.dart';
-import 'package:sharehop/infrastructures/security/derived_key_secret_chiper.dart';
+import 'package:sharehop/presentation/view_models/connection_view_model.dart';
 import 'package:uuid/uuid.dart';
 
 class ConnectionMapper {
@@ -22,13 +22,15 @@ class ConnectionMapper {
 
   ConnectionModel toConnectionModel(ConnectionDraftDto connection) {
     final now = DateTime.now().toUtc();
-    final secret = Argon2id(
-      memory: 19 * 1024,
-      parallelism: 1,
-      iterations: 2,
-      hashLength: 32,
+    final password = EncryptedValueModel(
+      id: const Uuid().v7(),
+      salt: '',
+      cipherText: connection.password,
+      nonce: '',
+      mac: '',
+      createdAt: now,
+      updatedAt: now,
     );
-    final password = encryptedValueMapper.toEncryptedValueModel();
 
     return ConnectionModel(
       id: const Uuid().v7(),
@@ -36,9 +38,25 @@ class ConnectionMapper {
       protocol: connection.connectionProtocol,
       remoteAddress: connection.remoteAddress,
       username: connection.username,
+      passwordId: password.id,
       password: password,
       createdAt: now,
       updatedAt: now,
+    );
+  }
+
+  ConnectionViewModel toConnectionViewModel(
+    ConnectionModel connection, {
+    bool isPinned = false,
+  }) {
+    return ConnectionViewModel(
+      id: connection.id,
+      displayName: connection.displayName,
+      protocol: connection.protocol,
+      remoteAddress: connection.remoteAddress,
+      username: connection.username,
+      password: connection.password?.cipherText ?? '',
+      isPinned: isPinned,
     );
   }
 }

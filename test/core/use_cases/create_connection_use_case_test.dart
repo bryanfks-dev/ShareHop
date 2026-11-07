@@ -1,23 +1,45 @@
-import 'dart:typed_data';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sharehop/core/enums/connection_protocol.dart';
-import 'package:sharehop/core/models/connection_credential_model.dart';
 import 'package:sharehop/core/models/connection_model.dart';
-import 'package:sharehop/core/models/web_dav_credential_model.dart';
-import 'package:sharehop/core/gateways/web_dav_storage_gateway.dart';
+import 'package:sharehop/core/models/encrypted_value_model.dart';
 import 'package:sharehop/core/repositories/connection_repository.dart';
+import 'package:sharehop/core/services/connection_service.dart';
 import 'package:sharehop/core/use_cases/create_connection_use_case.dart';
+import 'package:sharehop/data/dto/connection_credential_dto.dart';
 import 'package:sharehop/data/dto/connection_dto.dart';
+import 'package:sharehop/data/dto/web_dav_credential_dto.dart';
+import 'package:sharehop/data/mapper/connection_credential_mapper.dart';
+import 'package:sharehop/data/mapper/connection_mapper.dart';
+import 'package:sharehop/data/mapper/encrypted_value_mapper.dart';
 import 'package:sharehop/infrastructures/gateways/web_dav_storage/error.dart';
-import 'package:webdav_client/webdav_client.dart';
 
 class FakeConnectionRepository implements ConnectionRepository {
   final List<ConnectionModel> connections = [];
 
   @override
-  Future<ConnectionModel> create(ConnectionDraftDto draft) async {
-    final model = buildConnectionDraftDtoFromConnectionModel(draft);
+  Future<ConnectionModel> create({
+    required ConnectionDraftDto connection,
+  }) async {
+    final now = DateTime.now().toUtc();
+    final model = ConnectionModel(
+      id: 'test-id',
+      displayName: connection.displayName,
+      protocol: connection.connectionProtocol,
+      remoteAddress: connection.remoteAddress,
+      username: connection.username,
+      passwordId: 'pwd-id',
+      password: EncryptedValueModel(
+        id: 'pwd-id',
+        salt: '',
+        cipherText: connection.password,
+        nonce: '',
+        mac: '',
+        createdAt: now,
+        updatedAt: now,
+      ),
+      createdAt: now,
+      updatedAt: now,
+    );
     connections.add(model);
     return model;
   }
@@ -26,243 +48,95 @@ class FakeConnectionRepository implements ConnectionRepository {
   Future<List<ConnectionModel>> getAll() async => connections;
 
   @override
-  Future<ConnectionModel?> getOne(String id) async {
-    for (final connection in connections) {
-      if (connection.id == id) {
-        return connection;
-      }
-    }
-    return null;
-  }
+  Future<ConnectionModel?> getOne({required String id}) async =>
+      connections.where((c) => c.id == id).firstOrNull;
 
   @override
-  Future<ConnectionModel?> update(ConnectionRevisionDto revision) async => null;
+  Future<ConnectionModel?> update({required ConnectionModel model}) async =>
+      model;
 
   @override
-  Future<void> remove(String id) async {
+  Future<void> remove({required String id}) async {
     connections.removeWhere((c) => c.id == id);
   }
 
   @override
-  Future<void> batchRemove(Set<String> ids) async {
+  Future<void> batchRemove({required Set<String> ids}) async {
     connections.removeWhere((c) => ids.contains(c.id));
   }
 
   @override
-  Future<String?> checkIfExists(String id) async =>
+  Future<String?> checkIfExists({required String id}) async =>
       connections.any((c) => c.id == id) ? id : null;
 }
 
-class FakeWebDavStorageGateway implements WebDavStorageGateway {
+class FakeConnectionService implements ConnectionService {
   bool shouldThrow = false;
-  WebDavCredentialModel? passedCredential;
+  ConnectionCredentialDto? verifiedCredential;
 
   @override
-  Future<void> testConnection({
-    required WebDavCredentialModel credential,
-  }) async {
-    passedCredential = credential;
+  Future<void> verify({required ConnectionCredentialDto credential}) async {
+    verifiedCredential = credential;
     if (shouldThrow) {
-      throw WebDavOperationFailedError('Failed to connect to WebDAV server');
+      throw WebDavOperationFailedError(message: 'Failed to verify');
     }
   }
-
-  @override
-  Future<List<File>> list({
-    required WebDavCredentialModel credential,
-    required String path,
-  }) async => [];
-
-  @override
-  Future<void> createDirectory({
-    required WebDavCredentialModel credential,
-    required String path,
-  }) async {}
-
-  @override
-  Future<void> delete({
-    required WebDavCredentialModel credential,
-    required String path,
-  }) async {}
-
-  @override
-  Future<void> uploadFile({
-    required WebDavCredentialModel credential,
-    required String path,
-    required Uint8List fileBytes,
-  }) async {}
-
-  @override
-  Future<Uint8List> downloadFile({
-    required WebDavCredentialModel credential,
-    required String path,
-  }) async => Uint8List(0);
-
-  @override
-  Future<void> rename({
-    required WebDavCredentialModel credential,
-    required String oldPath,
-    required String newPath,
-  }) async {}
-
-  @override
-  Future<void> copy({
-    required WebDavCredentialModel credential,
-    required String sourcePath,
-    required String destinationPath,
-  }) async {}
-
-  @override
-  Future<void> move({
-    required WebDavCredentialModel credential,
-    required String sourcePath,
-    required String destinationPath,
-  }) async {}
-
-  @override
-  Future<File> getFileProperties({
-    required WebDavCredentialModel credential,
-    required String path,
-  }) async => throw UnimplementedError();
-
-  @override
-  Future<StorageStatusDto> getStatus({
-    required WebDavCredentialModel credential,
-    String path = '/',
-  }) async => const StorageStatusDto(
-    totalBytes: 500 * 1024 * 1024 * 1024,
-    freeBytes: 64 * 1024 * 1024 * 1024,
-  );
-}
-
-class FakeUnsupportedCredentialModel implements ConnectionCredentialModel {
-  const new(this.protocol);
-
-  @override
-  final ConnectionProtocol protocol;
 }
 
 void main() {
-  group('CreateConnectionUseCase', () {
-    test(
-      'creates and persists connection from draft without credential',
-      () async {
-        final fakeRepo = FakeConnectionRepository();
-        final useCase = CreateConnectionUseCase(fakeRepo);
+  late FakeConnectionRepository fakeRepo;
+  late FakeConnectionService fakeService;
+  late ConnectionCredentialMapper credentialMapper;
+  late ConnectionMapper connectionMapper;
+  late CreateConnectionUseCase useCase;
 
-        const draft = ConnectionDraftDto(
-          connectionProtocol: ConnectionProtocol.webdav,
-          remoteAddress: 'https://example.com/dav',
-          displayName: 'My WebDAV',
-        );
-
-        final result = await useCase.call(draft: draft);
-
-        expect(result.displayName, 'My WebDAV');
-        expect(result.protocol, ConnectionProtocol.webdav);
-        expect(result.remoteAddress, 'https://example.com/dav');
-        expect(fakeRepo.connections.length, 1);
-        expect(fakeRepo.connections.first.id, result.id);
-      },
+  setUp(() {
+    fakeRepo = FakeConnectionRepository();
+    fakeService = FakeConnectionService();
+    credentialMapper = ConnectionCredentialMapper();
+    connectionMapper = ConnectionMapper(EncryptedValueMapper());
+    useCase = CreateConnectionUseCase(
+      connectionRepository: fakeRepo,
+      connectionService: fakeService,
+      connectionCredentialMapper: credentialMapper,
+      connectionMapper: connectionMapper,
     );
+  });
 
-    test('tests connection successfully before creating connection', () async {
-      final fakeRepo = FakeConnectionRepository();
-      final fakeStorageService = FakeWebDavStorageGateway();
-      final testConnectionUseCase = TestConnectionUseCase(fakeStorageService);
-      final useCase = CreateConnectionUseCase(fakeRepo, testConnectionUseCase);
-
-      const draft = ConnectionDraftDto(
+  group('CreateConnectionUseCase', () {
+    test('creates connection after verifying credentials', () async {
+      const connectionDto = ConnectionDto(
         connectionProtocol: ConnectionProtocol.webdav,
-        remoteAddress: 'https://example.com/dav',
-        displayName: 'Tested WebDAV',
-      );
-      final credential = WebDavCredentialModel(
-        url: Uri.parse('https://example.com/dav'),
+        remoteAddress: 'example.com',
         username: 'admin',
         password: 'password',
+        displayName: 'My WebDAV',
       );
 
-      final result = await useCase.call(draft: draft, credential: credential);
+      final result = await useCase.call(connection: connectionDto);
 
-      expect(result.displayName, 'Tested WebDAV');
-      expect(fakeStorageService.passedCredential, credential);
+      expect(result.displayName, 'My WebDAV');
+      expect(result.protocol, ConnectionProtocol.webdav);
+      expect(result.remoteAddress, 'example.com');
+      expect(result.username, 'admin');
       expect(fakeRepo.connections.length, 1);
+      expect(fakeService.verifiedCredential, isA<WebDavCredentialDto>());
     });
 
-    test(
-      'does not create connection and rethrows when test connection fails',
-      () async {
-        final fakeRepo = FakeConnectionRepository();
-        final fakeStorageService = FakeWebDavStorageGateway()
-          ..shouldThrow = true;
-        final testConnectionUseCase = TestConnectionUseCase(fakeStorageService);
-        final useCase = CreateConnectionUseCase(
-          fakeRepo,
-          testConnectionUseCase,
-        );
+    test('rethrows error when connection verification fails', () async {
+      fakeService.shouldThrow = true;
+      const connectionDto = ConnectionDto(
+        connectionProtocol: ConnectionProtocol.webdav,
+        remoteAddress: 'example.com',
+        username: 'admin',
+        password: 'wrong_password',
+      );
 
-        const draft = ConnectionDraftDto(
-          connectionProtocol: ConnectionProtocol.webdav,
-          remoteAddress: 'https://example.com/dav',
-        );
-        final credential = WebDavCredentialModel(
-          url: Uri.parse('https://example.com/dav'),
-          username: 'admin',
-          password: 'wrong_password',
-        );
-
-        expect(
-          () => useCase.call(draft: draft, credential: credential),
-          throwsA(isA<WebDavOperationFailedError>()),
-        );
-        expect(fakeRepo.connections, isEmpty);
-      },
-    );
-
-    test('accepts any connection protocol even when test connection is '
-        'unimplemented', () async {
-      final fakeRepo = FakeConnectionRepository();
-      final fakeStorageService = FakeWebDavStorageGateway();
-      final testConnectionUseCase = TestConnectionUseCase(fakeStorageService);
-      final useCase = CreateConnectionUseCase(fakeRepo, testConnectionUseCase);
-
-      for (final protocol in ConnectionProtocol.values) {
-        final draft = ConnectionDraftDto(
-          connectionProtocol: protocol,
-          remoteAddress: '192.168.1.100',
-          displayName: '${protocol.name} Server',
-        );
-        final credential = FakeUnsupportedCredentialModel(protocol);
-
-        final result = await useCase.call(draft: draft, credential: credential);
-
-        expect(result.protocol, protocol);
-        expect(result.displayName, '${protocol.name} Server');
-      }
-
-      expect(fakeRepo.connections.length, ConnectionProtocol.values.length);
-    });
-
-    test('accepts any connection protocol when credential is null', () async {
-      final fakeRepo = FakeConnectionRepository();
-      final fakeStorageService = FakeWebDavStorageGateway();
-      final testConnectionUseCase = TestConnectionUseCase(fakeStorageService);
-      final useCase = CreateConnectionUseCase(fakeRepo, testConnectionUseCase);
-
-      for (final protocol in ConnectionProtocol.values) {
-        final draft = ConnectionDraftDto(
-          connectionProtocol: protocol,
-          remoteAddress: '10.0.0.1',
-          displayName: 'Remote ${protocol.name}',
-        );
-
-        final result = await useCase.call(draft: draft);
-
-        expect(result.protocol, protocol);
-      }
-
-      expect(fakeRepo.connections.length, ConnectionProtocol.values.length);
+      expect(
+        () => useCase.call(connection: connectionDto),
+        throwsA(isA<WebDavOperationFailedError>()),
+      );
+      expect(fakeRepo.connections, isEmpty);
     });
   });
 }

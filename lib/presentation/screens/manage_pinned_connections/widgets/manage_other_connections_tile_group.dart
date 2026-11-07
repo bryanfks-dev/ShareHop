@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
-import 'package:sharehop/core/models/connection_model.dart';
 import 'package:sharehop/presentation/screens/manage_pinned_connections/widgets/manage_connection_tile.dart';
+import 'package:sharehop/presentation/view_models/connection_view_model.dart';
 
 class ManageOtherConnectionsTileGroup extends StatelessWidget {
   const new({
@@ -11,9 +11,9 @@ class ManageOtherConnectionsTileGroup extends StatelessWidget {
     super.key,
   });
 
-  final List<ConnectionModel> otherConnections;
-  final void Function({required ConnectionModel connection}) onPressPin;
-  final void Function({required ConnectionModel connection}) onPressEdit;
+  final List<ConnectionViewModel> otherConnections;
+  final void Function({required ConnectionViewModel connection}) onPressPin;
+  final void Function({required ConnectionViewModel connection}) onPressEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,6 @@ class ManageOtherConnectionsTileGroup extends StatelessWidget {
           ManageConnectionTile(
             key: ValueKey(connection.id),
             connection: connection,
-            isPinned: false,
             onPressPin: () => onPressPin(connection: connection),
             onPressEdit: () => onPressEdit(connection: connection),
           ),
