@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$EncryptedValueModel {
 
- String get id; String get salt; String get nonce;@JsonKey(name: 'cipher_text') String get cipherText; String get mac;@JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'updated_at') DateTime get updatedAt;
+@UuidValueConverter() UuidValue get id; String get salt; String get nonce; String get cipherText; String get mac; DateTime get createdAt; DateTime get updatedAt;
 /// Create a copy of EncryptedValueModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -54,7 +54,7 @@ abstract mixin class $EncryptedValueModelCopyWith<$Res>  {
   factory $EncryptedValueModelCopyWith(EncryptedValueModel value, $Res Function(EncryptedValueModel) _then) = _$EncryptedValueModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String salt, String nonce,@JsonKey(name: 'cipher_text') String cipherText, String mac,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt
+@UuidValueConverter() UuidValue id, String salt, String nonce, String cipherText, String mac, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -74,7 +74,7 @@ class _$EncryptedValueModelCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? salt = null,Object? nonce = null,Object? cipherText = null,Object? mac = null,Object? createdAt = null,Object? updatedAt = null,}) {
   return _then(EncryptedValueModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,salt: null == salt ? _self.salt : salt // ignore: cast_nullable_to_non_nullable
+as UuidValue,salt: null == salt ? _self.salt : salt // ignore: cast_nullable_to_non_nullable
 as String,nonce: null == nonce ? _self.nonce : nonce // ignore: cast_nullable_to_non_nullable
 as String,cipherText: null == cipherText ? _self.cipherText : cipherText // ignore: cast_nullable_to_non_nullable
 as String,mac: null == mac ? _self.mac : mac // ignore: cast_nullable_to_non_nullable
@@ -165,7 +165,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String salt,  String nonce, @JsonKey(name: 'cipher_text')  String cipherText,  String mac, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@UuidValueConverter()  UuidValue id,  String salt,  String nonce,  String cipherText,  String mac,  DateTime createdAt,  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _EncryptedValueModel() when $default != null:
 return $default(_that.id,_that.salt,_that.nonce,_that.cipherText,_that.mac,_that.createdAt,_that.updatedAt);case _:
@@ -186,7 +186,7 @@ return $default(_that.id,_that.salt,_that.nonce,_that.cipherText,_that.mac,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String salt,  String nonce, @JsonKey(name: 'cipher_text')  String cipherText,  String mac, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@UuidValueConverter()  UuidValue id,  String salt,  String nonce,  String cipherText,  String mac,  DateTime createdAt,  DateTime updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _EncryptedValueModel():
 return $default(_that.id,_that.salt,_that.nonce,_that.cipherText,_that.mac,_that.createdAt,_that.updatedAt);case _:
@@ -206,7 +206,7 @@ return $default(_that.id,_that.salt,_that.nonce,_that.cipherText,_that.mac,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String salt,  String nonce, @JsonKey(name: 'cipher_text')  String cipherText,  String mac, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@UuidValueConverter()  UuidValue id,  String salt,  String nonce,  String cipherText,  String mac,  DateTime createdAt,  DateTime updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _EncryptedValueModel() when $default != null:
 return $default(_that.id,_that.salt,_that.nonce,_that.cipherText,_that.mac,_that.createdAt,_that.updatedAt);case _:
@@ -221,16 +221,16 @@ return $default(_that.id,_that.salt,_that.nonce,_that.cipherText,_that.mac,_that
 @JsonSerializable()
 
 class _EncryptedValueModel extends EncryptedValueModel {
-  const _EncryptedValueModel({required this.id, required this.salt, required this.nonce, @JsonKey(name: 'cipher_text') required this.cipherText, required this.mac, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'updated_at') required this.updatedAt}): super._();
+  const _EncryptedValueModel({@UuidValueConverter() required this.id, required this.salt, required this.nonce, required this.cipherText, required this.mac, required this.createdAt, required this.updatedAt}): super._();
   factory _EncryptedValueModel.fromJson(Map<String, dynamic> json) => _$EncryptedValueModelFromJson(json);
 
-@override final  String id;
+@override@UuidValueConverter() final  UuidValue id;
 @override final  String salt;
 @override final  String nonce;
-@override@JsonKey(name: 'cipher_text') final  String cipherText;
+@override final  String cipherText;
 @override final  String mac;
-@override@JsonKey(name: 'created_at') final  DateTime createdAt;
-@override@JsonKey(name: 'updated_at') final  DateTime updatedAt;
+@override final  DateTime createdAt;
+@override final  DateTime updatedAt;
 
 /// Create a copy of EncryptedValueModel
 /// with the given fields replaced by the non-null parameter values.
@@ -267,7 +267,7 @@ abstract mixin class _$EncryptedValueModelCopyWith<$Res> implements $EncryptedVa
   factory _$EncryptedValueModelCopyWith(_EncryptedValueModel value, $Res Function(_EncryptedValueModel) _then) = __$EncryptedValueModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String salt, String nonce,@JsonKey(name: 'cipher_text') String cipherText, String mac,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt
+@UuidValueConverter() UuidValue id, String salt, String nonce, String cipherText, String mac, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -287,7 +287,7 @@ class __$EncryptedValueModelCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? salt = null,Object? nonce = null,Object? cipherText = null,Object? mac = null,Object? createdAt = null,Object? updatedAt = null,}) {
   return _then(_EncryptedValueModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,salt: null == salt ? _self.salt : salt // ignore: cast_nullable_to_non_nullable
+as UuidValue,salt: null == salt ? _self.salt : salt // ignore: cast_nullable_to_non_nullable
 as String,nonce: null == nonce ? _self.nonce : nonce // ignore: cast_nullable_to_non_nullable
 as String,cipherText: null == cipherText ? _self.cipherText : cipherText // ignore: cast_nullable_to_non_nullable
 as String,mac: null == mac ? _self.mac : mac // ignore: cast_nullable_to_non_nullable

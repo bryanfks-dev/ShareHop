@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sharehop/infrastructures/database/manager.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -48,6 +50,28 @@ void main() {
         ),
         completes,
       );
+    });
+
+    test('applies assets/database/schema.sql successfully', () async {
+      final schemaSql = await File('assets/database/schema.sql').readAsString();
+
+      await expectLater(
+        DatabaseManager.instance.applySchema(
+          db: db,
+          schemaSql: schemaSql,
+        ),
+        completes,
+      );
+
+      final tables = await db.rawQuery(
+        "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;",
+      );
+      final tableNames = tables.map((t) => t['name']! as String).toSet();
+
+      expect(tableNames, contains('encrypted_values'));
+      expect(tableNames, contains('connections'));
+      expect(tableNames, contains('pinned_connections'));
+      expect(tableNames, contains('file_transfer_histories'));
     });
   });
 }

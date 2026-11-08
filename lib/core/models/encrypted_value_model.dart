@@ -1,7 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:sharehop/core/converters/uuid_value_converter.dart';
 import 'package:sharehop/core/models/mixins/id_mixin.dart';
 import 'package:sharehop/core/models/mixins/timestamp_mixin.dart';
 import 'package:sharehop/core/models/persistence_model.dart';
+import 'package:uuid/uuid_value.dart';
 
 part 'encrypted_value_model.freezed.dart';
 part 'encrypted_value_model.g.dart';
@@ -11,13 +13,13 @@ abstract class EncryptedValueModel
     with _$EncryptedValueModel, IdMixin, TimestampMixin
     implements PersistenceModel {
   const factory({
-    required String id,
+    @UuidValueConverter() required UuidValue id,
     required String salt,
     required String nonce,
-    @JsonKey(name: 'cipher_text') required String cipherText,
+    required String cipherText,
     required String mac,
-    @JsonKey(name: 'created_at') required DateTime createdAt,
-    @JsonKey(name: 'updated_at') required DateTime updatedAt,
+    required DateTime createdAt,
+    required DateTime updatedAt,
   }) = _EncryptedValueModel;
 
   const new _();

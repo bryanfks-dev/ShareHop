@@ -15,7 +15,7 @@ void main() {
     test('toWebDavCredentialDto maps ConnectionDto with scheme to '
         'WebDavCredentialDto', () {
       const dto = ConnectionDto(
-        connectionProtocol: ConnectionProtocol.webdav,
+        protocol: ConnectionProtocol.webdav,
         remoteAddress: 'https://dav.example.com:8443/remote.php/webdav',
         username: 'admin',
         password: 'password',
@@ -34,7 +34,7 @@ void main() {
     test('toWebDavCredentialDto maps ConnectionDto without scheme to '
         'WebDavCredentialDto', () {
       const dto = ConnectionDto(
-        connectionProtocol: ConnectionProtocol.webdav,
+        protocol: ConnectionProtocol.webdav,
         remoteAddress: 'example.com',
         username: 'user',
         password: 'pwd',

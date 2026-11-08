@@ -7,8 +7,9 @@ import 'package:sharehop/core/models/connection_model.dart';
 import 'package:sharehop/data/dto/connection_dto.dart';
 import 'package:sharehop/data/mapper/connection_mapper.dart';
 import 'package:sharehop/data/mapper/encrypted_value_mapper.dart';
+import 'package:sharehop/data/utils/not_required_value.dart';
 import 'package:sharehop/infrastructures/database/manager.dart';
-import 'package:sharehop/infrastructures/repositories/connection_repository_impl.dart';
+import 'package:sharehop/infrastructures/repositories/connection/repository_impl.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
@@ -46,7 +47,7 @@ void main() {
   group('ConnectionRepositoryImpl.create', () {
     test('creates and saves connection into SQLite table', () async {
       const draft = ConnectionDraftDto(
-        connectionProtocol: ConnectionProtocol.webdav,
+        protocol: ConnectionProtocol.webdav,
         remoteAddress: 'https://dav.example.com',
         displayName: 'My WebDAV Server',
         username: 'admin',
@@ -84,7 +85,7 @@ void main() {
         await db.close();
 
         const draft = ConnectionDraftDto(
-          connectionProtocol: ConnectionProtocol.webdav,
+          protocol: ConnectionProtocol.webdav,
           remoteAddress: 'https://fail.example.com',
           displayName: 'Fail',
           username: 'admin',
@@ -105,7 +106,7 @@ void main() {
 
       final first = await repository.create(
         connection: const ConnectionDraftDto(
-          connectionProtocol: ConnectionProtocol.webdav,
+          protocol: ConnectionProtocol.webdav,
           remoteAddress: 'https://first.com',
           displayName: 'First',
           username: 'user1',
@@ -115,7 +116,7 @@ void main() {
 
       final second = await repository.create(
         connection: const ConnectionDraftDto(
-          connectionProtocol: ConnectionProtocol.sftp,
+          protocol: ConnectionProtocol.sftp,
           remoteAddress: 'sftp://second.com',
           displayName: 'Second',
           username: 'user2',
@@ -140,7 +141,7 @@ void main() {
     test('getOne retrieves specific connection from SQLite table', () async {
       final created = await repository.create(
         connection: const ConnectionDraftDto(
-          connectionProtocol: ConnectionProtocol.ftp,
+          protocol: ConnectionProtocol.ftp,
           remoteAddress: 'ftp://example.com',
           displayName: 'FTP Storage',
           username: 'ftpuser',
@@ -159,10 +160,12 @@ void main() {
       expect(nonExistent, isNull);
     });
 
-    test('update modifies existing connection in SQLite table', () async {
+    test(
+      'update modifies existing connection in SQLite table with partial fields',
+      () async {
       final created = await repository.create(
         connection: const ConnectionDraftDto(
-          connectionProtocol: ConnectionProtocol.webdav,
+          protocol: ConnectionProtocol.webdav,
           remoteAddress: 'https://old.example.com',
           displayName: 'Old Name',
           username: 'admin',
@@ -171,15 +174,19 @@ void main() {
       );
 
       final updated = await repository.update(
-        model: created.copyWith(
-          displayName: 'Updated Name',
-          remoteAddress: 'https://new.example.com',
+        connection: ConnectionRevisionDto(
+          id: created.id,
+          displayName: const NotRequiredValue('Updated Name'),
+          remoteAddress: const NotRequiredValue('https://new.example.com'),
         ),
       );
 
       expect(updated, isNotNull);
       expect(updated?.displayName, 'Updated Name');
       expect(updated?.remoteAddress, 'https://new.example.com');
+      expect(updated?.username, 'admin');
+      expect(updated?.protocol, ConnectionProtocol.webdav);
+      expect(updated?.password?.cipherText, 'pwd');
 
       final row = (await db.query(
         ConnectionModel.tableName,
@@ -189,12 +196,50 @@ void main() {
 
       expect(row['display_name'], 'Updated Name');
       expect(row['remote_address'], 'https://new.example.com');
+      expect(row['username'], 'admin');
+      expect(row['protocol'], 'webdav');
+    });
+
+    test(
+      'update updates password when provided via NotRequiredValue',
+      () async {
+      final created = await repository.create(
+        connection: const ConnectionDraftDto(
+          protocol: ConnectionProtocol.webdav,
+          remoteAddress: 'https://webdav.example.com',
+          displayName: 'WebDAV Server',
+          username: 'admin',
+          password: 'old_password',
+        ),
+      );
+
+      final updated = await repository.update(
+        connection: ConnectionRevisionDto(
+          id: created.id,
+          password: const NotRequiredValue('new_secret_password'),
+        ),
+      );
+
+      expect(updated, isNotNull);
+      expect(updated?.displayName, 'WebDAV Server');
+      expect(updated?.password?.cipherText, 'new_secret_password');
+    });
+
+    test('update returns null if connection does not exist', () async {
+      final updated = await repository.update(
+        connection: const ConnectionRevisionDto(
+          id: 'non-existent-id',
+          displayName: NotRequiredValue('New Name'),
+        ),
+      );
+
+      expect(updated, isNull);
     });
 
     test('checkIfExists returns id if connection exists', () async {
       final created = await repository.create(
         connection: const ConnectionDraftDto(
-          connectionProtocol: ConnectionProtocol.nfs,
+          protocol: ConnectionProtocol.nfs,
           remoteAddress: 'nfs://share',
           displayName: 'NFS Share',
           username: 'nfs',
@@ -209,7 +254,7 @@ void main() {
     test('remove deletes connection from SQLite table', () async {
       final created = await repository.create(
         connection: const ConnectionDraftDto(
-          connectionProtocol: ConnectionProtocol.ftps,
+          protocol: ConnectionProtocol.ftps,
           remoteAddress: 'ftps://secure.com',
           displayName: 'FTPS',
           username: 'user',
@@ -228,7 +273,7 @@ void main() {
       () async {
         final first = await repository.create(
           connection: const ConnectionDraftDto(
-            connectionProtocol: ConnectionProtocol.webdav,
+            protocol: ConnectionProtocol.webdav,
             remoteAddress: 'https://1.com',
             displayName: 'First',
             username: 'u1',
@@ -237,7 +282,7 @@ void main() {
         );
         final second = await repository.create(
           connection: const ConnectionDraftDto(
-            connectionProtocol: ConnectionProtocol.webdav,
+            protocol: ConnectionProtocol.webdav,
             remoteAddress: 'https://2.com',
             displayName: 'Second',
             username: 'u2',

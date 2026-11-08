@@ -1,7 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:sharehop/core/converters/uuid_value_converter.dart';
 import 'package:sharehop/core/models/connection_model.dart';
 import 'package:sharehop/core/models/mixins/timestamp_mixin.dart';
 import 'package:sharehop/core/models/persistence_model.dart';
+import 'package:uuid/uuid_value.dart';
 
 part 'pinned_connection_model.freezed.dart';
 part 'pinned_connection_model.g.dart';
@@ -11,10 +13,9 @@ abstract class PinnedConnectionModel
     with _$PinnedConnectionModel, TimestampMixin
     implements PersistenceModel {
   const factory({
-    required String id,
-    @JsonKey(name: 'connection_id') required String connectionId,
-    @JsonKey(name: 'created_at') required DateTime createdAt,
-    @JsonKey(name: 'updated_at') required DateTime updatedAt,
+    @UuidValueConverter() required UuidValue connectionId,
+    required DateTime createdAt,
+    required DateTime updatedAt,
     @JsonKey(includeFromJson: false, includeToJson: false)
     ConnectionModel? connection,
   }) = _PinnedConnectionModel;

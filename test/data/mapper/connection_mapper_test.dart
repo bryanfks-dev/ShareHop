@@ -16,7 +16,7 @@ void main() {
   group('ConnectionMapper', () {
     test('toDraftDto maps ConnectionDto to ConnectionDraftDto', () {
       const dto = ConnectionDto(
-        connectionProtocol: ConnectionProtocol.webdav,
+        protocol: ConnectionProtocol.webdav,
         remoteAddress: 'https://example.com',
         username: 'user',
         password: 'pwd',
@@ -25,7 +25,7 @@ void main() {
 
       final draft = mapper.toDraftDto(dto);
 
-      expect(draft.connectionProtocol, ConnectionProtocol.webdav);
+      expect(draft.protocol, ConnectionProtocol.webdav);
       expect(draft.remoteAddress, 'https://example.com');
       expect(draft.username, 'user');
       expect(draft.password, 'pwd');
@@ -34,7 +34,7 @@ void main() {
 
     test('toDraftDto falls back to remoteAddress when displayName is null', () {
       const dto = ConnectionDto(
-        connectionProtocol: ConnectionProtocol.webdav,
+        protocol: ConnectionProtocol.webdav,
         remoteAddress: 'https://example.com',
         username: 'user',
         password: 'pwd',
@@ -45,27 +45,55 @@ void main() {
       expect(draft.displayName, 'https://example.com');
     });
 
-    test('toConnectionModel maps ConnectionDraftDto to ConnectionModel', () {
-      const draft = ConnectionDraftDto(
-        connectionProtocol: ConnectionProtocol.webdav,
-        remoteAddress: 'https://example.com',
-        username: 'user',
-        password: 'pwd',
-        displayName: 'My WebDAV',
-      );
+    test(
+      'toConnectionModel maps ConnectionDraftDto to ConnectionModel with date',
+      () {
+        final testDate = DateTime.utc(2026, 11, 7, 12);
+        const draft = ConnectionDraftDto(
+          protocol: ConnectionProtocol.webdav,
+          remoteAddress: 'https://example.com',
+          username: 'user',
+          password: 'pwd',
+          displayName: 'My WebDAV',
+        );
 
-      final model = mapper.toConnectionModel(draft);
+        final model = mapper.toConnectionModel(draft, date: testDate);
 
-      expect(model.id, isNotEmpty);
-      expect(model.protocol, ConnectionProtocol.webdav);
-      expect(model.displayName, 'My WebDAV');
-      expect(model.remoteAddress, 'https://example.com');
-      expect(model.username, 'user');
-      expect(model.password?.cipherText, 'pwd');
-      expect(model.rootPath, '/');
-      expect(model.createdAt, isNotNull);
-      expect(model.updatedAt, isNotNull);
-    });
+        expect(model.id, isNotEmpty);
+        expect(model.protocol, ConnectionProtocol.webdav);
+        expect(model.displayName, 'My WebDAV');
+        expect(model.remoteAddress, 'https://example.com');
+        expect(model.username, 'user');
+        expect(model.password?.cipherText, 'pwd');
+        expect(model.rootPath, '/');
+        expect(model.createdAt, testDate);
+        expect(model.updatedAt, testDate);
+        expect(model.password?.createdAt, testDate);
+        expect(model.password?.updatedAt, testDate);
+      },
+    );
+
+    test(
+      'toConnectionModel defaults date to current UTC time when omitted',
+      () {
+        const draft = ConnectionDraftDto(
+          protocol: ConnectionProtocol.webdav,
+          remoteAddress: 'https://example.com',
+          username: 'user',
+          password: 'pwd',
+          displayName: 'My WebDAV',
+        );
+
+        final before = DateTime.now().toUtc().subtract(
+          const Duration(seconds: 1),
+        );
+        final model = mapper.toConnectionModel(draft);
+        final after = DateTime.now().toUtc().add(const Duration(seconds: 1));
+
+        expect(model.createdAt.isAfter(before), isTrue);
+        expect(model.createdAt.isBefore(after), isTrue);
+      },
+    );
 
     test(
       'toConnectionViewModel maps ConnectionModel to ConnectionViewModel',

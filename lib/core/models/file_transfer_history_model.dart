@@ -1,8 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:sharehop/core/converters/uuid_value_converter.dart';
 import 'package:sharehop/core/enums/file_transfer_status.dart';
 import 'package:sharehop/core/models/mixins/id_mixin.dart';
 import 'package:sharehop/core/models/mixins/timestamp_mixin.dart';
 import 'package:sharehop/core/models/persistence_model.dart';
+import 'package:uuid/uuid_value.dart';
 
 part 'file_transfer_history_model.freezed.dart';
 part 'file_transfer_history_model.g.dart';
@@ -12,15 +14,15 @@ abstract class FileTransferHistoryModel
     with _$FileTransferHistoryModel, IdMixin, TimestampMixin
     implements PersistenceModel {
   const factory({
-    required String id,
-    @JsonKey(name: 'file_name') required String fileName,
-    @JsonKey(name: 'file_size') required int fileSize,
-    @JsonKey(name: 'file_mime_type') required String fileMimeType,
-    @JsonKey(name: 'source_name') required String sourceName,
-    @JsonKey(name: 'destination_name') required String destinationName,
+    @UuidValueConverter() required UuidValue id,
+    required String fileName,
+    required int fileSize,
+    required String fileMimeType,
+    required String sourceName,
+    required String destinationName,
     required FileTransferStatus status,
-    @JsonKey(name: 'created_at') required DateTime createdAt,
-    @JsonKey(name: 'updated_at') required DateTime updatedAt,
+    required DateTime createdAt,
+    required DateTime updatedAt,
   }) = _FileTransferHistoryModel;
 
   const new _();

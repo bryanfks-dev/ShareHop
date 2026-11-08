@@ -1,5 +1,6 @@
 import 'package:sharehop/core/enums/connection_protocol.dart';
 import 'package:sharehop/core/enums/connection_status.dart';
+import 'package:uuid/uuid_value.dart';
 
 class ConnectionViewModel {
   new({
@@ -13,7 +14,7 @@ class ConnectionViewModel {
     this.status = ConnectionStatus.idle,
   });
 
-  final String id;
+  final UuidValue id;
   final ConnectionProtocol protocol;
   String displayName;
   String remoteAddress;

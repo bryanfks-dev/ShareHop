@@ -52,8 +52,10 @@ class FakeConnectionRepository implements ConnectionRepository {
       connections.where((c) => c.id == id).firstOrNull;
 
   @override
-  Future<ConnectionModel?> update({required ConnectionModel model}) async =>
-      model;
+  Future<ConnectionModel?> update({
+    required ConnectionRevisionDto connection,
+  }) async =>
+      null;
 
   @override
   Future<void> remove({required String id}) async {
@@ -106,7 +108,7 @@ void main() {
   group('CreateConnectionUseCase', () {
     test('creates connection after verifying credentials', () async {
       const connectionDto = ConnectionDto(
-        connectionProtocol: ConnectionProtocol.webdav,
+        protocol: ConnectionProtocol.webdav,
         remoteAddress: 'example.com',
         username: 'admin',
         password: 'password',
@@ -126,7 +128,7 @@ void main() {
     test('rethrows error when connection verification fails', () async {
       fakeService.shouldThrow = true;
       const connectionDto = ConnectionDto(
-        connectionProtocol: ConnectionProtocol.webdav,
+        protocol: ConnectionProtocol.webdav,
         remoteAddress: 'example.com',
         username: 'admin',
         password: 'wrong_password',

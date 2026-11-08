@@ -5,10 +5,14 @@ import 'package:sharehop/core/errors/connection.dart';
 import 'package:sharehop/core/models/connection_model.dart';
 import 'package:sharehop/core/models/encrypted_value_model.dart';
 import 'package:sharehop/core/repositories/connection_repository.dart';
+import 'package:sharehop/core/security/secret_cipher.dart';
+import 'package:sharehop/core/security/secure_random.dart';
 import 'package:sharehop/data/dto/connection_dto.dart';
 import 'package:sharehop/data/mapper/connection_mapper.dart';
 import 'package:sharehop/infrastructures/database/manager.dart';
+import 'package:sharehop/infrastructures/database/utils/not_required_value_map_util.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:uuid/uuid.dart';
 
 class ConnectionRepositoryImpl implements ConnectionRepository {
   const new({required this._connectionMapper});
@@ -98,7 +102,10 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
 
     try {
       final db = await DatabaseManager.instance.database;
-      final model = _connectionMapper.toConnectionModel(connection);
+      final model = _connectionMapper.toConnectionModel(
+        connection,
+        date: DateTime.now().toUtc(),
+      );
       if (model.password != null) {
         await db.insert(
           EncryptedValueModel.tableName,
@@ -127,32 +134,51 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
   }
 
   @override
-  Future<ConnectionModel?> update({required ConnectionModel model}) async {
+  Future<ConnectionModel?> update({
+    required ConnectionRevisionDto connection,
+  }) async {
     log('Update connection started', name: 'ConnectionRepositoryImpl.update');
 
-    if (await checkIfExists(id: model.id) == null) {
+    if (await checkIfExists(id: connection.id) == null) {
       return null;
+    }
+
+    if (connection.password?.value != null &&
+        connection.passwordSecretKey?.value == null) {
+      throw Exception('Password secret key is required when updating password');
     }
 
     try {
       final db = await DatabaseManager.instance.database;
-      if (model.password != null) {
+      final values = <String, dynamic>{
+        'updated_at': DateTime.now().toUtc().toIso8601String(),
+      };
+
+      forEachNotRequiredValueMap(connection.toMap(), (key, value) {
+        values[key] = value;
+      });
+
+      if (values.containsKey('password')) {
+        final password = values['password'] as String;
+
         await db.insert(
           EncryptedValueModel.tableName,
-          model.password!.toJson(),
+          encryptedValue.toJson(),
           conflictAlgorithm: ConflictAlgorithm.replace,
         );
+        values['password'] = passwordId;
       }
+
       await db.update(
         ConnectionModel.tableName,
-        model.toJson(),
+        values,
         where: 'id = ?',
-        whereArgs: [model.id],
+        whereArgs: [connection.id],
       );
 
       log('Update connection done', name: 'ConnectionRepositoryImpl.update');
 
-      return await getOne(id: model.id);
+      return await getOne(id: connection.id);
     } on Exception catch (e, st) {
       log(
         'Update connection failed',

@@ -7,7 +7,7 @@ import 'package:sharehop/data/mapper/connection_credential_mapper.dart';
 import 'package:sharehop/data/mapper/connection_mapper.dart';
 import 'package:sharehop/data/mapper/encrypted_value_mapper.dart';
 import 'package:sharehop/infrastructures/gateways/web_dav_storage/gateway_impl.dart';
-import 'package:sharehop/infrastructures/repositories/connection_repository_impl.dart';
+import 'package:sharehop/infrastructures/repositories/connection/repository_impl.dart';
 import 'package:sharehop/infrastructures/services/connection_service_impl.dart';
 import 'package:sharehop/infrastructures/web_dav/web_dav_client_manager.dart';
 import 'package:sharehop/infrastructures/web_dav/web_dav_client_pool.dart';

@@ -60,7 +60,9 @@ class FakeConnectionRepository implements ConnectionRepository {
   Future<ConnectionModel?> getOne({required String id}) async => null;
 
   @override
-  Future<ConnectionModel?> update({required ConnectionModel model}) async =>
+  Future<ConnectionModel?> update({
+    required ConnectionRevisionDto connection,
+  }) async =>
       null;
 
   @override

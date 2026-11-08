@@ -13,7 +13,4 @@ class ConnectionCredentialMapper {
       password: connection.password,
     );
   }
-
-  ConnectionCredentialDto toWebDavCredentialModel(ConnectionDto connection) =>
-      toWebDavCredentialDto(connection);
 }

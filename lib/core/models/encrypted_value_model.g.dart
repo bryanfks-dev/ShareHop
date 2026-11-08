@@ -8,7 +8,7 @@ part of 'encrypted_value_model.dart';
 
 _EncryptedValueModel _$EncryptedValueModelFromJson(Map<String, dynamic> json) =>
     _EncryptedValueModel(
-      id: json['id'] as String,
+      id: const UuidValueConverter().fromJson(json['id'] as String),
       salt: json['salt'] as String,
       nonce: json['nonce'] as String,
       cipherText: json['cipher_text'] as String,
@@ -20,7 +20,7 @@ _EncryptedValueModel _$EncryptedValueModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$EncryptedValueModelToJson(
   _EncryptedValueModel instance,
 ) => <String, dynamic>{
-  'id': instance.id,
+  'id': const UuidValueConverter().toJson(instance.id),
   'salt': instance.salt,
   'nonce': instance.nonce,
   'cipher_text': instance.cipherText,

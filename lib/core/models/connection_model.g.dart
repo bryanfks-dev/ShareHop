@@ -8,27 +8,29 @@ part of 'connection_model.dart';
 
 _ConnectionModel _$ConnectionModelFromJson(Map<String, dynamic> json) =>
     _ConnectionModel(
-      id: json['id'] as String,
+      id: const UuidValueConverter().fromJson(json['id'] as String),
       protocol: $enumDecode(_$ConnectionProtocolEnumMap, json['protocol']),
       displayName: json['display_name'] as String,
       remoteAddress: json['remote_address'] as String,
       username: json['username'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
-      passwordId: json['password'] as String? ?? '',
+      passwordId: const UuidValueConverter().fromJson(
+        json['password_id'] as String,
+      ),
       rootPath: json['root_path'] as String? ?? '/',
     );
 
 Map<String, dynamic> _$ConnectionModelToJson(_ConnectionModel instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      'id': const UuidValueConverter().toJson(instance.id),
       'protocol': _$ConnectionProtocolEnumMap[instance.protocol]!,
       'display_name': instance.displayName,
       'remote_address': instance.remoteAddress,
       'username': instance.username,
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
-      'password': instance.passwordId,
+      'password_id': const UuidValueConverter().toJson(instance.passwordId),
       'root_path': instance.rootPath,
     };
 

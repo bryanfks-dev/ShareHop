@@ -31,7 +31,6 @@ Don't:
 - Named parameters only used if the function name is descriptive enough to explain the parameter's purpose. For example, `void setUser(User user)` is descriptive enough to not require a named parameter. However, `void setUser(User user, bool isAdmin)` is not descriptive enough and should use named parameters: `void setUser({required User user, required bool isAdmin})`.
 - NEVER use positional parameters for function parameters.
 - Use named parameters for model or DTO classes.
-- DO NOT use named parameters for mapper classes.
 - DO NOT use named parameters for `BuildContext` parameters in funcitons or methods.
 
 # Single Line If Statements

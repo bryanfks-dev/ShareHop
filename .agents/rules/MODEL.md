@@ -131,3 +131,4 @@ Use `watch` instead of `build` during active development.
 - [ ] Relation objects are optional and excluded from JSON
 - [ ] Converters applied for bool/date columns
 - [ ] `build_runner` run successfully
+- [ ] Modify the `schema.sql` file to match the model if needed

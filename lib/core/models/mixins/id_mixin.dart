@@ -1,3 +1,5 @@
+import 'package:uuid/uuid.dart';
+
 mixin IdMixin {
-  String get id;
+  UuidValue get id;
 }

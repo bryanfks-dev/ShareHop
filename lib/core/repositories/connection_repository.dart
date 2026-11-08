@@ -5,7 +5,7 @@ abstract interface class ConnectionRepository {
   Future<List<ConnectionModel>> getAll();
   Future<ConnectionModel?> getOne({required String id});
   Future<ConnectionModel> create({required ConnectionDraftDto connection});
-  Future<ConnectionModel?> update({required ConnectionModel model});
+  Future<ConnectionModel?> update({required ConnectionRevisionDto connection});
   Future<void> remove({required String id});
   Future<void> batchRemove({required Set<String> ids});
   Future<String?> checkIfExists({required String id});

@@ -12,7 +12,7 @@ class ConnectionMapper {
 
   ConnectionDraftDto toDraftDto(ConnectionDto connection) {
     return ConnectionDraftDto(
-      connectionProtocol: connection.connectionProtocol,
+      protocol: connection.protocol,
       remoteAddress: connection.remoteAddress,
       username: connection.username,
       password: connection.password,
@@ -20,28 +20,30 @@ class ConnectionMapper {
     );
   }
 
-  ConnectionModel toConnectionModel(ConnectionDraftDto connection) {
-    final now = DateTime.now().toUtc();
+  ConnectionModel toConnectionModel(
+    ConnectionDraftDto connection, {
+    required DateTime date,
+  }) {
     final password = EncryptedValueModel(
-      id: const Uuid().v7(),
+      id: const Uuid().v7obj(),
       salt: '',
       cipherText: connection.password,
       nonce: '',
       mac: '',
-      createdAt: now,
-      updatedAt: now,
+      createdAt: date,
+      updatedAt: date,
     );
 
     return ConnectionModel(
-      id: const Uuid().v7(),
+      id: const Uuid().v7obj(),
       displayName: connection.displayName,
-      protocol: connection.connectionProtocol,
+      protocol: connection.protocol,
       remoteAddress: connection.remoteAddress,
       username: connection.username,
       passwordId: password.id,
       password: password,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: date,
+      updatedAt: date,
     );
   }
 

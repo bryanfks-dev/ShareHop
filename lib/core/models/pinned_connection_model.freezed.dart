@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PinnedConnectionModel {
 
- String get id;@JsonKey(name: 'connection_id') String get connectionId;@JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'updated_at') DateTime get updatedAt;@JsonKey(includeFromJson: false, includeToJson: false) ConnectionModel? get connection;
+@UuidValueConverter() UuidValue get connectionId; DateTime get createdAt; DateTime get updatedAt;@JsonKey(includeFromJson: false, includeToJson: false) ConnectionModel? get connection;
 /// Create a copy of PinnedConnectionModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,20 +30,20 @@ $PinnedConnectionModelCopyWith<PinnedConnectionModel> get copyWith => _$PinnedCo
 @override
 bool operator ==(Object other) {
   final _this = this as PinnedConnectionModel;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PinnedConnectionModel&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.connectionId, _this.connectionId) || other.connectionId == _this.connectionId)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.connection, _this.connection) || other.connection == _this.connection));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PinnedConnectionModel&&(identical(other.connectionId, _this.connectionId) || other.connectionId == _this.connectionId)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.connection, _this.connection) || other.connection == _this.connection));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as PinnedConnectionModel;
-  return Object.hash(runtimeType,_this.id,_this.connectionId,_this.createdAt,_this.updatedAt,_this.connection);
+  return Object.hash(runtimeType,_this.connectionId,_this.createdAt,_this.updatedAt,_this.connection);
 }
 
 @override
 String toString() {
   final _this = this as PinnedConnectionModel;
-  return 'PinnedConnectionModel(id: ${_this.id}, connectionId: ${_this.connectionId}, createdAt: ${_this.createdAt}, updatedAt: ${_this.updatedAt}, connection: ${_this.connection})';
+  return 'PinnedConnectionModel(connectionId: ${_this.connectionId}, createdAt: ${_this.createdAt}, updatedAt: ${_this.updatedAt}, connection: ${_this.connection})';
 }
 
 
@@ -54,7 +54,7 @@ abstract mixin class $PinnedConnectionModelCopyWith<$Res>  {
   factory $PinnedConnectionModelCopyWith(PinnedConnectionModel value, $Res Function(PinnedConnectionModel) _then) = _$PinnedConnectionModelCopyWithImpl;
 @useResult
 $Res call({
- String id,@JsonKey(name: 'connection_id') String connectionId,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt,@JsonKey(includeFromJson: false, includeToJson: false) ConnectionModel? connection
+@UuidValueConverter() UuidValue connectionId, DateTime createdAt, DateTime updatedAt,@JsonKey(includeFromJson: false, includeToJson: false) ConnectionModel? connection
 });
 
 
@@ -71,11 +71,10 @@ class _$PinnedConnectionModelCopyWithImpl<$Res>
 
 /// Create a copy of PinnedConnectionModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? connectionId = null,Object? createdAt = null,Object? updatedAt = null,Object? connection = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? connectionId = null,Object? createdAt = null,Object? updatedAt = null,Object? connection = freezed,}) {
   return _then(PinnedConnectionModel(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,connectionId: null == connectionId ? _self.connectionId : connectionId // ignore: cast_nullable_to_non_nullable
-as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+connectionId: null == connectionId ? _self.connectionId : connectionId // ignore: cast_nullable_to_non_nullable
+as UuidValue,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,connection: freezed == connection ? _self.connection : connection // ignore: cast_nullable_to_non_nullable
 as ConnectionModel?,
@@ -175,10 +174,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'connection_id')  String connectionId, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(includeFromJson: false, includeToJson: false)  ConnectionModel? connection)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@UuidValueConverter()  UuidValue connectionId,  DateTime createdAt,  DateTime updatedAt, @JsonKey(includeFromJson: false, includeToJson: false)  ConnectionModel? connection)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PinnedConnectionModel() when $default != null:
-return $default(_that.id,_that.connectionId,_that.createdAt,_that.updatedAt,_that.connection);case _:
+return $default(_that.connectionId,_that.createdAt,_that.updatedAt,_that.connection);case _:
   return orElse();
 
 }
@@ -196,10 +195,10 @@ return $default(_that.id,_that.connectionId,_that.createdAt,_that.updatedAt,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'connection_id')  String connectionId, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(includeFromJson: false, includeToJson: false)  ConnectionModel? connection)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@UuidValueConverter()  UuidValue connectionId,  DateTime createdAt,  DateTime updatedAt, @JsonKey(includeFromJson: false, includeToJson: false)  ConnectionModel? connection)  $default,) {final _that = this;
 switch (_that) {
 case _PinnedConnectionModel():
-return $default(_that.id,_that.connectionId,_that.createdAt,_that.updatedAt,_that.connection);case _:
+return $default(_that.connectionId,_that.createdAt,_that.updatedAt,_that.connection);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -216,10 +215,10 @@ return $default(_that.id,_that.connectionId,_that.createdAt,_that.updatedAt,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'connection_id')  String connectionId, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(includeFromJson: false, includeToJson: false)  ConnectionModel? connection)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@UuidValueConverter()  UuidValue connectionId,  DateTime createdAt,  DateTime updatedAt, @JsonKey(includeFromJson: false, includeToJson: false)  ConnectionModel? connection)?  $default,) {final _that = this;
 switch (_that) {
 case _PinnedConnectionModel() when $default != null:
-return $default(_that.id,_that.connectionId,_that.createdAt,_that.updatedAt,_that.connection);case _:
+return $default(_that.connectionId,_that.createdAt,_that.updatedAt,_that.connection);case _:
   return null;
 
 }
@@ -231,13 +230,12 @@ return $default(_that.id,_that.connectionId,_that.createdAt,_that.updatedAt,_tha
 @JsonSerializable()
 
 class _PinnedConnectionModel extends PinnedConnectionModel {
-  const _PinnedConnectionModel({required this.id, @JsonKey(name: 'connection_id') required this.connectionId, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'updated_at') required this.updatedAt, @JsonKey(includeFromJson: false, includeToJson: false) this.connection}): super._();
+  const _PinnedConnectionModel({@UuidValueConverter() required this.connectionId, required this.createdAt, required this.updatedAt, @JsonKey(includeFromJson: false, includeToJson: false) this.connection}): super._();
   factory _PinnedConnectionModel.fromJson(Map<String, dynamic> json) => _$PinnedConnectionModelFromJson(json);
 
-@override final  String id;
-@override@JsonKey(name: 'connection_id') final  String connectionId;
-@override@JsonKey(name: 'created_at') final  DateTime createdAt;
-@override@JsonKey(name: 'updated_at') final  DateTime updatedAt;
+@override@UuidValueConverter() final  UuidValue connectionId;
+@override final  DateTime createdAt;
+@override final  DateTime updatedAt;
 @override@JsonKey(includeFromJson: false, includeToJson: false) final  ConnectionModel? connection;
 
 /// Create a copy of PinnedConnectionModel
@@ -253,18 +251,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _PinnedConnectionModel&&(identical(other.id, id) || other.id == id)&&(identical(other.connectionId, connectionId) || other.connectionId == connectionId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.connection, connection) || other.connection == connection));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _PinnedConnectionModel&&(identical(other.connectionId, connectionId) || other.connectionId == connectionId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.connection, connection) || other.connection == connection));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,connectionId,createdAt,updatedAt,connection);
+    return Object.hash(runtimeType,connectionId,createdAt,updatedAt,connection);
 }
 
 @override
 String toString() {
-    return 'PinnedConnectionModel(id: $id, connectionId: $connectionId, createdAt: $createdAt, updatedAt: $updatedAt, connection: $connection)';
+    return 'PinnedConnectionModel(connectionId: $connectionId, createdAt: $createdAt, updatedAt: $updatedAt, connection: $connection)';
 }
 
 
@@ -275,7 +273,7 @@ abstract mixin class _$PinnedConnectionModelCopyWith<$Res> implements $PinnedCon
   factory _$PinnedConnectionModelCopyWith(_PinnedConnectionModel value, $Res Function(_PinnedConnectionModel) _then) = __$PinnedConnectionModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id,@JsonKey(name: 'connection_id') String connectionId,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt,@JsonKey(includeFromJson: false, includeToJson: false) ConnectionModel? connection
+@UuidValueConverter() UuidValue connectionId, DateTime createdAt, DateTime updatedAt,@JsonKey(includeFromJson: false, includeToJson: false) ConnectionModel? connection
 });
 
 
@@ -292,11 +290,10 @@ class __$PinnedConnectionModelCopyWithImpl<$Res>
 
 /// Create a copy of PinnedConnectionModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? connectionId = null,Object? createdAt = null,Object? updatedAt = null,Object? connection = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? connectionId = null,Object? createdAt = null,Object? updatedAt = null,Object? connection = freezed,}) {
   return _then(_PinnedConnectionModel(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,connectionId: null == connectionId ? _self.connectionId : connectionId // ignore: cast_nullable_to_non_nullable
-as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+connectionId: null == connectionId ? _self.connectionId : connectionId // ignore: cast_nullable_to_non_nullable
+as UuidValue,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,connection: freezed == connection ? _self.connection : connection // ignore: cast_nullable_to_non_nullable
 as ConnectionModel?,

@@ -21,7 +21,7 @@ class AddConnectionController extends _$AddConnectionController {
 
     try {
       final connection = ConnectionDto(
-        connectionProtocol: .webdav,
+        protocol: .webdav,
         remoteAddress: remoteAddress,
         username: username,
         password: password,

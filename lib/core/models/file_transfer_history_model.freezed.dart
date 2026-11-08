@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FileTransferHistoryModel {
 
- String get id;@JsonKey(name: 'file_name') String get fileName;@JsonKey(name: 'file_size') int get fileSize;@JsonKey(name: 'file_mime_type') String get fileMimeType;@JsonKey(name: 'source_name') String get sourceName;@JsonKey(name: 'destination_name') String get destinationName; FileTransferStatus get status;@JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'updated_at') DateTime get updatedAt;
+@UuidValueConverter() UuidValue get id; String get fileName; int get fileSize; String get fileMimeType; String get sourceName; String get destinationName; FileTransferStatus get status; DateTime get createdAt; DateTime get updatedAt;
 /// Create a copy of FileTransferHistoryModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -54,7 +54,7 @@ abstract mixin class $FileTransferHistoryModelCopyWith<$Res>  {
   factory $FileTransferHistoryModelCopyWith(FileTransferHistoryModel value, $Res Function(FileTransferHistoryModel) _then) = _$FileTransferHistoryModelCopyWithImpl;
 @useResult
 $Res call({
- String id,@JsonKey(name: 'file_name') String fileName,@JsonKey(name: 'file_size') int fileSize,@JsonKey(name: 'file_mime_type') String fileMimeType,@JsonKey(name: 'source_name') String sourceName,@JsonKey(name: 'destination_name') String destinationName, FileTransferStatus status,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt
+@UuidValueConverter() UuidValue id, String fileName, int fileSize, String fileMimeType, String sourceName, String destinationName, FileTransferStatus status, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -74,7 +74,7 @@ class _$FileTransferHistoryModelCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? fileName = null,Object? fileSize = null,Object? fileMimeType = null,Object? sourceName = null,Object? destinationName = null,Object? status = null,Object? createdAt = null,Object? updatedAt = null,}) {
   return _then(FileTransferHistoryModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,fileName: null == fileName ? _self.fileName : fileName // ignore: cast_nullable_to_non_nullable
+as UuidValue,fileName: null == fileName ? _self.fileName : fileName // ignore: cast_nullable_to_non_nullable
 as String,fileSize: null == fileSize ? _self.fileSize : fileSize // ignore: cast_nullable_to_non_nullable
 as int,fileMimeType: null == fileMimeType ? _self.fileMimeType : fileMimeType // ignore: cast_nullable_to_non_nullable
 as String,sourceName: null == sourceName ? _self.sourceName : sourceName // ignore: cast_nullable_to_non_nullable
@@ -167,7 +167,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'file_name')  String fileName, @JsonKey(name: 'file_size')  int fileSize, @JsonKey(name: 'file_mime_type')  String fileMimeType, @JsonKey(name: 'source_name')  String sourceName, @JsonKey(name: 'destination_name')  String destinationName,  FileTransferStatus status, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@UuidValueConverter()  UuidValue id,  String fileName,  int fileSize,  String fileMimeType,  String sourceName,  String destinationName,  FileTransferStatus status,  DateTime createdAt,  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FileTransferHistoryModel() when $default != null:
 return $default(_that.id,_that.fileName,_that.fileSize,_that.fileMimeType,_that.sourceName,_that.destinationName,_that.status,_that.createdAt,_that.updatedAt);case _:
@@ -188,7 +188,7 @@ return $default(_that.id,_that.fileName,_that.fileSize,_that.fileMimeType,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'file_name')  String fileName, @JsonKey(name: 'file_size')  int fileSize, @JsonKey(name: 'file_mime_type')  String fileMimeType, @JsonKey(name: 'source_name')  String sourceName, @JsonKey(name: 'destination_name')  String destinationName,  FileTransferStatus status, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@UuidValueConverter()  UuidValue id,  String fileName,  int fileSize,  String fileMimeType,  String sourceName,  String destinationName,  FileTransferStatus status,  DateTime createdAt,  DateTime updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _FileTransferHistoryModel():
 return $default(_that.id,_that.fileName,_that.fileSize,_that.fileMimeType,_that.sourceName,_that.destinationName,_that.status,_that.createdAt,_that.updatedAt);case _:
@@ -208,7 +208,7 @@ return $default(_that.id,_that.fileName,_that.fileSize,_that.fileMimeType,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'file_name')  String fileName, @JsonKey(name: 'file_size')  int fileSize, @JsonKey(name: 'file_mime_type')  String fileMimeType, @JsonKey(name: 'source_name')  String sourceName, @JsonKey(name: 'destination_name')  String destinationName,  FileTransferStatus status, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@UuidValueConverter()  UuidValue id,  String fileName,  int fileSize,  String fileMimeType,  String sourceName,  String destinationName,  FileTransferStatus status,  DateTime createdAt,  DateTime updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _FileTransferHistoryModel() when $default != null:
 return $default(_that.id,_that.fileName,_that.fileSize,_that.fileMimeType,_that.sourceName,_that.destinationName,_that.status,_that.createdAt,_that.updatedAt);case _:
@@ -223,18 +223,18 @@ return $default(_that.id,_that.fileName,_that.fileSize,_that.fileMimeType,_that.
 @JsonSerializable()
 
 class _FileTransferHistoryModel extends FileTransferHistoryModel {
-  const _FileTransferHistoryModel({required this.id, @JsonKey(name: 'file_name') required this.fileName, @JsonKey(name: 'file_size') required this.fileSize, @JsonKey(name: 'file_mime_type') required this.fileMimeType, @JsonKey(name: 'source_name') required this.sourceName, @JsonKey(name: 'destination_name') required this.destinationName, required this.status, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'updated_at') required this.updatedAt}): super._();
+  const _FileTransferHistoryModel({@UuidValueConverter() required this.id, required this.fileName, required this.fileSize, required this.fileMimeType, required this.sourceName, required this.destinationName, required this.status, required this.createdAt, required this.updatedAt}): super._();
   factory _FileTransferHistoryModel.fromJson(Map<String, dynamic> json) => _$FileTransferHistoryModelFromJson(json);
 
-@override final  String id;
-@override@JsonKey(name: 'file_name') final  String fileName;
-@override@JsonKey(name: 'file_size') final  int fileSize;
-@override@JsonKey(name: 'file_mime_type') final  String fileMimeType;
-@override@JsonKey(name: 'source_name') final  String sourceName;
-@override@JsonKey(name: 'destination_name') final  String destinationName;
+@override@UuidValueConverter() final  UuidValue id;
+@override final  String fileName;
+@override final  int fileSize;
+@override final  String fileMimeType;
+@override final  String sourceName;
+@override final  String destinationName;
 @override final  FileTransferStatus status;
-@override@JsonKey(name: 'created_at') final  DateTime createdAt;
-@override@JsonKey(name: 'updated_at') final  DateTime updatedAt;
+@override final  DateTime createdAt;
+@override final  DateTime updatedAt;
 
 /// Create a copy of FileTransferHistoryModel
 /// with the given fields replaced by the non-null parameter values.
@@ -271,7 +271,7 @@ abstract mixin class _$FileTransferHistoryModelCopyWith<$Res> implements $FileTr
   factory _$FileTransferHistoryModelCopyWith(_FileTransferHistoryModel value, $Res Function(_FileTransferHistoryModel) _then) = __$FileTransferHistoryModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id,@JsonKey(name: 'file_name') String fileName,@JsonKey(name: 'file_size') int fileSize,@JsonKey(name: 'file_mime_type') String fileMimeType,@JsonKey(name: 'source_name') String sourceName,@JsonKey(name: 'destination_name') String destinationName, FileTransferStatus status,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt
+@UuidValueConverter() UuidValue id, String fileName, int fileSize, String fileMimeType, String sourceName, String destinationName, FileTransferStatus status, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -291,7 +291,7 @@ class __$FileTransferHistoryModelCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? fileName = null,Object? fileSize = null,Object? fileMimeType = null,Object? sourceName = null,Object? destinationName = null,Object? status = null,Object? createdAt = null,Object? updatedAt = null,}) {
   return _then(_FileTransferHistoryModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,fileName: null == fileName ? _self.fileName : fileName // ignore: cast_nullable_to_non_nullable
+as UuidValue,fileName: null == fileName ? _self.fileName : fileName // ignore: cast_nullable_to_non_nullable
 as String,fileSize: null == fileSize ? _self.fileSize : fileSize // ignore: cast_nullable_to_non_nullable
 as int,fileMimeType: null == fileMimeType ? _self.fileMimeType : fileMimeType // ignore: cast_nullable_to_non_nullable
 as String,sourceName: null == sourceName ? _self.sourceName : sourceName // ignore: cast_nullable_to_non_nullable

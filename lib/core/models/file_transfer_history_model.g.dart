@@ -9,7 +9,7 @@ part of 'file_transfer_history_model.dart';
 _FileTransferHistoryModel _$FileTransferHistoryModelFromJson(
   Map<String, dynamic> json,
 ) => _FileTransferHistoryModel(
-  id: json['id'] as String,
+  id: const UuidValueConverter().fromJson(json['id'] as String),
   fileName: json['file_name'] as String,
   fileSize: (json['file_size'] as num).toInt(),
   fileMimeType: json['file_mime_type'] as String,
@@ -23,7 +23,7 @@ _FileTransferHistoryModel _$FileTransferHistoryModelFromJson(
 Map<String, dynamic> _$FileTransferHistoryModelToJson(
   _FileTransferHistoryModel instance,
 ) => <String, dynamic>{
-  'id': instance.id,
+  'id': const UuidValueConverter().toJson(instance.id),
   'file_name': instance.fileName,
   'file_size': instance.fileSize,
   'file_mime_type': instance.fileMimeType,
