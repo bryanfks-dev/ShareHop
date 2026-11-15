@@ -2,12 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
 
 class ManageOtherConnectionsEmptyState extends StatelessWidget {
-  const new({
-    this.message = 'No other connections available.',
-    super.key,
-  });
-
-  final String message;
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +13,7 @@ class ManageOtherConnectionsEmptyState extends StatelessWidget {
         FTile(
           title: Center(
             child: Text(
-              message,
+              'No other connections available.',
               textAlign: .center,
               style: theme.typography.body.xs2.copyWith(
                 color: theme.colors.mutedForeground,

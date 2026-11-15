@@ -1,10 +1,10 @@
-import 'package:sharehop/core/models/web_dav_credential_model.dart';
+import 'package:sharehop/data/dto/web_dav_credential_dto.dart';
 import 'package:webdav_client/webdav_client.dart' as webdav;
 
 class WebDavClientPool {
   final _clients = <String, webdav.Client>{};
 
-  webdav.Client getClient({required WebDavCredentialModel credential}) {
+  webdav.Client getClient({required WebDavCredentialDto credential}) {
     final key =
         '${credential.url}|${credential.username}|${credential.password}';
     return _clients.putIfAbsent(
@@ -13,7 +13,7 @@ class WebDavClientPool {
     );
   }
 
-  webdav.Client _createClient({required WebDavCredentialModel credential}) {
+  webdav.Client _createClient({required WebDavCredentialDto credential}) {
     return webdav.newClient(
       credential.url.toString(),
       user: credential.username,
@@ -21,7 +21,7 @@ class WebDavClientPool {
     );
   }
 
-  void destroyClient({required WebDavCredentialModel credential}) {
+  void destroyClient({required WebDavCredentialDto credential}) {
     final key =
         '${credential.url}|${credential.username}|${credential.password}';
     final client = _clients.remove(key);

@@ -5,7 +5,7 @@ abstract class BaseEnum {
 }
 
 extension PersistentEnumLookup<T extends BaseEnum> on Iterable<T> {
-  T fromPersistentValue(String value) => firstWhere(
+  T fromPersistentValue({required String value}) => firstWhere(
     (e) => e.persistentValue == value,
     orElse: () => throw ArgumentError('Invalid persistent value of $T: $value'),
   );

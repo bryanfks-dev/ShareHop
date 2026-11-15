@@ -102,4 +102,4 @@ final class GetAppVersionUseCaseProvider
 }
 
 String _$getAppVersionUseCaseHash() =>
-    r'662b28ec99365389f9e44655bce19eba7950e8ea';
+    r'd885b090d88cb1e7330ef455354aed0e74f1c145';

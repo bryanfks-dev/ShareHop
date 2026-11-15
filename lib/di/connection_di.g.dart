@@ -55,7 +55,56 @@ final class ConnectionRepositoryProvider
 }
 
 String _$connectionRepositoryHash() =>
-    r'7cd5ed812fa6a4ef10dbac4bd3fa8ad4b85d19af';
+    r'bec08968c0b6563f17b1a3d17224ffd6ef40c0ce';
+
+@ProviderFor(pinnedConnectionRepository)
+final pinnedConnectionRepositoryProvider =
+    PinnedConnectionRepositoryProvider._();
+
+final class PinnedConnectionRepositoryProvider
+    extends
+        $FunctionalProvider<
+          PinnedConnectionRepository,
+          PinnedConnectionRepository,
+          PinnedConnectionRepository
+        >
+    with $Provider<PinnedConnectionRepository> {
+  PinnedConnectionRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pinnedConnectionRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$pinnedConnectionRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<PinnedConnectionRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  PinnedConnectionRepository create(Ref ref) {
+    return pinnedConnectionRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(PinnedConnectionRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<PinnedConnectionRepository>(value),
+    );
+  }
+}
+
+String _$pinnedConnectionRepositoryHash() =>
+    r'6418842c9f7997deb3bb13ea7bb5735bd020e059';
 
 @ProviderFor(webDavClientPool)
 final webDavClientPoolProvider = WebDavClientPoolProvider._();
@@ -149,102 +198,149 @@ final class WebDavClientManagerProvider
 }
 
 String _$webDavClientManagerHash() =>
-    r'ceb6e5463232be5fbe828a7cfa964190bd6c11b5';
+    r'bc3fce35d476144b97f683a66afc9fda18ad4d76';
 
-@ProviderFor(webDavStorageService)
-final webDavStorageServiceProvider = WebDavStorageServiceProvider._();
+@ProviderFor(webDavStorageGateway)
+final webDavStorageGatewayProvider = WebDavStorageGatewayProvider._();
 
-final class WebDavStorageServiceProvider
+final class WebDavStorageGatewayProvider
     extends
         $FunctionalProvider<
-          WebDavStorageService,
-          WebDavStorageService,
-          WebDavStorageService
+          WebDavStorageGateway,
+          WebDavStorageGateway,
+          WebDavStorageGateway
         >
-    with $Provider<WebDavStorageService> {
-  WebDavStorageServiceProvider._()
+    with $Provider<WebDavStorageGateway> {
+  WebDavStorageGatewayProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'webDavStorageServiceProvider',
+        name: r'webDavStorageGatewayProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$webDavStorageServiceHash();
+  String debugGetCreateSourceHash() => _$webDavStorageGatewayHash();
 
   @$internal
   @override
-  $ProviderElement<WebDavStorageService> $createElement(
+  $ProviderElement<WebDavStorageGateway> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  WebDavStorageService create(Ref ref) {
-    return webDavStorageService(ref);
+  WebDavStorageGateway create(Ref ref) {
+    return webDavStorageGateway(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(WebDavStorageService value) {
+  Override overrideWithValue(WebDavStorageGateway value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<WebDavStorageService>(value),
+      providerOverride: $SyncValueProvider<WebDavStorageGateway>(value),
     );
   }
 }
 
-String _$webDavStorageServiceHash() =>
-    r'89a1a239b12b3356bb0635d4a26b850873fa6747';
+String _$webDavStorageGatewayHash() =>
+    r'405bf2eb3f12b5a5499dd823e56f7fe1747987c4';
 
-@ProviderFor(smbStorageService)
-final smbStorageServiceProvider = SmbStorageServiceProvider._();
+@ProviderFor(connectionService)
+final connectionServiceProvider = ConnectionServiceProvider._();
 
-final class SmbStorageServiceProvider
+final class ConnectionServiceProvider
     extends
         $FunctionalProvider<
-          SmbStorageService,
-          SmbStorageService,
-          SmbStorageService
+          ConnectionService,
+          ConnectionService,
+          ConnectionService
         >
-    with $Provider<SmbStorageService> {
-  SmbStorageServiceProvider._()
+    with $Provider<ConnectionService> {
+  ConnectionServiceProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'smbStorageServiceProvider',
+        name: r'connectionServiceProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$smbStorageServiceHash();
+  String debugGetCreateSourceHash() => _$connectionServiceHash();
 
   @$internal
   @override
-  $ProviderElement<SmbStorageService> $createElement(
+  $ProviderElement<ConnectionService> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  SmbStorageService create(Ref ref) {
-    return smbStorageService(ref);
+  ConnectionService create(Ref ref) {
+    return connectionService(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SmbStorageService value) {
+  Override overrideWithValue(ConnectionService value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<SmbStorageService>(value),
+      providerOverride: $SyncValueProvider<ConnectionService>(value),
     );
   }
 }
 
-String _$smbStorageServiceHash() => r'f2446543856558903b65aee592f5c574e48577e3';
+String _$connectionServiceHash() => r'748d34c91c14ee7ff878ec9c9266f1a4b83c88cb';
+
+@ProviderFor(connectionFactory)
+final connectionFactoryProvider = ConnectionFactoryProvider._();
+
+final class ConnectionFactoryProvider
+    extends
+        $FunctionalProvider<
+          ConnectionFactory,
+          ConnectionFactory,
+          ConnectionFactory
+        >
+    with $Provider<ConnectionFactory> {
+  ConnectionFactoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'connectionFactoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$connectionFactoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<ConnectionFactory> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ConnectionFactory create(Ref ref) {
+    return connectionFactory(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ConnectionFactory value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ConnectionFactory>(value),
+    );
+  }
+}
+
+String _$connectionFactoryHash() => r'5630518d06f2507bbe1f90c1786394d24f2a3ad1';
 
 @ProviderFor(createConnectionUseCase)
 final createConnectionUseCaseProvider = CreateConnectionUseCaseProvider._();
@@ -292,101 +388,292 @@ final class CreateConnectionUseCaseProvider
 }
 
 String _$createConnectionUseCaseHash() =>
-    r'fab3abc7f94fe3bd58d9bfd533e0faa6ca755d18';
+    r'e27905f87558a0417b9e6730384ccae89767543b';
 
-@ProviderFor(testConnectionUseCase)
-final testConnectionUseCaseProvider = TestConnectionUseCaseProvider._();
+@ProviderFor(pinConnectionUseCase)
+final pinConnectionUseCaseProvider = PinConnectionUseCaseProvider._();
 
-final class TestConnectionUseCaseProvider
+final class PinConnectionUseCaseProvider
     extends
         $FunctionalProvider<
-          TestConnectionUseCase,
-          TestConnectionUseCase,
-          TestConnectionUseCase
+          PinConnectionUseCase,
+          PinConnectionUseCase,
+          PinConnectionUseCase
         >
-    with $Provider<TestConnectionUseCase> {
-  TestConnectionUseCaseProvider._()
+    with $Provider<PinConnectionUseCase> {
+  PinConnectionUseCaseProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'testConnectionUseCaseProvider',
+        name: r'pinConnectionUseCaseProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$testConnectionUseCaseHash();
+  String debugGetCreateSourceHash() => _$pinConnectionUseCaseHash();
 
   @$internal
   @override
-  $ProviderElement<TestConnectionUseCase> $createElement(
+  $ProviderElement<PinConnectionUseCase> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  TestConnectionUseCase create(Ref ref) {
-    return testConnectionUseCase(ref);
+  PinConnectionUseCase create(Ref ref) {
+    return pinConnectionUseCase(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(TestConnectionUseCase value) {
+  Override overrideWithValue(PinConnectionUseCase value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<TestConnectionUseCase>(value),
+      providerOverride: $SyncValueProvider<PinConnectionUseCase>(value),
     );
   }
 }
 
-String _$testConnectionUseCaseHash() =>
-    r'06125f69da59d6165efb2dc01df6ec443cfb1922';
+String _$pinConnectionUseCaseHash() =>
+    r'25e96e30039fc5d0f0a3e25f435ec322e1aad570';
 
-@ProviderFor(getSmbStorageStatusUseCase)
-final getSmbStorageStatusUseCaseProvider =
-    GetSmbStorageStatusUseCaseProvider._();
+@ProviderFor(updateConnectionUseCase)
+final updateConnectionUseCaseProvider = UpdateConnectionUseCaseProvider._();
 
-final class GetSmbStorageStatusUseCaseProvider
+final class UpdateConnectionUseCaseProvider
     extends
         $FunctionalProvider<
-          GetSmbStorageStatusUseCase,
-          GetSmbStorageStatusUseCase,
-          GetSmbStorageStatusUseCase
+          UpdateConnectionUseCase,
+          UpdateConnectionUseCase,
+          UpdateConnectionUseCase
         >
-    with $Provider<GetSmbStorageStatusUseCase> {
-  GetSmbStorageStatusUseCaseProvider._()
+    with $Provider<UpdateConnectionUseCase> {
+  UpdateConnectionUseCaseProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'getSmbStorageStatusUseCaseProvider',
+        name: r'updateConnectionUseCaseProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$getSmbStorageStatusUseCaseHash();
+  String debugGetCreateSourceHash() => _$updateConnectionUseCaseHash();
 
   @$internal
   @override
-  $ProviderElement<GetSmbStorageStatusUseCase> $createElement(
+  $ProviderElement<UpdateConnectionUseCase> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  GetSmbStorageStatusUseCase create(Ref ref) {
-    return getSmbStorageStatusUseCase(ref);
+  UpdateConnectionUseCase create(Ref ref) {
+    return updateConnectionUseCase(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(GetSmbStorageStatusUseCase value) {
+  Override overrideWithValue(UpdateConnectionUseCase value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<GetSmbStorageStatusUseCase>(value),
+      providerOverride: $SyncValueProvider<UpdateConnectionUseCase>(value),
     );
   }
 }
 
-String _$getSmbStorageStatusUseCaseHash() =>
-    r'f87d618873dcc0c08033a32abfb2a2110ede599f';
+String _$updateConnectionUseCaseHash() =>
+    r'b843462a9fb133cab33ad5abfb965996da9197c2';
+
+@ProviderFor(checkConnectionStatusUseCase)
+final checkConnectionStatusUseCaseProvider =
+    CheckConnectionStatusUseCaseProvider._();
+
+final class CheckConnectionStatusUseCaseProvider
+    extends
+        $FunctionalProvider<
+          CheckConnectionStatusUseCase,
+          CheckConnectionStatusUseCase,
+          CheckConnectionStatusUseCase
+        >
+    with $Provider<CheckConnectionStatusUseCase> {
+  CheckConnectionStatusUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'checkConnectionStatusUseCaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$checkConnectionStatusUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<CheckConnectionStatusUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  CheckConnectionStatusUseCase create(Ref ref) {
+    return checkConnectionStatusUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(CheckConnectionStatusUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<CheckConnectionStatusUseCase>(value),
+    );
+  }
+}
+
+String _$checkConnectionStatusUseCaseHash() =>
+    r'8414396dc5e703df234dbffc634f958fb151ff43';
+
+@ProviderFor(connectionCredentialMapper)
+final connectionCredentialMapperProvider =
+    ConnectionCredentialMapperProvider._();
+
+final class ConnectionCredentialMapperProvider
+    extends
+        $FunctionalProvider<
+          ConnectionCredentialMapper,
+          ConnectionCredentialMapper,
+          ConnectionCredentialMapper
+        >
+    with $Provider<ConnectionCredentialMapper> {
+  ConnectionCredentialMapperProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'connectionCredentialMapperProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$connectionCredentialMapperHash();
+
+  @$internal
+  @override
+  $ProviderElement<ConnectionCredentialMapper> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ConnectionCredentialMapper create(Ref ref) {
+    return connectionCredentialMapper(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ConnectionCredentialMapper value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ConnectionCredentialMapper>(value),
+    );
+  }
+}
+
+String _$connectionCredentialMapperHash() =>
+    r'377a7fbf5d8fd5bd8b638f50173f14e588312f6a';
+
+@ProviderFor(encryptedValueMapper)
+final encryptedValueMapperProvider = EncryptedValueMapperProvider._();
+
+final class EncryptedValueMapperProvider
+    extends
+        $FunctionalProvider<
+          EncryptedValueMapper,
+          EncryptedValueMapper,
+          EncryptedValueMapper
+        >
+    with $Provider<EncryptedValueMapper> {
+  EncryptedValueMapperProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'encryptedValueMapperProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$encryptedValueMapperHash();
+
+  @$internal
+  @override
+  $ProviderElement<EncryptedValueMapper> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  EncryptedValueMapper create(Ref ref) {
+    return encryptedValueMapper(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(EncryptedValueMapper value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<EncryptedValueMapper>(value),
+    );
+  }
+}
+
+String _$encryptedValueMapperHash() =>
+    r'872eb93a686a6b73111ca218079bd7ca1022a7ab';
+
+@ProviderFor(connectionMapper)
+final connectionMapperProvider = ConnectionMapperProvider._();
+
+final class ConnectionMapperProvider
+    extends
+        $FunctionalProvider<
+          ConnectionMapper,
+          ConnectionMapper,
+          ConnectionMapper
+        >
+    with $Provider<ConnectionMapper> {
+  ConnectionMapperProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'connectionMapperProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$connectionMapperHash();
+
+  @$internal
+  @override
+  $ProviderElement<ConnectionMapper> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  ConnectionMapper create(Ref ref) {
+    return connectionMapper(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ConnectionMapper value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ConnectionMapper>(value),
+    );
+  }
+}
+
+String _$connectionMapperHash() => r'b5496b23695ecffa20f63522bc6e48b9ac174a10';

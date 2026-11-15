@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:sharehop/core/enums/connection_protocol.dart';
+import 'package:sharehop/presentation/extensions/enums/connection_protocol_extension.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
 import 'package:sharehop/presentation/widgets/connection/connection_protocol_glyph.dart';
 import 'package:sharehop/presentation/widgets/connection/constants/connection_protocol_glyph.dart';
@@ -31,7 +32,7 @@ class ConnectionProtocolGlyphWithUndertext extends StatelessWidget {
             size: size,
           ),
           Text(
-            connectionProtocol.name,
+            connectionProtocol.displayName,
             style: theme.typography.body.xs2.copyWith(
               color: theme.colors.foreground,
               fontWeight: .w600,

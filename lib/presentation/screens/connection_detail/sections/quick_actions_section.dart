@@ -19,7 +19,7 @@ class QuickActionsSection extends StatelessWidget {
       mainAxisSize: .min,
       children: [
         Text(
-          'QUICK ACTIONS',
+          'Quick Actions',
           style: theme.typography.display.xs.copyWith(
             color: theme.colors.foreground,
             fontWeight: .w700,

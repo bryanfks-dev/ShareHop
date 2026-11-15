@@ -20,7 +20,7 @@ class CompletedTransfersSection extends StatelessWidget {
       spacing: Spacing.sm,
       children: [
         TransferSectionHeader(
-          title: 'COMPLETED TODAY',
+          title: 'Completed Today',
           actionLabel: 'View history',
           onActionPress: onViewHistoryPress,
         ),

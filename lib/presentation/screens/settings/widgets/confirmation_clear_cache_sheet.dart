@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
-import 'package:sharehop/presentation/router/navigator_extension.dart';
+import 'package:sharehop/presentation/extensions/router/navigator_extension.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
 
 Future<void> showConfirmationClearCacheSheet(
@@ -70,16 +70,16 @@ class _ConfirmationClearCacheSheetContent extends StatelessWidget {
                 spacing: Spacing.md,
                 children: [
                   FButton(
-                    variant: .outline,
-                    size: .sm,
-                    onPress: handleOnPressCancel,
-                    child: const Text('Cancel'),
-                  ),
-                  FButton(
                     variant: .destructive,
                     size: .sm,
                     onPress: handleOnPressConfirm,
                     child: const Text('Clear'),
+                  ),
+                  FButton(
+                    variant: .outline,
+                    size: .sm,
+                    onPress: handleOnPressCancel,
+                    child: const Text('Cancel'),
                   ),
                 ],
               ),

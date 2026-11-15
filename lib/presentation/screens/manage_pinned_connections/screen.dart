@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
-import 'package:sharehop/presentation/router/navigator_extension.dart';
+import 'package:sharehop/presentation/extensions/router/navigator_extension.dart';
+import 'package:sharehop/presentation/screens/add_connection/screen.dart';
 import 'package:sharehop/presentation/screens/manage_pinned_connections/sections/other_connections_manage_section.dart';
 import 'package:sharehop/presentation/screens/manage_pinned_connections/sections/pinned_connections_manage_section.dart';
 import 'package:sharehop/presentation/screens/manage_pinned_connections/widgets/manage_pinned_callout_banner.dart';
@@ -18,8 +19,19 @@ class ManagePinnedConnectionsScreen extends StatelessWidget {
       context.navigator.pop();
     }
 
+    void handleOnPressAddConnection() {
+      context.navigator.push(
+        MaterialPageRoute<void>(
+          builder: (context) => const AddConnectionScreen(),
+        ),
+      );
+    }
+
     return FScaffold(
-      header: ManagePinnedHeader(onPressDone: handleOnPressDone),
+      header: ManagePinnedHeader(
+        onPressDone: handleOnPressDone,
+        onPressAddConnection: handleOnPressAddConnection,
+      ),
       child: SafeArea(
         child: SingleChildScrollView(
           padding: .only(bottom: 2 * theme.style.pagePadding.bottom),

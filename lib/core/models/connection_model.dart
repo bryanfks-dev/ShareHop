@@ -1,21 +1,36 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:sharehop/core/converters/bool_int_converter.dart';
+import 'package:sharehop/core/converters/uuid_value_converter.dart';
 import 'package:sharehop/core/enums/connection_protocol.dart';
-import 'package:sharehop/core/enums/connection_status.dart';
-import 'package:sharehop/core/models/base_model.dart';
+import 'package:sharehop/core/models/encrypted_value_model.dart';
+import 'package:sharehop/core/models/mixins/id_mixin.dart';
+import 'package:sharehop/core/models/mixins/timestamp_mixin.dart';
+import 'package:sharehop/core/models/persistence_model.dart';
+import 'package:uuid/uuid.dart';
 
 part 'connection_model.freezed.dart';
 part 'connection_model.g.dart';
 
 @freezed
-abstract class ConnectionModel with _$ConnectionModel implements BaseModel {
+abstract class ConnectionModel
+    with _$ConnectionModel, IdMixin, TimestampMixin
+    implements PersistenceModel {
   const factory({
-    required String id,
+    @UuidValueConverter() required UuidValue id,
     required ConnectionProtocol protocol,
-    @JsonKey(name: 'display_name') required String displayName,
-    @JsonKey(name: 'remote_address') required String remoteAddress,
-    @JsonKey(name: 'created_at') required DateTime createdAt,
-    @JsonKey(name: 'updated_at') required DateTime updatedAt,
-    @Default(ConnectionStatus.online) ConnectionStatus status,
+    required String displayName,
+    required String remoteAddress,
+    required String username,
+    @UuidValueConverter() required UuidValue passwordId,
+    required String rootPath,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    @BoolIntConverter()
+    @JsonKey(name: 'allow_self_signed_certificate')
+    @Default(false)
+    bool allowSelfSignedCertificate,
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    EncryptedValueModel? password,
   }) = _ConnectionModel;
 
   const new _();

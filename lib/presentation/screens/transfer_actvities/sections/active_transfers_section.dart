@@ -17,7 +17,7 @@ class ActiveTransfersSection extends StatelessWidget {
       spacing: Spacing.sm,
       children: [
         TransferSectionHeader(
-          title: 'ACTIVE NOW',
+          title: 'Active Now',
           actionLabel: 'Cancel all',
           isDestructive: true,
           onActionPress: onCancelAllPress,

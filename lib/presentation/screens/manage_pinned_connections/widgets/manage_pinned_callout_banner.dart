@@ -13,16 +13,9 @@ class ManagePinnedCalloutBanner extends StatelessWidget {
       icon: Container(
         width: 36,
         height: 36,
-        decoration: BoxDecoration(
-          color: theme.colors.card,
-          shape: .circle,
-        ),
+        decoration: BoxDecoration(color: theme.colors.card, shape: .circle),
         child: Center(
-          child: Icon(
-            FLucideIcons.pin,
-            size: 18,
-            color: theme.colors.primary,
-          ),
+          child: Icon(FLucideIcons.pin, size: 18, color: theme.colors.primary),
         ),
       ),
       style: .delta(

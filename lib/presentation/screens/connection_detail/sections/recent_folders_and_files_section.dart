@@ -22,7 +22,7 @@ class RecentFoldersAndFilesSection extends StatelessWidget {
       mainAxisSize: .min,
       children: [
         Text(
-          'RECENT FOLDERS & FILES',
+          'Recent Folders & Files',
           style: theme.typography.display.xs.copyWith(
             color: theme.colors.foreground,
             fontWeight: .w700,

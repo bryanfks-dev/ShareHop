@@ -1,28 +1,38 @@
-import 'package:sharehop/core/models/connection_credential_model.dart';
+import 'package:sharehop/core/factories/connection/factory.dart';
+import 'package:sharehop/core/factories/connection/input.dart';
 import 'package:sharehop/core/models/connection_model.dart';
-import 'package:sharehop/core/repositories/connection/dto.dart';
-import 'package:sharehop/core/repositories/connection/repository.dart';
-import 'package:sharehop/core/use_cases/test_connection_use_case.dart';
+import 'package:sharehop/core/repositories/app_config_repository.dart';
+import 'package:sharehop/core/repositories/connection_repository.dart';
+import 'package:sharehop/core/security/secret_cipher.dart';
+import 'package:sharehop/data/dto/connection_dto.dart';
 
 class CreateConnectionUseCase {
-  const new(
-    this._connectionRepository, [
-    this._testConnectionUseCase,
-  ]);
+  const new({
+    required this._appConfigRepository,
+    required this._connectionRepository,
+    required this._secretCipherFactory,
+    required this._connectionFactory,
+  });
 
+  final AppConfigRepository _appConfigRepository;
   final ConnectionRepository _connectionRepository;
-  final TestConnectionUseCase? _testConnectionUseCase;
+  final SecretCipherFactory _secretCipherFactory;
+  final ConnectionFactory _connectionFactory;
 
-  Future<ConnectionModel> call({
-    required ConnectionDraftDto draft,
-    ConnectionCredentialModel? credential,
-  }) async {
-    if (credential != null && _testConnectionUseCase != null) {
-      if (_testConnectionUseCase.isSupported(credential)) {
-        await _testConnectionUseCase.call(credential: credential);
-      }
-    }
+  Future<ConnectionModel> call({required ConnectionDto connection}) async {
+    final key = await _appConfigRepository.getEncryptionKey();
+    final secretCipher = _secretCipherFactory(key);
+    final password = await secretCipher.encrypt(connection.password);
 
-    return await _connectionRepository.create(draft);
+    final input = CreateConnectionInput(
+      displayName: connection.displayName ?? connection.remoteAddress,
+      remoteAddress: connection.remoteAddress,
+      username: connection.username,
+      password: password,
+      rootPath: connection.rootPath,
+      allowSelfSignedCertificate: connection.allowSelfSignedCertificate,
+    );
+    final newConnection = _connectionFactory.createWebDav(input);
+    return await _connectionRepository.create(newConnection);
   }
 }

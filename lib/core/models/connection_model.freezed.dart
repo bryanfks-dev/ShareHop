@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ConnectionModel {
 
- String get id; ConnectionProtocol get protocol;@JsonKey(name: 'display_name') String get displayName;@JsonKey(name: 'remote_address') String get remoteAddress;@JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'updated_at') DateTime get updatedAt; ConnectionStatus get status;
+@UuidValueConverter() UuidValue get id; ConnectionProtocol get protocol; String get displayName; String get remoteAddress; String get username;@UuidValueConverter() UuidValue get passwordId; String get rootPath; DateTime get createdAt; DateTime get updatedAt;@BoolIntConverter()@JsonKey(name: 'allow_self_signed_certificate') bool get allowSelfSignedCertificate;@JsonKey(includeFromJson: false, includeToJson: false) EncryptedValueModel? get password;
 /// Create a copy of ConnectionModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,20 +30,20 @@ $ConnectionModelCopyWith<ConnectionModel> get copyWith => _$ConnectionModelCopyW
 @override
 bool operator ==(Object other) {
   final _this = this as ConnectionModel;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ConnectionModel&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.protocol, _this.protocol) || other.protocol == _this.protocol)&&(identical(other.displayName, _this.displayName) || other.displayName == _this.displayName)&&(identical(other.remoteAddress, _this.remoteAddress) || other.remoteAddress == _this.remoteAddress)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.status, _this.status) || other.status == _this.status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ConnectionModel&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.protocol, _this.protocol) || other.protocol == _this.protocol)&&(identical(other.displayName, _this.displayName) || other.displayName == _this.displayName)&&(identical(other.remoteAddress, _this.remoteAddress) || other.remoteAddress == _this.remoteAddress)&&(identical(other.username, _this.username) || other.username == _this.username)&&(identical(other.passwordId, _this.passwordId) || other.passwordId == _this.passwordId)&&(identical(other.rootPath, _this.rootPath) || other.rootPath == _this.rootPath)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.allowSelfSignedCertificate, _this.allowSelfSignedCertificate) || other.allowSelfSignedCertificate == _this.allowSelfSignedCertificate)&&(identical(other.password, _this.password) || other.password == _this.password));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as ConnectionModel;
-  return Object.hash(runtimeType,_this.id,_this.protocol,_this.displayName,_this.remoteAddress,_this.createdAt,_this.updatedAt,_this.status);
+  return Object.hash(runtimeType,_this.id,_this.protocol,_this.displayName,_this.remoteAddress,_this.username,_this.passwordId,_this.rootPath,_this.createdAt,_this.updatedAt,_this.allowSelfSignedCertificate,_this.password);
 }
 
 @override
 String toString() {
   final _this = this as ConnectionModel;
-  return 'ConnectionModel(id: ${_this.id}, protocol: ${_this.protocol}, displayName: ${_this.displayName}, remoteAddress: ${_this.remoteAddress}, createdAt: ${_this.createdAt}, updatedAt: ${_this.updatedAt}, status: ${_this.status})';
+  return 'ConnectionModel(id: ${_this.id}, protocol: ${_this.protocol}, displayName: ${_this.displayName}, remoteAddress: ${_this.remoteAddress}, username: ${_this.username}, passwordId: ${_this.passwordId}, rootPath: ${_this.rootPath}, createdAt: ${_this.createdAt}, updatedAt: ${_this.updatedAt}, allowSelfSignedCertificate: ${_this.allowSelfSignedCertificate}, password: ${_this.password})';
 }
 
 
@@ -54,11 +54,11 @@ abstract mixin class $ConnectionModelCopyWith<$Res>  {
   factory $ConnectionModelCopyWith(ConnectionModel value, $Res Function(ConnectionModel) _then) = _$ConnectionModelCopyWithImpl;
 @useResult
 $Res call({
- String id, ConnectionProtocol protocol,@JsonKey(name: 'display_name') String displayName,@JsonKey(name: 'remote_address') String remoteAddress,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt, ConnectionStatus status
+@UuidValueConverter() UuidValue id, ConnectionProtocol protocol, String displayName, String remoteAddress, String username,@UuidValueConverter() UuidValue passwordId, String rootPath, DateTime createdAt, DateTime updatedAt,@BoolIntConverter()@JsonKey(name: 'allow_self_signed_certificate') bool allowSelfSignedCertificate,@JsonKey(includeFromJson: false, includeToJson: false) EncryptedValueModel? password
 });
 
 
-
+$EncryptedValueModelCopyWith<$Res>? get password;
 
 }
 /// @nodoc
@@ -71,19 +71,35 @@ class _$ConnectionModelCopyWithImpl<$Res>
 
 /// Create a copy of ConnectionModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? protocol = null,Object? displayName = null,Object? remoteAddress = null,Object? createdAt = null,Object? updatedAt = null,Object? status = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? protocol = null,Object? displayName = null,Object? remoteAddress = null,Object? username = null,Object? passwordId = null,Object? rootPath = null,Object? createdAt = null,Object? updatedAt = null,Object? allowSelfSignedCertificate = null,Object? password = freezed,}) {
   return _then(ConnectionModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,protocol: null == protocol ? _self.protocol : protocol // ignore: cast_nullable_to_non_nullable
+as UuidValue,protocol: null == protocol ? _self.protocol : protocol // ignore: cast_nullable_to_non_nullable
 as ConnectionProtocol,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String,remoteAddress: null == remoteAddress ? _self.remoteAddress : remoteAddress // ignore: cast_nullable_to_non_nullable
+as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
+as String,passwordId: null == passwordId ? _self.passwordId : passwordId // ignore: cast_nullable_to_non_nullable
+as UuidValue,rootPath: null == rootPath ? _self.rootPath : rootPath // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as ConnectionStatus,
+as DateTime,allowSelfSignedCertificate: null == allowSelfSignedCertificate ? _self.allowSelfSignedCertificate : allowSelfSignedCertificate // ignore: cast_nullable_to_non_nullable
+as bool,password: freezed == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
+as EncryptedValueModel?,
   ));
 }
+/// Create a copy of ConnectionModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$EncryptedValueModelCopyWith<$Res>? get password {
+    if (_self.password == null) {
+    return null;
+  }
 
+  return $EncryptedValueModelCopyWith<$Res>(_self.password!, (value) {
+    return _then(_self.copyWith(password: value));
+  });
+}
 }
 
 
@@ -165,10 +181,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  ConnectionProtocol protocol, @JsonKey(name: 'display_name')  String displayName, @JsonKey(name: 'remote_address')  String remoteAddress, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt,  ConnectionStatus status)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@UuidValueConverter()  UuidValue id,  ConnectionProtocol protocol,  String displayName,  String remoteAddress,  String username, @UuidValueConverter()  UuidValue passwordId,  String rootPath,  DateTime createdAt,  DateTime updatedAt, @BoolIntConverter()@JsonKey(name: 'allow_self_signed_certificate')  bool allowSelfSignedCertificate, @JsonKey(includeFromJson: false, includeToJson: false)  EncryptedValueModel? password)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ConnectionModel() when $default != null:
-return $default(_that.id,_that.protocol,_that.displayName,_that.remoteAddress,_that.createdAt,_that.updatedAt,_that.status);case _:
+return $default(_that.id,_that.protocol,_that.displayName,_that.remoteAddress,_that.username,_that.passwordId,_that.rootPath,_that.createdAt,_that.updatedAt,_that.allowSelfSignedCertificate,_that.password);case _:
   return orElse();
 
 }
@@ -186,10 +202,10 @@ return $default(_that.id,_that.protocol,_that.displayName,_that.remoteAddress,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  ConnectionProtocol protocol, @JsonKey(name: 'display_name')  String displayName, @JsonKey(name: 'remote_address')  String remoteAddress, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt,  ConnectionStatus status)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@UuidValueConverter()  UuidValue id,  ConnectionProtocol protocol,  String displayName,  String remoteAddress,  String username, @UuidValueConverter()  UuidValue passwordId,  String rootPath,  DateTime createdAt,  DateTime updatedAt, @BoolIntConverter()@JsonKey(name: 'allow_self_signed_certificate')  bool allowSelfSignedCertificate, @JsonKey(includeFromJson: false, includeToJson: false)  EncryptedValueModel? password)  $default,) {final _that = this;
 switch (_that) {
 case _ConnectionModel():
-return $default(_that.id,_that.protocol,_that.displayName,_that.remoteAddress,_that.createdAt,_that.updatedAt,_that.status);case _:
+return $default(_that.id,_that.protocol,_that.displayName,_that.remoteAddress,_that.username,_that.passwordId,_that.rootPath,_that.createdAt,_that.updatedAt,_that.allowSelfSignedCertificate,_that.password);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -206,10 +222,10 @@ return $default(_that.id,_that.protocol,_that.displayName,_that.remoteAddress,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  ConnectionProtocol protocol, @JsonKey(name: 'display_name')  String displayName, @JsonKey(name: 'remote_address')  String remoteAddress, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt,  ConnectionStatus status)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@UuidValueConverter()  UuidValue id,  ConnectionProtocol protocol,  String displayName,  String remoteAddress,  String username, @UuidValueConverter()  UuidValue passwordId,  String rootPath,  DateTime createdAt,  DateTime updatedAt, @BoolIntConverter()@JsonKey(name: 'allow_self_signed_certificate')  bool allowSelfSignedCertificate, @JsonKey(includeFromJson: false, includeToJson: false)  EncryptedValueModel? password)?  $default,) {final _that = this;
 switch (_that) {
 case _ConnectionModel() when $default != null:
-return $default(_that.id,_that.protocol,_that.displayName,_that.remoteAddress,_that.createdAt,_that.updatedAt,_that.status);case _:
+return $default(_that.id,_that.protocol,_that.displayName,_that.remoteAddress,_that.username,_that.passwordId,_that.rootPath,_that.createdAt,_that.updatedAt,_that.allowSelfSignedCertificate,_that.password);case _:
   return null;
 
 }
@@ -221,16 +237,20 @@ return $default(_that.id,_that.protocol,_that.displayName,_that.remoteAddress,_t
 @JsonSerializable()
 
 class _ConnectionModel extends ConnectionModel {
-  const _ConnectionModel({required this.id, required this.protocol, @JsonKey(name: 'display_name') required this.displayName, @JsonKey(name: 'remote_address') required this.remoteAddress, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'updated_at') required this.updatedAt, this.status = ConnectionStatus.online}): super._();
+  const _ConnectionModel({@UuidValueConverter() required this.id, required this.protocol, required this.displayName, required this.remoteAddress, required this.username, @UuidValueConverter() required this.passwordId, required this.rootPath, required this.createdAt, required this.updatedAt, @BoolIntConverter()@JsonKey(name: 'allow_self_signed_certificate') this.allowSelfSignedCertificate = false, @JsonKey(includeFromJson: false, includeToJson: false) this.password}): super._();
   factory _ConnectionModel.fromJson(Map<String, dynamic> json) => _$ConnectionModelFromJson(json);
 
-@override final  String id;
+@override@UuidValueConverter() final  UuidValue id;
 @override final  ConnectionProtocol protocol;
-@override@JsonKey(name: 'display_name') final  String displayName;
-@override@JsonKey(name: 'remote_address') final  String remoteAddress;
-@override@JsonKey(name: 'created_at') final  DateTime createdAt;
-@override@JsonKey(name: 'updated_at') final  DateTime updatedAt;
-@override@JsonKey() final  ConnectionStatus status;
+@override final  String displayName;
+@override final  String remoteAddress;
+@override final  String username;
+@override@UuidValueConverter() final  UuidValue passwordId;
+@override final  String rootPath;
+@override final  DateTime createdAt;
+@override final  DateTime updatedAt;
+@override@BoolIntConverter()@JsonKey(name: 'allow_self_signed_certificate') final  bool allowSelfSignedCertificate;
+@override@JsonKey(includeFromJson: false, includeToJson: false) final  EncryptedValueModel? password;
 
 /// Create a copy of ConnectionModel
 /// with the given fields replaced by the non-null parameter values.
@@ -245,18 +265,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ConnectionModel&&(identical(other.id, id) || other.id == id)&&(identical(other.protocol, protocol) || other.protocol == protocol)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.remoteAddress, remoteAddress) || other.remoteAddress == remoteAddress)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.status, status) || other.status == status));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ConnectionModel&&(identical(other.id, id) || other.id == id)&&(identical(other.protocol, protocol) || other.protocol == protocol)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.remoteAddress, remoteAddress) || other.remoteAddress == remoteAddress)&&(identical(other.username, username) || other.username == username)&&(identical(other.passwordId, passwordId) || other.passwordId == passwordId)&&(identical(other.rootPath, rootPath) || other.rootPath == rootPath)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.allowSelfSignedCertificate, allowSelfSignedCertificate) || other.allowSelfSignedCertificate == allowSelfSignedCertificate)&&(identical(other.password, password) || other.password == password));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,protocol,displayName,remoteAddress,createdAt,updatedAt,status);
+    return Object.hash(runtimeType,id,protocol,displayName,remoteAddress,username,passwordId,rootPath,createdAt,updatedAt,allowSelfSignedCertificate,password);
 }
 
 @override
 String toString() {
-    return 'ConnectionModel(id: $id, protocol: $protocol, displayName: $displayName, remoteAddress: $remoteAddress, createdAt: $createdAt, updatedAt: $updatedAt, status: $status)';
+    return 'ConnectionModel(id: $id, protocol: $protocol, displayName: $displayName, remoteAddress: $remoteAddress, username: $username, passwordId: $passwordId, rootPath: $rootPath, createdAt: $createdAt, updatedAt: $updatedAt, allowSelfSignedCertificate: $allowSelfSignedCertificate, password: $password)';
 }
 
 
@@ -267,11 +287,11 @@ abstract mixin class _$ConnectionModelCopyWith<$Res> implements $ConnectionModel
   factory _$ConnectionModelCopyWith(_ConnectionModel value, $Res Function(_ConnectionModel) _then) = __$ConnectionModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, ConnectionProtocol protocol,@JsonKey(name: 'display_name') String displayName,@JsonKey(name: 'remote_address') String remoteAddress,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt, ConnectionStatus status
+@UuidValueConverter() UuidValue id, ConnectionProtocol protocol, String displayName, String remoteAddress, String username,@UuidValueConverter() UuidValue passwordId, String rootPath, DateTime createdAt, DateTime updatedAt,@BoolIntConverter()@JsonKey(name: 'allow_self_signed_certificate') bool allowSelfSignedCertificate,@JsonKey(includeFromJson: false, includeToJson: false) EncryptedValueModel? password
 });
 
 
-
+@override $EncryptedValueModelCopyWith<$Res>? get password;
 
 }
 /// @nodoc
@@ -284,20 +304,36 @@ class __$ConnectionModelCopyWithImpl<$Res>
 
 /// Create a copy of ConnectionModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? protocol = null,Object? displayName = null,Object? remoteAddress = null,Object? createdAt = null,Object? updatedAt = null,Object? status = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? protocol = null,Object? displayName = null,Object? remoteAddress = null,Object? username = null,Object? passwordId = null,Object? rootPath = null,Object? createdAt = null,Object? updatedAt = null,Object? allowSelfSignedCertificate = null,Object? password = freezed,}) {
   return _then(_ConnectionModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,protocol: null == protocol ? _self.protocol : protocol // ignore: cast_nullable_to_non_nullable
+as UuidValue,protocol: null == protocol ? _self.protocol : protocol // ignore: cast_nullable_to_non_nullable
 as ConnectionProtocol,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String,remoteAddress: null == remoteAddress ? _self.remoteAddress : remoteAddress // ignore: cast_nullable_to_non_nullable
+as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
+as String,passwordId: null == passwordId ? _self.passwordId : passwordId // ignore: cast_nullable_to_non_nullable
+as UuidValue,rootPath: null == rootPath ? _self.rootPath : rootPath // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as ConnectionStatus,
+as DateTime,allowSelfSignedCertificate: null == allowSelfSignedCertificate ? _self.allowSelfSignedCertificate : allowSelfSignedCertificate // ignore: cast_nullable_to_non_nullable
+as bool,password: freezed == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
+as EncryptedValueModel?,
   ));
 }
 
+/// Create a copy of ConnectionModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$EncryptedValueModelCopyWith<$Res>? get password {
+    if (_self.password == null) {
+    return null;
+  }
 
+  return $EncryptedValueModelCopyWith<$Res>(_self.password!, (value) {
+    return _then(_self.copyWith(password: value));
+  });
+}
 }
 
 // dart format on

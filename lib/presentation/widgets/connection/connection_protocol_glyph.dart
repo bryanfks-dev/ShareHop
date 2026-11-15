@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:sharehop/core/enums/connection_protocol.dart';
 import 'package:sharehop/core/enums/connection_status.dart';
+import 'package:sharehop/presentation/extensions/enums/connection_protocol_extension.dart';
 import 'package:sharehop/presentation/theme/theme.dart';
 import 'package:sharehop/presentation/widgets/connection/constants/connection_protocol_glyph.dart';
 

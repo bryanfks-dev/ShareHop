@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
-import 'package:sharehop/core/data/dto/storage_status_dto.dart';
+import 'package:sharehop/data/dto/storage_status_dto.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
 
 class StorageUsageCard extends StatelessWidget {
@@ -19,10 +19,11 @@ class StorageUsageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.theme;
 
+    final usedFormatted = storageStatus != null
+        ? StorageStatusDto.formatBytes(bytes: storageStatus!.usedBytes)
+        : '';
     final usedString = storageStatus != null
-        ? '${StorageStatusDto.formatBytes(
-            bytes: storageStatus!.usedBytes,
-          )} used'
+        ? '$usedFormatted used'
         : '436 GB used';
 
     final availableString = storageStatus != null
@@ -31,11 +32,12 @@ class StorageUsageCard extends StatelessWidget {
 
     final progressValue = storageStatus?.usedPercentage ?? (436 / 500);
 
+    final totalFormatted = storageStatus != null
+        ? StorageStatusDto.formatBytes(bytes: storageStatus!.totalBytes)
+        : '';
     final summaryString = storageStatus != null
         ? '${(storageStatus!.usedPercentage * 100).toInt()}% of '
-            '${StorageStatusDto.formatBytes(
-            bytes: storageStatus!.totalBytes,
-          )} used · updated just now'
+              '$totalFormatted used · updated just now'
         : '87% of 500 GB used · updated just now';
 
     return FCard(
@@ -56,7 +58,7 @@ class StorageUsageCard extends StatelessWidget {
                     mainAxisSize: .min,
                     children: [
                       Text(
-                        'REMOTE STORAGE',
+                        'Remote Storage',
                         style: theme.typography.display.xs2.copyWith(
                           color: theme.colors.foreground,
                         ),

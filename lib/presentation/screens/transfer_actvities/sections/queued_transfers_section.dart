@@ -19,7 +19,7 @@ class QueuedTransfersSection extends StatelessWidget {
       spacing: Spacing.sm,
       children: [
         TransferSectionHeader(
-          title: 'UP NEXT',
+          title: 'Up Next',
           actionLabel: 'Cancel all',
           isDestructive: true,
           onActionPress: onCancelAllPress,

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/theme.dart';
 import 'package:forui/widgets/button.dart';
 import 'package:sharehop/presentation/controllers/manage_pinned_connections_controller.dart';
-import 'package:sharehop/presentation/router/navigator_extension.dart';
+import 'package:sharehop/presentation/extensions/router/navigator_extension.dart';
 import 'package:sharehop/presentation/screens/manage_pinned_connections/screen.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
 import 'package:sharehop/presentation/widgets/connection/connection_list_empty_state.dart';
@@ -34,7 +34,7 @@ class PinnedConnectionsSection extends ConsumerWidget {
           mainAxisAlignment: .spaceBetween,
           children: [
             Text(
-              'PINNED CONNECTIONS',
+              'Pinned Connections',
               style: theme.typography.display.xs.copyWith(
                 color: theme.colors.foreground,
                 fontWeight: .w700,

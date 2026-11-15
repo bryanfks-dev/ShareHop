@@ -1,164 +1,174 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:forui/forui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sharehop/core/data/dto/storage_status_dto.dart';
 import 'package:sharehop/core/enums/connection_protocol.dart';
+import 'package:sharehop/core/models/app_config_model.dart';
 import 'package:sharehop/core/models/connection_model.dart';
-import 'package:sharehop/core/models/web_dav_credential_model.dart';
-import 'package:sharehop/core/repositories/connection/dto.dart';
-import 'package:sharehop/core/repositories/connection/repository.dart';
-import 'package:sharehop/core/services/web_dav_storage_service.dart';
-import 'package:sharehop/core/use_cases/create_connection_use_case.dart';
-import 'package:sharehop/core/use_cases/test_connection_use_case.dart';
+import 'package:sharehop/core/models/pinned_connection_model.dart';
+import 'package:sharehop/core/repositories/app_config_repository.dart';
+import 'package:sharehop/core/repositories/connection_repository.dart';
+import 'package:sharehop/core/repositories/pinned_connection_repository.dart';
+import 'package:sharehop/core/security/secret_cipher.dart';
+import 'package:sharehop/data/dto/connection_dto.dart';
+import 'package:sharehop/data/utils/encrypted_value.dart';
+import 'package:sharehop/di/app_config_di.dart';
 import 'package:sharehop/di/connection_di.dart';
-import 'package:sharehop/infrastructures/repositories/connection/factory.dart';
-import 'package:sharehop/infrastructures/services/web_dav_storage/error.dart';
+import 'package:sharehop/di/security_di.dart';
+import 'package:sharehop/infrastructures/gateways/web_dav_storage/error.dart';
 import 'package:sharehop/presentation/screens/add_connection/screen.dart';
 import 'package:sharehop/presentation/theme/theme.dart';
-import 'package:webdav_client/webdav_client.dart';
+import 'package:uuid/uuid_value.dart';
 
-class FakeWebDavStorageService implements WebDavStorageService {
-  bool shouldThrow = false;
-  WebDavCredentialModel? passedCredential;
+class FakeAppConfigRepository implements AppConfigRepository {
+  @override
+  Future<String> getEncryptionKey() async => 'test-encryption-key';
 
   @override
-  Future<void> testConnection({
-    required WebDavCredentialModel credential,
-  }) async {
-    passedCredential = credential;
-    if (shouldThrow) {
-      throw WebDavOperationFailedError('Failed to connect to WebDAV server');
-    }
-  }
+  Future<AppConfigModel> getConfig() => throw UnimplementedError();
 
   @override
-  Future<List<File>> list({
-    required WebDavCredentialModel credential,
-    required String path,
-  }) async =>
-      [];
-
-  @override
-  Future<void> createDirectory({
-    required WebDavCredentialModel credential,
-    required String path,
-  }) async {}
-
-  @override
-  Future<void> delete({
-    required WebDavCredentialModel credential,
-    required String path,
-  }) async {}
-
-  @override
-  Future<void> uploadFile({
-    required WebDavCredentialModel credential,
-    required String path,
-    required Uint8List fileBytes,
-  }) async {}
-
-  @override
-  Future<Uint8List> downloadFile({
-    required WebDavCredentialModel credential,
-    required String path,
-  }) async =>
-      Uint8List(0);
-
-  @override
-  Future<void> rename({
-    required WebDavCredentialModel credential,
-    required String oldPath,
-    required String newPath,
-  }) async {}
-
-  @override
-  Future<void> copy({
-    required WebDavCredentialModel credential,
-    required String sourcePath,
-    required String destinationPath,
-  }) async {}
-
-  @override
-  Future<void> move({
-    required WebDavCredentialModel credential,
-    required String sourcePath,
-    required String destinationPath,
-  }) async {}
-
-  @override
-  Future<File> getFileProperties({
-    required WebDavCredentialModel credential,
-    required String path,
-  }) async =>
+  Future<void> setAppTheme({required dynamic theme}) =>
       throw UnimplementedError();
 
   @override
-  Future<StorageStatusDto> getStatus({
-    required WebDavCredentialModel credential,
-    String path = '/',
-  }) async =>
-      const StorageStatusDto(
-        totalBytes: 500 * 1024 * 1024 * 1024,
-        freeBytes: 64 * 1024 * 1024 * 1024,
-      );
+  Future<void> setBackgroundTransfersEnabled({required bool enabled}) =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> setBiometricLockEnabled({required bool enabled}) =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> setDownloadPath({required String path}) =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> setFileConflictResolution({required dynamic resolution}) =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> setMaxSimultaneousTransfers({required int limit}) =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> setWifiOnlyTransfersEnabled({required bool enabled}) =>
+      throw UnimplementedError();
+}
+
+class FakeSecretCipher implements SecretCipher {
+  @override
+  Future<EncryptedValue> encrypt(String text) async {
+    return EncryptedValue(
+      salt: 'salt-1',
+      nonce: 'nonce-1',
+      cipherText: 'encrypted-$text',
+      mac: 'mac-1',
+    );
+  }
+
+  @override
+  Future<String> decrypt(EncryptedValue value) async {
+    return value.cipherText.replaceAll('encrypted-', '');
+  }
 }
 
 class FakeConnectionRepository implements ConnectionRepository {
   final List<ConnectionModel> connections = [];
+  bool shouldThrow = false;
 
   @override
-  Future<ConnectionModel> create(ConnectionDraftDto draft) async {
-    final model = buildConnectionDraftDtoFromConnectionModel(draft);
-    connections.add(model);
-    return model;
+  Future<ConnectionModel> create(ConnectionModel connection) async {
+    if (shouldThrow) {
+      throw WebDavOperationFailedError(
+        message: 'Failed to connect to WebDAV server',
+      );
+    }
+    connections.add(connection);
+    return connection;
   }
 
   @override
   Future<List<ConnectionModel>> getAll() async => connections;
 
   @override
-  Future<ConnectionModel?> getOne(String id) async => null;
+  Future<ConnectionModel?> getOne(UuidValue id) async =>
+      connections.where((c) => c.id == id).firstOrNull;
 
   @override
-  Future<ConnectionModel?> update(ConnectionRevisionDto revision) async => null;
+  Future<ConnectionModel?> update({
+    required ConnectionRevisionDto connection,
+  }) async => null;
 
   @override
-  Future<void> remove(String id) async {}
+  Future<void> remove(UuidValue id) async {
+    connections.removeWhere((c) => c.id == id);
+  }
 
   @override
-  Future<void> batchRemove(Set<String> ids) async {}
+  Future<void> batchRemove(Set<UuidValue> ids) async {
+    connections.removeWhere((c) => ids.contains(c.id));
+  }
 
   @override
-  Future<String?> checkIfExists(String id) async => null;
+  Future<Set<UuidValue>> checkIfExists(Set<UuidValue> ids) async =>
+      connections.map((c) => c.id).toSet().intersection(ids);
+}
+
+class FakePinnedConnectionRepository implements PinnedConnectionRepository {
+  final Set<UuidValue> pinnedIds = {};
+
+  @override
+  Future<List<PinnedConnectionModel>> getAll() async {
+    final now = DateTime.now().toUtc();
+    return pinnedIds
+        .map(
+          (id) => PinnedConnectionModel(
+            connectionId: id,
+            createdAt: now,
+            updatedAt: now,
+          ),
+        )
+        .toList();
+  }
+
+  @override
+  Future<Set<UuidValue>> getPinnedConnectionIds() async => Set.from(pinnedIds);
+
+  @override
+  Future<void> pin(UuidValue connectionId) async {
+    pinnedIds.add(connectionId);
+  }
+
+  @override
+  Future<void> unpin(UuidValue connectionId) async {
+    pinnedIds.remove(connectionId);
+  }
 }
 
 Widget createTestApp({
-  required FakeWebDavStorageService fakeService,
   required FakeConnectionRepository fakeRepo,
+  FakePinnedConnectionRepository? fakePinnedRepo,
   GlobalKey<NavigatorState>? navigatorKey,
   Widget? home,
 }) {
   return ProviderScope(
     overrides: [
-      testConnectionUseCaseProvider.overrideWithValue(
-        TestConnectionUseCase(fakeService),
+      appConfigRepositoryProvider.overrideWithValue(FakeAppConfigRepository()),
+      connectionRepositoryProvider.overrideWithValue(fakeRepo),
+      pinnedConnectionRepositoryProvider.overrideWithValue(
+        fakePinnedRepo ?? FakePinnedConnectionRepository(),
       ),
-      createConnectionUseCaseProvider.overrideWithValue(
-        CreateConnectionUseCase(fakeRepo),
+      secretCipherFactoryProvider.overrideWithValue(
+        (secret) => FakeSecretCipher(),
       ),
     ],
     child: MaterialApp(
       navigatorKey: navigatorKey,
+      localizationsDelegates: const [...FLocalizations.localizationsDelegates],
       builder: (context, child) => FTheme(
         data: darkTheme,
-        child: FToaster(
-          child: FTooltipGroup(
-            child: child!,
-          ),
-        ),
+        child: FToaster(child: FTooltipGroup(child: child!)),
       ),
       home: home ?? const AddConnectionScreen(),
     ),
@@ -174,12 +184,9 @@ void main() {
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
 
-      final fakeService = FakeWebDavStorageService();
       final fakeRepo = FakeConnectionRepository();
 
-      await tester.pumpWidget(
-        createTestApp(fakeService: fakeService, fakeRepo: fakeRepo),
-      );
+      await tester.pumpWidget(createTestApp(fakeRepo: fakeRepo));
       await tester.pumpAndSettle();
 
       expect(find.text('Add connection'), findsOneWidget);
@@ -188,7 +195,7 @@ void main() {
       expect(find.text('Root path'), findsOneWidget);
       expect(find.text('Username'), findsOneWidget);
       expect(find.text('Password or app password'), findsOneWidget);
-      expect(find.text('Test & save connection'), findsOneWidget);
+      expect(find.text('Save connection'), findsOneWidget);
     });
 
     testWidgets('shows validation errors when submitted empty', (tester) async {
@@ -196,38 +203,33 @@ void main() {
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
 
-      final fakeService = FakeWebDavStorageService();
       final fakeRepo = FakeConnectionRepository();
 
-      await tester.pumpWidget(
-        createTestApp(fakeService: fakeService, fakeRepo: fakeRepo),
-      );
+      await tester.pumpWidget(createTestApp(fakeRepo: fakeRepo));
       await tester.pumpAndSettle();
 
-      final button = find.text('Test & save connection');
+      final button = find.text('Save connection');
       await tester.ensureVisible(button);
       await tester.tap(button);
       await tester.pumpAndSettle();
 
       expect(find.text('Server url is required'), findsOneWidget);
-      expect(find.text('Username is required'), findsOneWidget);
       expect(find.text('Password or app password is required'), findsOneWidget);
       expect(fakeRepo.connections, isEmpty);
     });
 
-    testWidgets('successfully tests and saves WebDAV connection',
-        (tester) async {
+    testWidgets('successfully tests and saves WebDAV connection', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(800, 1600);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
 
-      final fakeService = FakeWebDavStorageService();
       final fakeRepo = FakeConnectionRepository();
       final navigatorKey = GlobalKey<NavigatorState>();
 
       await tester.pumpWidget(
         createTestApp(
-          fakeService: fakeService,
           fakeRepo: fakeRepo,
           navigatorKey: navigatorKey,
           home: const Scaffold(body: Text('Previous Screen')),
@@ -240,12 +242,6 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // EditableTexts in order:
-      // 0: Display name
-      // 1: Server url
-      // 2: Root path ('/')
-      // 3: Username
-      // 4: Password
       final editables = find.byType(EditableText);
       expect(editables, findsNWidgets(5));
 
@@ -263,8 +259,8 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      // Tap test & save
-      final button = find.text('Test & save connection');
+      // Tap save
+      final button = find.text('Save connection');
       await tester.ensureVisible(button);
       await tester.tap(button);
       await tester.pumpAndSettle();
@@ -274,30 +270,70 @@ void main() {
       expect(created.displayName, 'My Home WebDAV');
       expect(created.remoteAddress, 'https://dav.example.com/files');
       expect(created.protocol, ConnectionProtocol.webdav);
-      expect(
-        fakeService.passedCredential?.url,
-        Uri.parse('https://dav.example.com/files'),
-      );
-      expect(fakeService.passedCredential?.username, 'john');
-      expect(fakeService.passedCredential?.password, 'secret123');
+      expect(created.allowSelfSignedCertificate, isFalse);
 
-      // Verify popped back and success toast appears
+      // Verify popped back
       expect(find.text('Previous Screen'), findsOneWidget);
-      expect(find.text('Connection saved successfully'), findsOneWidget);
     });
 
-    testWidgets('shows failure toast when connection test fails',
-        (tester) async {
+    testWidgets(
+      'successfully saves WebDAV connection with allow self-signed certificate',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1600);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+
+        final fakeRepo = FakeConnectionRepository();
+        final navigatorKey = GlobalKey<NavigatorState>();
+
+        await tester.pumpWidget(
+          createTestApp(
+            fakeRepo: fakeRepo,
+            navigatorKey: navigatorKey,
+            home: const Scaffold(body: Text('Previous Screen')),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        navigatorKey.currentState!.push(
+          MaterialPageRoute<void>(builder: (_) => const AddConnectionScreen()),
+        );
+        await tester.pumpAndSettle();
+
+        final editables = find.byType(EditableText);
+        await tester.enterText(editables.at(0), 'Self Signed WebDAV');
+        await tester.enterText(editables.at(1), 'https://selfsigned.local');
+        await tester.enterText(editables.at(3), 'admin');
+        await tester.enterText(editables.at(4), 'secret');
+        await tester.pumpAndSettle();
+
+        final selfSignedTile = find.text('Allow self-signed certificate');
+        await tester.ensureVisible(selfSignedTile);
+        await tester.tap(selfSignedTile);
+        await tester.pumpAndSettle();
+
+        final button = find.text('Save connection');
+        await tester.ensureVisible(button);
+        await tester.tap(button);
+        await tester.pumpAndSettle();
+
+        expect(fakeRepo.connections.length, 1);
+        final created = fakeRepo.connections.first;
+        expect(created.displayName, 'Self Signed WebDAV');
+        expect(created.allowSelfSignedCertificate, isTrue);
+      },
+    );
+
+    testWidgets('shows failure toast when connection test fails', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(800, 1600);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
 
-      final fakeService = FakeWebDavStorageService()..shouldThrow = true;
-      final fakeRepo = FakeConnectionRepository();
+      final fakeRepo = FakeConnectionRepository()..shouldThrow = true;
 
-      await tester.pumpWidget(
-        createTestApp(fakeService: fakeService, fakeRepo: fakeRepo),
-      );
+      await tester.pumpWidget(createTestApp(fakeRepo: fakeRepo));
       await tester.pumpAndSettle();
 
       final editables = find.byType(EditableText);
@@ -313,32 +349,27 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      // Tap test & save
-      final button = find.text('Test & save connection');
+      // Tap save
+      final button = find.text('Save connection');
       await tester.ensureVisible(button);
       await tester.tap(button);
       await tester.pumpAndSettle();
 
       expect(fakeRepo.connections, isEmpty);
-      expect(find.text('Connection failed'), findsOneWidget);
-      expect(
-        find.text('Failed to connect to WebDAV server'),
-        findsOneWidget,
-      );
+      expect(find.text('Operation failed'), findsOneWidget);
+      expect(find.text('Failed to connect to WebDAV server'), findsOneWidget);
     });
 
-    testWidgets('shows unsupported notice when another protocol is selected',
-        (tester) async {
+    testWidgets('shows unsupported notice when another protocol is selected', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(800, 1600);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
 
-      final fakeService = FakeWebDavStorageService();
       final fakeRepo = FakeConnectionRepository();
 
-      await tester.pumpWidget(
-        createTestApp(fakeService: fakeService, fakeRepo: fakeRepo),
-      );
+      await tester.pumpWidget(createTestApp(fakeRepo: fakeRepo));
       await tester.pumpAndSettle();
 
       // Tap Change button on protocol selector
