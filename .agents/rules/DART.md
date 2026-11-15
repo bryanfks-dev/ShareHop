@@ -33,11 +33,11 @@ Don't:
 - Use named parameters for model or DTO classes.
 - DO NOT use named parameters for `BuildContext` parameters in funcitons or methods.
 
-# Single Line If Statements
+## Single Line If Statements
 
 - DO NOT use single line if statements. Always use braces for if statements, even for single line statements.
 
-# Constant Naming
+## Constant Naming
 
 - Use `camelCase` for constant names. Do not use `ALL_CAPS` for constant names.
 - Use `k` prefix for constant names. For example, `kMyConstant`.

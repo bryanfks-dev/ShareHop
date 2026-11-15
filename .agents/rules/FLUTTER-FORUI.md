@@ -1,6 +1,6 @@
 # Flutter ForUI Rules
 
-# Use ForUI
+## Use ForUI
 
 - ALWAYS use ForUI (`forui` package) widgets for UI instead of stock
   Flutter Material/Cupertino widgets.
