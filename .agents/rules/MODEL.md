@@ -17,7 +17,7 @@ Apply these rules whenever creating or editing a Dart model that represents a da
   part 'post.freezed.dart';
   part 'post.g.dart';
   ```
-- Never edit generated files (`*.freezed.dart`, `*.g.dart`). Never hand-write `copyWith`, `==`, or `hashCode`.
+- Never edit generated files (`*.freezed.dart`, `*.g.dart`). Never hand-write `copyWith`, `==`, `fromJson`, `toJson`, or `hashCode`.
 
 ## 3. Model template
 
