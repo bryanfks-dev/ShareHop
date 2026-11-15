@@ -43,7 +43,7 @@ final class ConnectionsControllerProvider
 }
 
 String _$connectionsControllerHash() =>
-    r'650a30667b298d49d7028645d553aa6619e6dbdd';
+    r'609aae309695d777b89b41be3919f73f92b06656';
 
 abstract class _$ConnectionsController
     extends $Notifier<List<ConnectionViewModel>> {

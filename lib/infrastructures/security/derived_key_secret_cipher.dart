@@ -4,7 +4,7 @@ import 'package:cryptography/cryptography.dart';
 import 'package:sharehop/core/security/secret_cipher.dart';
 import 'package:sharehop/data/utils/encrypted_value.dart';
 
-class DerivedKeySecretChiper implements SecretCipher {
+class DerivedKeySecretCipher implements SecretCipher {
   new(this.secret);
 
   final String secret;

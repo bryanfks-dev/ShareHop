@@ -6,6 +6,7 @@ import 'package:sharehop/core/enums/connection_status.dart';
 import 'package:sharehop/presentation/theme/theme.dart';
 import 'package:sharehop/presentation/view_models/connection_view_model.dart';
 import 'package:sharehop/presentation/widgets/connection/connection_tile.dart';
+import 'package:uuid/uuid_value.dart';
 
 Widget _buildTestWidget(Widget child) {
   return MaterialApp(
@@ -25,7 +26,7 @@ void main() {
       (tester) async {
       var pressed = false;
       final connection = ConnectionViewModel(
-        id: 'conn-1',
+        id: UuidValue.fromString('11111111-1111-1111-1111-111111111111'),
         protocol: ConnectionProtocol.webdav,
         displayName: 'My Storage',
         remoteAddress: 'https://storage.cloud.com',

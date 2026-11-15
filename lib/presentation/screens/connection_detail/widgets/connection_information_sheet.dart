@@ -162,11 +162,6 @@ class _ConnectionInformationSheetContent extends StatelessWidget {
                     label: 'Protocol',
                     value: connection.protocol.shortName,
                   ),
-                  _ConnectionInformationDetailTile(
-                    label: 'Connection ID',
-                    value: connection.id,
-                    onCopy: () => handleOnCopy('Connection ID', connection.id),
-                  ),
                 ],
               ),
               Row(

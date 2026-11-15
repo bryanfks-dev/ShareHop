@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sharehop/core/enums/file_conflicts_resolution.dart';
-import 'package:sharehop/presentation/controllers/app_config_controller.dart';
+import 'package:sharehop/presentation/controllers/settings_controller.dart';
 import 'package:sharehop/presentation/extensions/enums/file_conflicts_resolution_extension.dart';
 import 'package:sharehop/presentation/screens/settings/widgets/change_on_file_conflicts_resolution_sheet.dart';
 import 'package:sharehop/presentation/screens/settings/widgets/change_simultaneous_transfers_limit_sheet.dart';
@@ -12,8 +12,8 @@ class TransferPreferencesSection extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appConfig = ref.watch(appConfigControllerProvider);
-    final appConfigController = ref.watch(appConfigControllerProvider.notifier);
+    final appConfig = ref.watch(settingsControllerProvider);
+    final appConfigController = ref.watch(settingsControllerProvider.notifier);
 
     Future<void> handleOnChangeWifiOnlyTransfers({required bool value}) async {
       await appConfigController.setIsWifiOnlyTransfersEnabled(enabled: value);
@@ -34,7 +34,7 @@ class TransferPreferencesSection extends HookConsumerWidget {
     final limit = appConfig.value?.simultaneousTransfersLimit ?? 3;
 
     return SettingsSection(
-      title: 'TRANSFER PREFERENCES',
+      title: 'Transfer Preferences',
       children: [
         SettingsSectionTileWithSwitchSuffix(
           title: 'Wi-Fi only transfers',

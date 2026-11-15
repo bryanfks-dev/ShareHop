@@ -26,7 +26,7 @@ extension ConnectionProtocolExtension on ConnectionProtocol {
   String get hint {
     return switch (this) {
       ConnectionProtocol.ftp => 'Standard file transfer',
-      ConnectionProtocol.sftp => '',
+      ConnectionProtocol.sftp => 'Secure file transfer',
       ConnectionProtocol.webdav => 'HTTP(s) document storage',
       ConnectionProtocol.ftps => 'FTP protected with transport security',
       ConnectionProtocol.nfs => '',

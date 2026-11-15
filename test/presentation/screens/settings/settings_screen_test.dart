@@ -90,7 +90,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Verify sections and values are rendered
-    expect(find.text('TRANSFER PREFERENCES'), findsOneWidget);
+    expect(find.text('Transfer Preferences'), findsOneWidget);
     expect(find.text('Wi-Fi only transfers'), findsOneWidget);
     expect(find.text('Background transfers'), findsOneWidget);
     expect(find.text('Simultaneous transfers'), findsOneWidget);
@@ -98,15 +98,15 @@ void main() {
     expect(find.text('File conflicts'), findsOneWidget);
     expect(find.text('Overwrite files'), findsOneWidget);
 
-    expect(find.text('SECURITY'), findsOneWidget);
+    expect(find.text('Security'), findsOneWidget);
     expect(find.text('Biometric lock'), findsOneWidget);
 
-    expect(find.text('STORAGE'), findsOneWidget);
+    expect(find.text('Storage'), findsOneWidget);
     expect(find.text('Download destination'), findsOneWidget);
     expect(find.text('on /test/downloads'), findsOneWidget);
     expect(find.text('Clear cache'), findsOneWidget);
 
-    expect(find.text('APP PREFERENCES'), findsOneWidget);
+    expect(find.text('App Preferences'), findsOneWidget);
     expect(find.text('Appearance'), findsOneWidget);
     expect(find.text('Dark'), findsOneWidget);
 

@@ -7,7 +7,7 @@ void main() {
     test(
       'toEncryptedValueModel maps EncryptedValue to model with explicit date',
       () {
-        final mapper = EncryptedValueMapper();
+        const mapper = EncryptedValueMapper();
         final testDate = DateTime.utc(2026, 11, 7, 12);
         const vo = EncryptedValue(
           salt: 'salt123',
@@ -18,7 +18,7 @@ void main() {
 
         final model = mapper.toEncryptedValueModel(vo, date: testDate);
 
-        expect(model.id, isNotEmpty);
+        expect(model.id.uuid, isNotEmpty);
         expect(model.salt, 'salt123');
         expect(model.cipherText, 'cipher123');
         expect(model.nonce, 'nonce123');
@@ -31,7 +31,7 @@ void main() {
     test(
       'toEncryptedValueModel defaults date to current UTC time when omitted',
       () {
-        final mapper = EncryptedValueMapper();
+        const mapper = EncryptedValueMapper();
         const vo = EncryptedValue(
           salt: 'salt123',
           cipherText: 'cipher123',

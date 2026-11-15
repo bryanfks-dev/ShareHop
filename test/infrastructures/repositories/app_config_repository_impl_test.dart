@@ -92,7 +92,10 @@ void main() {
   group('AppConfigRepositoryImpl getEncryptionKey', () {
     test('generates and stores key on first retrieval', () async {
       final fakeStorage = FakeFlutterSecureStorage();
-      final repository = AppConfigRepositoryImpl(secureStorage: fakeStorage);
+      final repository = AppConfigRepositoryImpl(
+        secureStorage: fakeStorage,
+        secureRandom: const FakeSecureRandom(),
+      );
 
       final key = await repository.getEncryptionKey();
 
@@ -126,7 +129,10 @@ void main() {
         final fakeStorage = FakeFlutterSecureStorage({
           'encryption_key': 'existing-secure-encryption-key',
         });
-        final repository = AppConfigRepositoryImpl(secureStorage: fakeStorage);
+        final repository = AppConfigRepositoryImpl(
+          secureStorage: fakeStorage,
+          secureRandom: const FakeSecureRandom(),
+        );
 
         final firstCallKey = await repository.getEncryptionKey();
         final secondCallKey = await repository.getEncryptionKey();
@@ -141,7 +147,10 @@ void main() {
       'concurrent calls during initial retrieval do not overwrite each other',
       () async {
         final fakeStorage = FakeFlutterSecureStorage();
-        final repository = AppConfigRepositoryImpl(secureStorage: fakeStorage);
+        final repository = AppConfigRepositoryImpl(
+          secureStorage: fakeStorage,
+          secureRandom: const FakeSecureRandom(),
+        );
 
         final results = await Future.wait([
           repository.getEncryptionKey(),
@@ -158,7 +167,10 @@ void main() {
 
     test('getConfig triggers getEncryptionKey on initial app open', () async {
       final fakeStorage = FakeFlutterSecureStorage();
-      final repository = AppConfigRepositoryImpl(secureStorage: fakeStorage);
+      final repository = AppConfigRepositoryImpl(
+        secureStorage: fakeStorage,
+        secureRandom: const FakeSecureRandom(),
+      );
 
       final config = await repository.getConfig();
 

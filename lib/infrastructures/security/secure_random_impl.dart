@@ -5,18 +5,15 @@ import 'dart:typed_data';
 import 'package:sharehop/core/security/secure_random.dart';
 
 class SecureRandomImpl implements SecureRandom {
-  const new({this.random});
+  new({Random? random}) : _random = random ?? Random.secure();
 
-  final Random? random;
-
-  Random get _effectiveRandom => random ?? Random.secure();
+  final Random _random;
 
   @override
   Uint8List generateBytes({required int length}) {
-    final random = _effectiveRandom;
     final bytes = Uint8List(length);
     for (var i = 0; i < length; i++) {
-      bytes[i] = random.nextInt(256);
+      bytes[i] = _random.nextInt(256);
     }
     return bytes;
   }

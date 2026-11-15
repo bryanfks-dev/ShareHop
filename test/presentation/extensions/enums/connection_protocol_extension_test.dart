@@ -24,7 +24,7 @@ void main() {
 
     test('resolves hints correctly', () {
       expect(ConnectionProtocol.ftp.hint, 'Standard file transfer');
-      expect(ConnectionProtocol.sftp.hint, isEmpty);
+      expect(ConnectionProtocol.sftp.hint, 'Secure file transfer');
       expect(ConnectionProtocol.webdav.hint, 'HTTP(s) document storage');
       expect(
         ConnectionProtocol.ftps.hint,

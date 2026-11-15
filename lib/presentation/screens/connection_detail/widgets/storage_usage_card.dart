@@ -58,7 +58,7 @@ class StorageUsageCard extends StatelessWidget {
                     mainAxisSize: .min,
                     children: [
                       Text(
-                        'REMOTE STORAGE',
+                        'Remote Storage',
                         style: theme.typography.display.xs2.copyWith(
                           color: theme.colors.foreground,
                         ),

@@ -8,14 +8,20 @@ import 'package:sharehop/core/models/connection_model.dart';
 import 'package:sharehop/core/models/encrypted_value_model.dart';
 import 'package:sharehop/core/models/file_transfer_history_model.dart';
 import 'package:sharehop/core/models/pinned_connection_model.dart';
+import 'package:uuid/uuid_value.dart';
 
 void main() {
   final now = DateTime.utc(2026, 11, 7, 12);
+  final encId = UuidValue.fromString('11111111-1111-1111-1111-111111111111');
+  final connId = UuidValue.fromString('22222222-2222-2222-2222-222222222222');
+  final transferId = UuidValue.fromString(
+    '33333333-3333-3333-3333-333333333333',
+  );
 
   group('EncryptedValueModel', () {
     test('serializes to and from JSON correctly', () {
       final model = EncryptedValueModel(
-        id: 'enc-1',
+        id: encId,
         salt: 'salt123',
         nonce: 'nonce123',
         cipherText: 'cipher123',
@@ -25,7 +31,7 @@ void main() {
       );
 
       final json = model.toJson();
-      expect(json['id'], 'enc-1');
+      expect(json['id'], encId.uuid);
       expect(json['salt'], 'salt123');
       expect(json['nonce'], 'nonce123');
       expect(json['cipher_text'], 'cipher123');
@@ -40,7 +46,7 @@ void main() {
   group('ConnectionModel', () {
     test('instantiates and supports copyWith and tableName', () {
       final enc = EncryptedValueModel(
-        id: 'enc-1',
+        id: encId,
         salt: 'salt123',
         nonce: 'nonce123',
         cipherText: 'cipher123',
@@ -50,7 +56,7 @@ void main() {
       );
 
       final connection = ConnectionModel(
-        id: 'conn-1',
+        id: connId,
         protocol: ConnectionProtocol.webdav,
         displayName: 'My WebDAV',
         remoteAddress: 'https://dav.example.com',
@@ -62,7 +68,7 @@ void main() {
         rootPath: '/remote.php/webdav',
       );
 
-      expect(connection.id, 'conn-1');
+      expect(connection.id, connId);
       expect(connection.protocol, ConnectionProtocol.webdav);
       expect(connection.displayName, 'My WebDAV');
       expect(connection.remoteAddress, 'https://dav.example.com');
@@ -75,6 +81,13 @@ void main() {
       expect(copied.displayName, 'Renamed WebDAV');
       expect(copied.rootPath, '/new/path');
       expect(copied.id, connection.id);
+      expect(connection.allowSelfSignedCertificate, isFalse);
+      expect(connection.toJson()['allow_self_signed_certificate'], 0);
+
+      final withCert = connection.copyWith(allowSelfSignedCertificate: true);
+      expect(withCert.allowSelfSignedCertificate, isTrue);
+      expect(withCert.toJson()['allow_self_signed_certificate'], 1);
+
       expect(ConnectionModel.tableName, 'connections');
     });
   });
@@ -82,7 +95,7 @@ void main() {
   group('PinnedConnectionModel', () {
     test('instantiates correctly and provides tableName', () {
       final enc = EncryptedValueModel(
-        id: 'enc-1',
+        id: encId,
         salt: 'salt123',
         nonce: 'nonce123',
         cipherText: 'cipher123',
@@ -92,7 +105,7 @@ void main() {
       );
 
       final connection = ConnectionModel(
-        id: 'conn-1',
+        id: connId,
         protocol: ConnectionProtocol.webdav,
         displayName: 'My WebDAV',
         remoteAddress: 'https://dav.example.com',
@@ -105,7 +118,6 @@ void main() {
       );
 
       final pinned = PinnedConnectionModel(
-        id: 'pin-1',
         connectionId: connection.id,
         connection: connection,
         createdAt: now,
@@ -120,7 +132,7 @@ void main() {
   group('FileTransferHistoryModel', () {
     test('serializes to and from JSON correctly', () {
       final transfer = FileTransferHistoryModel(
-        id: 'transfer-1',
+        id: transferId,
         fileName: 'report.pdf',
         fileSize: 1048576,
         fileMimeType: 'application/pdf',
@@ -132,7 +144,7 @@ void main() {
       );
 
       final json = transfer.toJson();
-      expect(json['id'], 'transfer-1');
+      expect(json['id'], transferId.uuid);
       expect(json['file_name'], 'report.pdf');
       expect(json['file_size'], 1048576);
       expect(json['status'], 'completed');

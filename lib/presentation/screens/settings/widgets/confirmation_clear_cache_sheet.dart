@@ -70,16 +70,16 @@ class _ConfirmationClearCacheSheetContent extends StatelessWidget {
                 spacing: Spacing.md,
                 children: [
                   FButton(
-                    variant: .outline,
-                    size: .sm,
-                    onPress: handleOnPressCancel,
-                    child: const Text('Cancel'),
-                  ),
-                  FButton(
                     variant: .destructive,
                     size: .sm,
                     onPress: handleOnPressConfirm,
                     child: const Text('Clear'),
+                  ),
+                  FButton(
+                    variant: .outline,
+                    size: .sm,
+                    onPress: handleOnPressCancel,
+                    child: const Text('Cancel'),
                   ),
                 ],
               ),

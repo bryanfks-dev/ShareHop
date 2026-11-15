@@ -5,7 +5,7 @@ import 'package:forui/widgets/text_field.dart';
 import 'package:forui_lucide/forui_lucide.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
 
-class WebDavFormConnectionSubSection extends StatelessWidget {
+class WebDavFormConnectionGroup extends StatelessWidget {
   const new({
     this.displayNameController,
     this.remoteAddressController,

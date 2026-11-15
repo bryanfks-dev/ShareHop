@@ -5,7 +5,7 @@ import 'package:forui/widgets/text_field.dart';
 import 'package:forui_lucide/forui_lucide.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
 
-class WebDavFormCredentialSubSection extends StatelessWidget {
+class WebDavFormCredentialGroup extends StatelessWidget {
   const new({
     this.usernameController,
     this.passwordController,
@@ -33,9 +33,6 @@ class WebDavFormCredentialSubSection extends StatelessWidget {
           ),
           label: const Text('Username'),
           hint: 'Example username',
-          validator: FormBuilderValidators.compose([
-            FormBuilderValidators.required(errorText: 'Username is required'),
-          ]),
         ),
         FTextFormField.password(
           control: .managed(controller: passwordController),

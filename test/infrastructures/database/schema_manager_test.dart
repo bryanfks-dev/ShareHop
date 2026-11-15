@@ -20,6 +20,29 @@ void main() {
   });
 
   group('SchemaManager', () {
+    test('loadSchemaSql loads schema from default path successfully', () async {
+      final schemaSql = await DatabaseManager.instance.loadSchemaSql();
+
+      expect(schemaSql, isNotEmpty);
+      expect(
+        schemaSql,
+        contains('CREATE TABLE IF NOT EXISTS encrypted_values'),
+      );
+      expect(schemaSql, contains('CREATE TABLE IF NOT EXISTS connections'));
+    });
+
+    test(
+      'loadSchemaSql throws exception when file path does not exist',
+      () async {
+        await expectLater(
+          DatabaseManager.instance.loadSchemaSql(
+            filePath: 'non_existent_schema.sql',
+          ),
+          throwsA(isA<Object>()),
+        );
+      },
+    );
+
     test('applySchema executes SQL statements correctly', () async {
       const sql = '''
         CREATE TABLE test_table (
@@ -72,6 +95,43 @@ void main() {
       expect(tableNames, contains('connections'));
       expect(tableNames, contains('pinned_connections'));
       expect(tableNames, contains('file_transfer_histories'));
+
+      final indexes = await db.rawQuery(
+        "SELECT name FROM sqlite_master WHERE type='index' "
+        "AND tbl_name='connections';",
+      );
+      final indexNames = indexes.map((i) => i['name']! as String).toSet();
+      expect(indexNames, contains('idx_connections_protocol'));
     });
+
+    test(
+      'ensureSchemaCreated creates schema when tables do not exist',
+      () async {
+        final initialTables = await db.rawQuery(
+          "SELECT name FROM sqlite_master WHERE type='table' "
+          "AND name='connections';",
+        );
+        expect(initialTables, isEmpty);
+
+        await DatabaseManager.instance.ensureSchemaCreated(db: db);
+
+        final tables = await db.rawQuery(
+          "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;",
+        );
+        final tableNames = tables.map((t) => t['name']! as String).toSet();
+
+        expect(tableNames, contains('encrypted_values'));
+        expect(tableNames, contains('connections'));
+        expect(tableNames, contains('pinned_connections'));
+        expect(tableNames, contains('file_transfer_histories'));
+
+        final indexes = await db.rawQuery(
+          "SELECT name FROM sqlite_master WHERE type='index' "
+          "AND tbl_name='connections';",
+        );
+        final indexNames = indexes.map((i) => i['name']! as String).toSet();
+        expect(indexNames, contains('idx_connections_protocol'));
+      },
+    );
   });
 }

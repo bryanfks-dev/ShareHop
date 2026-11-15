@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
 
-class TestAndSaveConnectionButton extends StatelessWidget {
+class SaveConnectionButton extends StatelessWidget {
   const new({this.onPress, this.isLoading = false, super.key});
 
   final VoidCallback? onPress;
@@ -26,7 +26,7 @@ class TestAndSaveConnectionButton extends StatelessWidget {
           prefix: isLoading
               ? const FCircularProgress(size: .sm)
               : const Icon(FLucideIcons.plugZap, size: 18),
-          child: const Text('Test & save connection'),
+          child: const Text('Save connection'),
         ),
         Text(
           'Credentials stay encrypted on this device',

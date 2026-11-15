@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
+import 'package:sharehop/presentation/extensions/router/navigator_extension.dart';
+import 'package:sharehop/presentation/screens/add_connection/screen.dart';
+import 'package:sharehop/presentation/utils/connection_input_parser.dart';
 
 class QuickConnectTextField extends HookWidget {
   const new({super.key});
@@ -11,7 +14,28 @@ class QuickConnectTextField extends HookWidget {
 
     final textController = useTextEditingController();
 
-    void handleOnPressConnect() {}
+    void handleOnPressConnect() {
+      final input = textController.text.trim();
+      final parsed = parseConnectionInput(input: input);
+
+      context.navigator.push(
+        MaterialPageRoute<void>(
+          builder: (context) => AddConnectionScreen(
+            initialProtocol: parsed.protocol,
+            initialRemoteAddress: parsed.remoteAddress.isNotEmpty
+                ? parsed.remoteAddress
+                : null,
+            initialRootPath:
+                parsed.rootPath.isNotEmpty ? parsed.rootPath : null,
+            initialUsername:
+                parsed.username.isNotEmpty ? parsed.username : null,
+            initialPassword:
+                parsed.password.isNotEmpty ? parsed.password : null,
+            initialDisplayName: parsed.displayName,
+          ),
+        ),
+      );
+    }
 
     return FTextField(
       control: .managed(controller: textController),
@@ -19,6 +43,7 @@ class QuickConnectTextField extends HookWidget {
         contentPadding: .value(EdgeInsetsGeometry.symmetric(vertical: 14)),
       ),
       hint: 'Host or server address',
+      onSubmit: (_) => handleOnPressConnect(),
       prefixBuilder: (context, _, _) => Padding(
         padding: const .only(left: 12, right: 8),
         child: Icon(FLucideIcons.link, color: theme.colors.mutedForeground),

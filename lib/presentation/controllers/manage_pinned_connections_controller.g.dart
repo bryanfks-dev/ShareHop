@@ -49,7 +49,7 @@ final class ManagePinnedConnectionsControllerProvider
 }
 
 String _$managePinnedConnectionsControllerHash() =>
-    r'0a2a86cf67cd7698583321349c6a51d5bd4abcf1';
+    r'a2cea3ad4be55b9f5cc9a44a1700618c06c58606';
 
 abstract class _$ManagePinnedConnectionsController
     extends $Notifier<ManagePinnedConnectionsState> {

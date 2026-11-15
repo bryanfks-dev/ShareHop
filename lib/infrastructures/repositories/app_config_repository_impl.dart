@@ -8,17 +8,16 @@ import 'package:sharehop/core/enums/file_conflicts_resolution.dart';
 import 'package:sharehop/core/models/app_config_model.dart';
 import 'package:sharehop/core/repositories/app_config_repository.dart';
 import 'package:sharehop/core/security/secure_random.dart';
-import 'package:sharehop/infrastructures/security/secure_random_impl.dart';
 
 class AppConfigRepositoryImpl implements AppConfigRepository {
   new({
-    this.secureRandom = const SecureRandomImpl(),
+    required this._secureRandom,
     SharedPreferencesAsync? prefs,
     FlutterSecureStorage? secureStorage,
   }) : _prefs = prefs ?? SharedPreferencesAsync(),
        _secureStorage = secureStorage ?? const FlutterSecureStorage();
 
-  final SecureRandom secureRandom;
+  final SecureRandom _secureRandom;
   final SharedPreferencesAsync _prefs;
   final FlutterSecureStorage _secureStorage;
 
@@ -78,7 +77,7 @@ class AppConfigRepositoryImpl implements AppConfigRepository {
         return existingKey;
       }
 
-      final newKey = secureRandom.generateKey();
+      final newKey = _secureRandom.generateKey();
       await _secureStorage.write(key: _kEncryptionKeyStorageKey, value: newKey);
       return newKey;
     } catch (_) {

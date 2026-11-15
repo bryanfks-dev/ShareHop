@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sharehop/presentation/controllers/manage_pinned_connections_controller.dart';
 import 'package:sharehop/presentation/view_models/connection_view_model.dart';
+import 'package:uuid/uuid_value.dart';
 
 part 'connections_controller.g.dart';
 
@@ -19,7 +20,7 @@ class ConnectionsController extends _$ConnectionsController {
         .pinnedConnections;
   }
 
-  ConnectionViewModel? getPinnedConnection({String? id}) {
+  ConnectionViewModel? getPinnedConnection({UuidValue? id}) {
     final pinned = getPinnedConnections();
     if (id == null) {
       return pinned.firstOrNull;

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
+import 'package:forui/forui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sharehop/di/app_config_di.dart';
-import 'package:sharehop/presentation/controllers/app_config_controller.dart';
+import 'package:sharehop/presentation/controllers/settings_controller.dart';
 import 'package:sharehop/presentation/screens/settings/widgets/confirmation_biometric_lock_sheet.dart';
 import 'package:sharehop/presentation/screens/settings/widgets/information_biometrics_unavailable_sheet.dart';
 import 'package:sharehop/presentation/screens/settings/widgets/settings_section.dart';
@@ -11,19 +11,29 @@ class SecuritySection extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appConfig = ref.watch(appConfigControllerProvider);
-    final appConfigController = ref.watch(appConfigControllerProvider.notifier);
-    final biometricGateway = ref.watch(biometricLockGatewayProvider);
+    final appConfig = ref.watch(settingsControllerProvider);
+    final appConfigController = ref.watch(settingsControllerProvider.notifier);
 
     Future<void> handleOnProceedEnableBiometricLock() async {
       try {
-        final authenticated = await biometricGateway.authenticateUser(
+        final authenticated = await appConfigController.authenticateBiometric(
           localizedMessage: 'Authenticate to enable biometric lock',
         );
 
-        if (authenticated) {
-          await appConfigController.setIsBiometricLockEnabled(enabled: true);
+        if (!authenticated) {
+          return;
         }
+
+        await appConfigController.setIsBiometricLockEnabled(enabled: true);
+
+        if (!context.mounted) {
+          return;
+        }
+
+        showFToast(
+          context: context,
+          title: const Text('Biometric lock enabled'),
+        );
       } on Object {
         // If authentication is cancelled or errors, state remains unchanged
       }
@@ -31,7 +41,7 @@ class SecuritySection extends HookConsumerWidget {
 
     Future<void> handleOnChangeBiometricLock({required bool value}) async {
       try {
-        final isSupported = await biometricGateway.checkDeviceSupported();
+        final isSupported = await appConfigController.checkBiometricSupported();
         if (!context.mounted) {
           return;
         }
@@ -47,7 +57,7 @@ class SecuritySection extends HookConsumerWidget {
             onProceed: handleOnProceedEnableBiometricLock,
           );
         } else {
-          final authenticated = await biometricGateway.authenticateUser(
+          final authenticated = await appConfigController.authenticateBiometric(
             localizedMessage: 'Authenticate to disable biometric lock',
           );
 
@@ -64,7 +74,7 @@ class SecuritySection extends HookConsumerWidget {
         appConfig.value?.isBiometricLockEnabled ?? false;
 
     return SettingsSection(
-      title: 'SECURITY',
+      title: 'Security',
       children: [
         SettingsSectionTileWithSwitchSuffix(
           title: 'Biometric lock',

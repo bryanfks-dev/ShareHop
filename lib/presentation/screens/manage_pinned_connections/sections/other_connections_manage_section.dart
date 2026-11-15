@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
+import 'package:sharehop/core/enums/connection_protocol.dart';
 import 'package:sharehop/presentation/controllers/manage_pinned_connections_controller.dart';
 import 'package:sharehop/presentation/extensions/router/navigator_extension.dart';
 import 'package:sharehop/presentation/screens/connection_detail/screen.dart';
 import 'package:sharehop/presentation/screens/manage_pinned_connections/widgets/manage_other_connections_empty_state.dart';
+import 'package:sharehop/presentation/screens/manage_pinned_connections/widgets/manage_other_connections_filter_chips.dart';
 import 'package:sharehop/presentation/screens/manage_pinned_connections/widgets/manage_other_connections_tile_group.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
 import 'package:sharehop/presentation/view_models/connection_view_model.dart';
@@ -16,7 +18,7 @@ class OtherConnectionsManageSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = context.theme;
     final state = ref.watch(managePinnedConnectionsControllerProvider);
-    final other = state.otherConnections;
+    final other = state.filteredOtherConnections;
 
     void handleOnPressPin({required ConnectionViewModel connection}) {
       final success = ref
@@ -39,18 +41,30 @@ class OtherConnectionsManageSection extends ConsumerWidget {
       );
     }
 
+    void handleOnPressFilterProtocol({
+      required ConnectionProtocol? protocol,
+    }) {
+      ref
+          .read(managePinnedConnectionsControllerProvider.notifier)
+          .filterByProtocol(protocol);
+    }
+
     return Column(
       crossAxisAlignment: .start,
       spacing: Spacing.sm,
       mainAxisSize: .min,
       children: [
         Text(
-          'OTHER CONNECTIONS',
+          'Other Connections (${other.length})',
           style: theme.typography.display.xs2.copyWith(
             color: theme.colors.mutedForeground,
             fontWeight: .w700,
             letterSpacing: 0.5,
           ),
+        ),
+        ManageOtherConnectionsFilterChips(
+          selectedProtocol: state.selectedProtocol,
+          onPressProtocol: handleOnPressFilterProtocol,
         ),
         Builder(
           builder: (context) {

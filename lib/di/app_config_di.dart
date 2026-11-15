@@ -1,7 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sharehop/core/gateways/biometric_lock_gateway.dart';
 import 'package:sharehop/core/repositories/app_config_repository.dart';
-import 'package:sharehop/core/security/secure_random.dart';
+import 'package:sharehop/core/use_cases/authenticate_biometric_lock_use_case.dart';
+import 'package:sharehop/core/use_cases/check_device_biometric_supported_use_case.dart';
 import 'package:sharehop/core/use_cases/clear_cache_use_case.dart';
 import 'package:sharehop/core/use_cases/get_app_config_use_case.dart';
 import 'package:sharehop/core/use_cases/get_cache_size_use_case.dart';
@@ -12,14 +13,11 @@ import 'package:sharehop/core/use_cases/update_is_biometric_lock_enabled_use_cas
 import 'package:sharehop/core/use_cases/update_is_wifi_only_transfers_enabled_use_case.dart';
 import 'package:sharehop/core/use_cases/update_on_file_conflicts_resolution_use_case.dart';
 import 'package:sharehop/core/use_cases/update_simultaneous_transfers_limit_use_case.dart';
+import 'package:sharehop/di/security_di.dart';
 import 'package:sharehop/infrastructures/gateways/biometric_gateway_impl.dart';
 import 'package:sharehop/infrastructures/repositories/app_config_repository_impl.dart';
-import 'package:sharehop/infrastructures/security/secure_random_impl.dart';
 
 part 'app_config_di.g.dart';
-
-@Riverpod(keepAlive: true)
-SecureRandom secureRandom(Ref ref) => const SecureRandomImpl();
 
 @Riverpod(keepAlive: true)
 AppConfigRepository appConfigRepository(Ref ref) =>
@@ -87,3 +85,17 @@ UpdateAppAppearanceUseCase updateAppAppearanceUseCase(Ref ref) =>
     UpdateAppAppearanceUseCase(
       appConfigRepository: ref.watch(appConfigRepositoryProvider),
     );
+
+@Riverpod(keepAlive: true)
+CheckDeviceBiometricSupportedUseCase checkDeviceBiometricSupportedUseCase(
+  Ref ref,
+) => CheckDeviceBiometricSupportedUseCase(
+  biometricLockGateway: ref.watch(biometricLockGatewayProvider),
+);
+
+@Riverpod(keepAlive: true)
+AuthenticateBiometricLockUseCase authenticateBiometricLockUseCase(
+  Ref ref,
+) => AuthenticateBiometricLockUseCase(
+  biometricLockGateway: ref.watch(biometricLockGatewayProvider),
+);

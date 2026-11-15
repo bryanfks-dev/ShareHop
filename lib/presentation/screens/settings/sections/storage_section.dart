@@ -2,8 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sharehop/di/app_config_di.dart';
-import 'package:sharehop/presentation/controllers/app_config_controller.dart';
+import 'package:sharehop/presentation/controllers/settings_controller.dart';
 import 'package:sharehop/presentation/screens/settings/widgets/change_download_destination_sheet.dart';
 import 'package:sharehop/presentation/screens/settings/widgets/confirmation_clear_cache_sheet.dart';
 import 'package:sharehop/presentation/screens/settings/widgets/settings_section.dart';
@@ -14,16 +13,15 @@ class StorageSection extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appConfig = ref.watch(appConfigControllerProvider);
-    final appConfigController = ref.watch(appConfigControllerProvider.notifier);
-    final getCacheSizeUseCase = ref.watch(getCacheSizeUseCaseProvider);
+    final appConfig = ref.watch(settingsControllerProvider);
+    final appConfigController = ref.watch(settingsControllerProvider.notifier);
 
     final downloadDestination = appConfig.value?.downloadDestinationPath ?? '/';
 
     final cacheSizeBytes = useState<int>(0);
 
     useEffect(() {
-      cacheSizeBytes.value = getCacheSizeUseCase();
+      cacheSizeBytes.value = appConfigController.getCacheSize();
       return null;
     }, const []);
 
@@ -33,7 +31,7 @@ class StorageSection extends HookConsumerWidget {
 
     Future<void> handleOnConfirmClearCache() async {
       await appConfigController.clearCache();
-      cacheSizeBytes.value = getCacheSizeUseCase();
+      cacheSizeBytes.value = appConfigController.getCacheSize();
       if (context.mounted) {
         showFToast(
           context: context,
@@ -58,7 +56,7 @@ class StorageSection extends HookConsumerWidget {
     }
 
     return SettingsSection(
-      title: 'STORAGE',
+      title: 'Storage',
       children: [
         SettingsSectionTileWithTextSuffix(
           onPress: handleOnPressDownloadDestination,

@@ -38,7 +38,7 @@ class PinnedConnectionsManageSection extends ConsumerWidget {
       mainAxisSize: .min,
       children: [
         Text(
-          'PINNED (${pinned.length})',
+          'Pinned (${pinned.length})',
           style: theme.typography.display.xs2.copyWith(
             color: theme.colors.mutedForeground,
             fontWeight: .w700,

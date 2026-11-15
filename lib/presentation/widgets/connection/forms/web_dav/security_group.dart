@@ -26,7 +26,7 @@ const kWebDavFormSecurityAuthenticationMethods = [
   ),
 ];
 
-class WebDavFormSecuritySubSection extends StatelessWidget {
+class WebDavFormSecurityGroup extends StatelessWidget {
   const new({
     this.authenticationMethodTabController,
     this.validateCertificate = true,

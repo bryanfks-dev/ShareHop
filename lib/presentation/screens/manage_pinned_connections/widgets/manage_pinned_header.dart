@@ -1,11 +1,18 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
+import 'package:sharehop/presentation/extensions/router/navigator_extension.dart';
+import 'package:sharehop/presentation/screens/add_connection/screen.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
 
 class ManagePinnedHeader extends StatelessWidget {
-  const new({required this.onPressDone, super.key});
+  const new({
+    required this.onPressDone,
+    this.onPressAddConnection,
+    super.key,
+  });
 
   final VoidCallback onPressDone;
+  final VoidCallback? onPressAddConnection;
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +20,18 @@ class ManagePinnedHeader extends StatelessWidget {
 
     void handleOnPressDone() {
       onPressDone();
+    }
+
+    void handleOnPressAddConnection() {
+      if (onPressAddConnection != null) {
+        onPressAddConnection!();
+      } else {
+        context.navigator.push(
+          MaterialPageRoute<void>(
+            builder: (context) => const AddConnectionScreen(),
+          ),
+        );
+      }
     }
 
     return FHeader(
@@ -52,6 +71,19 @@ class ManagePinnedHeader extends StatelessWidget {
           ),
         ],
       ),
+      suffixes: [
+        FButton.icon(
+          size: .sm,
+          semanticsLabel: 'Add connection',
+          onPress: handleOnPressAddConnection,
+          style: .delta(
+            decoration: .delta([
+              .all(const .shapeDelta(shape: CircleBorder())),
+            ]),
+          ),
+          child: const Icon(FLucideIcons.plus),
+        ),
+      ],
     );
   }
 }

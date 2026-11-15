@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sharehop/infrastructures/security/derived_key_secret_chiper.dart';
+import 'package:sharehop/infrastructures/security/derived_key_secret_cipher.dart';
 
 void main() {
-  group('DerivedKeySecretChiper', () {
+  group('DerivedKeySecretCipher', () {
     test('encrypts and decrypts text back to original value', () async {
-      final cipher = DerivedKeySecretChiper('my-super-secret-key-12345');
+      final cipher = DerivedKeySecretCipher('my-super-secret-key-12345');
 
       const originalText = 'SuperSecretPassword!';
       final encrypted = await cipher.encrypt(originalText);
@@ -20,8 +20,8 @@ void main() {
     });
 
     test('decrypting with wrong secret fails', () async {
-      final cipher = DerivedKeySecretChiper('secret-a');
-      final otherCipher = DerivedKeySecretChiper('secret-b');
+      final cipher = DerivedKeySecretCipher('secret-a');
+      final otherCipher = DerivedKeySecretCipher('secret-b');
 
       final encrypted = await cipher.encrypt('Hello World');
 

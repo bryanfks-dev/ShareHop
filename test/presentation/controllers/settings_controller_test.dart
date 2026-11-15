@@ -5,7 +5,7 @@ import 'package:sharehop/core/enums/file_conflicts_resolution.dart';
 import 'package:sharehop/core/models/app_config_model.dart';
 import 'package:sharehop/core/repositories/app_config_repository.dart';
 import 'package:sharehop/di/app_config_di.dart';
-import 'package:sharehop/presentation/controllers/app_config_controller.dart';
+import 'package:sharehop/presentation/controllers/settings_controller.dart';
 
 class FakeAppConfigRepository implements AppConfigRepository {
   AppConfigModel model = AppConfigModel(
@@ -68,7 +68,7 @@ class FakeAppConfigRepository implements AppConfigRepository {
     required FileConflictsResolution resolution,
   }) async {
     if (shouldThrow) {
-      throw Exception('Failed to set resolution');
+      throw Exception('Failed to set file conflict resolution');
     }
     model = model.copyWith(onFileConflictsResolution: resolution);
   }
@@ -76,7 +76,7 @@ class FakeAppConfigRepository implements AppConfigRepository {
   @override
   Future<void> setMaxSimultaneousTransfers({required int limit}) async {
     if (shouldThrow) {
-      throw Exception('Failed to set limit');
+      throw Exception('Failed to set max simultaneous transfers');
     }
     model = model.copyWith(simultaneousTransfersLimit: limit);
   }
@@ -84,19 +84,18 @@ class FakeAppConfigRepository implements AppConfigRepository {
   @override
   Future<void> setWifiOnlyTransfersEnabled({required bool enabled}) async {
     if (shouldThrow) {
-      throw Exception('Failed to set wifi only');
+      throw Exception('Failed to set wifi only transfers');
     }
     model = model.copyWith(isWifiOnlyTransfersEnabled: enabled);
   }
 }
 
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
-
-  late FakeAppConfigRepository repository;
   late ProviderContainer container;
+  late FakeAppConfigRepository repository;
 
   setUp(() {
+    TestWidgetsFlutterBinding.ensureInitialized();
     repository = FakeAppConfigRepository();
     container = ProviderContainer(
       overrides: [appConfigRepositoryProvider.overrideWithValue(repository)],
@@ -107,9 +106,9 @@ void main() {
     container.dispose();
   });
 
-  group('AppConfigController', () {
+  group('SettingsController', () {
     test('loads initial config on build', () async {
-      final config = await container.read(appConfigControllerProvider.future);
+      final config = await container.read(settingsControllerProvider.future);
       expect(config.isWifiOnlyTransfersEnabled, isTrue);
       expect(config.simultaneousTransfersLimit, 3);
       expect(config.downloadDestinationPath, '/default');
@@ -118,14 +117,14 @@ void main() {
     test(
       'updates isWifiOnlyTransfersEnabled optimistically and persists',
       () async {
-        await container.read(appConfigControllerProvider.future);
-        final controller = container.read(appConfigControllerProvider.notifier);
+        await container.read(settingsControllerProvider.future);
+        final controller = container.read(settingsControllerProvider.notifier);
 
         await controller.setIsWifiOnlyTransfersEnabled(enabled: false);
 
         expect(
           container
-              .read(appConfigControllerProvider)
+              .read(settingsControllerProvider)
               .value
               ?.isWifiOnlyTransfersEnabled,
           isFalse,
@@ -137,15 +136,15 @@ void main() {
     test(
       'rolls back isWifiOnlyTransfersEnabled when repository fails',
       () async {
-        await container.read(appConfigControllerProvider.future);
-        final controller = container.read(appConfigControllerProvider.notifier);
+        await container.read(settingsControllerProvider.future);
+        final controller = container.read(settingsControllerProvider.notifier);
 
         repository.shouldThrow = true;
         await controller.setIsWifiOnlyTransfersEnabled(enabled: false);
 
         expect(
           container
-              .read(appConfigControllerProvider)
+              .read(settingsControllerProvider)
               .value
               ?.isWifiOnlyTransfersEnabled,
           isTrue,
@@ -156,14 +155,14 @@ void main() {
     test(
       'updates isBackgroundTransfersEnabled optimistically and persists',
       () async {
-        await container.read(appConfigControllerProvider.future);
-        final controller = container.read(appConfigControllerProvider.notifier);
+        await container.read(settingsControllerProvider.future);
+        final controller = container.read(settingsControllerProvider.notifier);
 
         await controller.setIsBackgroundTransfersEnabled(enabled: false);
 
         expect(
           container
-              .read(appConfigControllerProvider)
+              .read(settingsControllerProvider)
               .value
               ?.isBackgroundTransfersEnabled,
           isFalse,
@@ -175,14 +174,14 @@ void main() {
     test(
       'updates simultaneousTransfersLimit optimistically and persists',
       () async {
-        await container.read(appConfigControllerProvider.future);
-        final controller = container.read(appConfigControllerProvider.notifier);
+        await container.read(settingsControllerProvider.future);
+        final controller = container.read(settingsControllerProvider.notifier);
 
         await controller.setSimultaneousTransfersLimit(limit: 5);
 
         expect(
           container
-              .read(appConfigControllerProvider)
+              .read(settingsControllerProvider)
               .value
               ?.simultaneousTransfersLimit,
           5,
@@ -194,8 +193,8 @@ void main() {
     test(
       'updates onFileConflictsResolution optimistically and persists',
       () async {
-        await container.read(appConfigControllerProvider.future);
-        final controller = container.read(appConfigControllerProvider.notifier);
+        await container.read(settingsControllerProvider.future);
+        final controller = container.read(settingsControllerProvider.notifier);
 
         await controller.setOnFileConflictsResolution(
           resolution: FileConflictsResolution.overwrite,
@@ -203,7 +202,7 @@ void main() {
 
         expect(
           container
-              .read(appConfigControllerProvider)
+              .read(settingsControllerProvider)
               .value
               ?.onFileConflictsResolution,
           FileConflictsResolution.overwrite,
@@ -218,14 +217,14 @@ void main() {
     test(
       'updates isBiometricLockEnabled optimistically and persists',
       () async {
-        await container.read(appConfigControllerProvider.future);
-        final controller = container.read(appConfigControllerProvider.notifier);
+        await container.read(settingsControllerProvider.future);
+        final controller = container.read(settingsControllerProvider.notifier);
 
         await controller.setIsBiometricLockEnabled(enabled: true);
 
         expect(
           container
-              .read(appConfigControllerProvider)
+              .read(settingsControllerProvider)
               .value
               ?.isBiometricLockEnabled,
           isTrue,
@@ -237,14 +236,14 @@ void main() {
     test(
       'updates downloadDestinationPath optimistically and persists',
       () async {
-        await container.read(appConfigControllerProvider.future);
-        final controller = container.read(appConfigControllerProvider.notifier);
+        await container.read(settingsControllerProvider.future);
+        final controller = container.read(settingsControllerProvider.notifier);
 
         await controller.setDownloadDestinationPath(path: '/new/path');
 
         expect(
           container
-              .read(appConfigControllerProvider)
+              .read(settingsControllerProvider)
               .value
               ?.downloadDestinationPath,
           '/new/path',
@@ -254,21 +253,21 @@ void main() {
     );
 
     test('updates appAppearance optimistically and persists', () async {
-      await container.read(appConfigControllerProvider.future);
-      final controller = container.read(appConfigControllerProvider.notifier);
+      await container.read(settingsControllerProvider.future);
+      final controller = container.read(settingsControllerProvider.notifier);
 
       await controller.setAppAppearance(theme: AppTheme.dark);
 
       expect(
-        container.read(appConfigControllerProvider).value?.appAppearance,
+        container.read(settingsControllerProvider).value?.appAppearance,
         AppTheme.dark,
       );
       expect(repository.model.appAppearance, AppTheme.dark);
     });
 
     test('clearCache executes without error', () async {
-      await container.read(appConfigControllerProvider.future);
-      final controller = container.read(appConfigControllerProvider.notifier);
+      await container.read(settingsControllerProvider.future);
+      final controller = container.read(settingsControllerProvider.notifier);
 
       await expectLater(controller.clearCache(), completes);
     });

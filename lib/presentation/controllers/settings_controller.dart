@@ -4,10 +4,10 @@ import 'package:sharehop/core/enums/file_conflicts_resolution.dart';
 import 'package:sharehop/core/models/app_config_model.dart';
 import 'package:sharehop/di/app_config_di.dart';
 
-part 'app_config_controller.g.dart';
+part 'settings_controller.g.dart';
 
 @Riverpod(keepAlive: true)
-class AppConfigController extends _$AppConfigController {
+class SettingsController extends _$SettingsController {
   @override
   Future<AppConfigModel> build() async =>
       await ref.watch(getAppConfigUseCaseProvider)();
@@ -122,9 +122,22 @@ class AppConfigController extends _$AppConfigController {
     }
   }
 
-  Future<void> clearCache() async {
-    await ref.read(clearCacheUseCaseProvider).call();
-  }
+  Future<void> clearCache() async =>
+      await ref.read(clearCacheUseCaseProvider).call();
+
+  int getCacheSize() => ref.read(getCacheSizeUseCaseProvider).call();
+
+  Future<bool> checkBiometricSupported() async =>
+      await ref.read(checkDeviceBiometricSupportedUseCaseProvider).call();
+
+  Future<bool> authenticateBiometric({
+    required String localizedMessage,
+  }) async => await ref
+      .read(authenticateBiometricLockUseCaseProvider)
+      .call(localizedMessage: localizedMessage);
+
+  Future<AppConfigModel> getAppConfig() async =>
+      await ref.read(getAppConfigUseCaseProvider).call();
 
   Future<void> setAppAppearance({required AppTheme theme}) async {
     final current = state.value;

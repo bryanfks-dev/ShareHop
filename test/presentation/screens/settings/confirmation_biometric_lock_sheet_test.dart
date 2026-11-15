@@ -164,7 +164,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('SECURITY'), findsOneWidget);
+    expect(find.text('Security'), findsOneWidget);
     expect(find.text('Biometric lock'), findsOneWidget);
 
     // Tap Biometric lock to enable it
@@ -182,5 +182,49 @@ void main() {
     // Verify biometric authentication was requested and enabled
     expect(fakeBiometricService.authenticateUserCalls, 1);
     expect(fakeRepo.model.isBiometricLockEnabled, isTrue);
+    expect(find.text('Biometric lock enabled'), findsOneWidget);
   });
+
+  testWidgets(
+    'SecuritySection does not show toast when biometric authentication fails',
+    (tester) async {
+      final fakeRepo = FakeAppConfigRepository();
+      final fakeBiometricService =
+          FakeBiometricLockGateway(authenticatedResult: false);
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            appConfigRepositoryProvider.overrideWithValue(fakeRepo),
+            biometricLockGatewayProvider
+                .overrideWithValue(fakeBiometricService),
+          ],
+          child: MaterialApp(
+            localizationsDelegates: const [
+              ...FLocalizations.localizationsDelegates,
+            ],
+            builder: (context, child) => FTheme(
+              data: lightTheme,
+              child: FToaster(child: child!),
+            ),
+            home: const Scaffold(body: SecuritySection()),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Tap Biometric lock to enable it
+      await tester.tap(find.text('Biometric lock'));
+      await tester.pumpAndSettle();
+
+      // Tap proceed
+      await tester.tap(find.text('Proceed'));
+      await tester.pumpAndSettle();
+
+      expect(fakeBiometricService.authenticateUserCalls, 1);
+      expect(fakeRepo.model.isBiometricLockEnabled, isFalse);
+      expect(find.text('Biometric lock enabled'), findsNothing);
+    },
+  );
 }

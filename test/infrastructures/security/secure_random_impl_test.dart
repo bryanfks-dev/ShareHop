@@ -7,12 +7,12 @@ import 'package:sharehop/infrastructures/security/secure_random_impl.dart';
 void main() {
   group('SecureRandomImpl', () {
     test('implements SecureRandom interface', () {
-      const SecureRandom secureRandom = SecureRandomImpl();
+      final SecureRandom secureRandom = SecureRandomImpl();
       expect(secureRandom, isA<SecureRandom>());
     });
 
     test('generateKey generates non-empty string without padding', () {
-      const secureRandom = SecureRandomImpl();
+      final secureRandom = SecureRandomImpl();
       final key = secureRandom.generateKey();
 
       expect(key, isNotEmpty);
@@ -20,7 +20,7 @@ void main() {
     });
 
     test('generateKey generates unique keys across multiple invocations', () {
-      const secureRandom = SecureRandomImpl();
+      final secureRandom = SecureRandomImpl();
       final keys = List.generate(20, (_) => secureRandom.generateKey());
       final uniqueKeys = keys.toSet();
 
@@ -28,7 +28,7 @@ void main() {
     });
 
     test('generateString behaves consistently with key generation', () {
-      const secureRandom = SecureRandomImpl();
+      final secureRandom = SecureRandomImpl();
       final str1 = secureRandom.generateString();
       final str2 = secureRandom.generateString();
 
@@ -38,7 +38,7 @@ void main() {
     });
 
     test('generateBytes generates requested number of random bytes', () {
-      const secureRandom = SecureRandomImpl();
+      final secureRandom = SecureRandomImpl();
       final bytes16 = secureRandom.generateBytes(length: 16);
       final bytes32 = secureRandom.generateBytes(length: 32);
 
@@ -47,7 +47,7 @@ void main() {
     });
 
     test('generateBytes generates unique byte sequences', () {
-      const secureRandom = SecureRandomImpl();
+      final secureRandom = SecureRandomImpl();
       final bytes1 = secureRandom.generateBytes(length: 32);
       final bytes2 = secureRandom.generateBytes(length: 32);
 

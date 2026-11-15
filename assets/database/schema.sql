@@ -16,11 +16,13 @@ CREATE TABLE IF NOT EXISTS connections (
     username TEXT NOT NULL,
     password_id TEXT NOT NULL,
     root_path TEXT NOT NULL,
-    status TEXT NOT NULL DEFAULT 'offline' CHECK (status IN ('online', 'ready', 'idle', 'offline')),
+    allow_self_signed_certificate INTEGER NOT NULL CHECK (allow_self_signed_certificate IN (0, 1)),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (password_id) REFERENCES encrypted_values(id) ON DELETE CASCADE
 );
+
+CREATE INDEX IF NOT EXISTS idx_connections_protocol ON connections (protocol);
 
 CREATE TABLE IF NOT EXISTS pinned_connections (
     connection_id TEXT PRIMARY KEY NOT NULL,

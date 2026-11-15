@@ -30,6 +30,7 @@ class ConnectionIdentityCard extends StatelessWidget {
                   children: [
                     ConnectionProtocolGlyph(
                       connectionProtocol: connection.protocol,
+                      status: connection.status,
                       size: 52,
                     ),
                     Expanded(

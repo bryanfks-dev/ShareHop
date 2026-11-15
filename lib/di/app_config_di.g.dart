@@ -9,47 +9,6 @@ part of 'app_config_di.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(secureRandom)
-final secureRandomProvider = SecureRandomProvider._();
-
-final class SecureRandomProvider
-    extends $FunctionalProvider<SecureRandom, SecureRandom, SecureRandom>
-    with $Provider<SecureRandom> {
-  SecureRandomProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'secureRandomProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$secureRandomHash();
-
-  @$internal
-  @override
-  $ProviderElement<SecureRandom> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  SecureRandom create(Ref ref) {
-    return secureRandom(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SecureRandom value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<SecureRandom>(value),
-    );
-  }
-}
-
-String _$secureRandomHash() => r'0cb52bb76efad328678856f2395b0542994cc32d';
-
 @ProviderFor(appConfigRepository)
 final appConfigRepositoryProvider = AppConfigRepositoryProvider._();
 
@@ -644,3 +603,105 @@ final class UpdateAppAppearanceUseCaseProvider
 
 String _$updateAppAppearanceUseCaseHash() =>
     r'7eeb7e75f981be02afeadd30ebf2abdfa7c679c6';
+
+@ProviderFor(checkDeviceBiometricSupportedUseCase)
+final checkDeviceBiometricSupportedUseCaseProvider =
+    CheckDeviceBiometricSupportedUseCaseProvider._();
+
+final class CheckDeviceBiometricSupportedUseCaseProvider
+    extends
+        $FunctionalProvider<
+          CheckDeviceBiometricSupportedUseCase,
+          CheckDeviceBiometricSupportedUseCase,
+          CheckDeviceBiometricSupportedUseCase
+        >
+    with $Provider<CheckDeviceBiometricSupportedUseCase> {
+  CheckDeviceBiometricSupportedUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'checkDeviceBiometricSupportedUseCaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() =>
+      _$checkDeviceBiometricSupportedUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<CheckDeviceBiometricSupportedUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  CheckDeviceBiometricSupportedUseCase create(Ref ref) {
+    return checkDeviceBiometricSupportedUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(CheckDeviceBiometricSupportedUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride:
+          $SyncValueProvider<CheckDeviceBiometricSupportedUseCase>(value),
+    );
+  }
+}
+
+String _$checkDeviceBiometricSupportedUseCaseHash() =>
+    r'cd57d6e7ce3cedc8ec55dd14d9976e3317c01b74';
+
+@ProviderFor(authenticateBiometricLockUseCase)
+final authenticateBiometricLockUseCaseProvider =
+    AuthenticateBiometricLockUseCaseProvider._();
+
+final class AuthenticateBiometricLockUseCaseProvider
+    extends
+        $FunctionalProvider<
+          AuthenticateBiometricLockUseCase,
+          AuthenticateBiometricLockUseCase,
+          AuthenticateBiometricLockUseCase
+        >
+    with $Provider<AuthenticateBiometricLockUseCase> {
+  AuthenticateBiometricLockUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'authenticateBiometricLockUseCaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$authenticateBiometricLockUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<AuthenticateBiometricLockUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  AuthenticateBiometricLockUseCase create(Ref ref) {
+    return authenticateBiometricLockUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AuthenticateBiometricLockUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AuthenticateBiometricLockUseCase>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$authenticateBiometricLockUseCaseHash() =>
+    r'1a6785d1390d219d2a030aa15cfec1c303fa73e9';

@@ -11,7 +11,9 @@ class ConnectionViewModel {
     required this.username,
     required this.password,
     required this.isPinned,
-    this.status = ConnectionStatus.idle,
+    this.rootPath = '/',
+    this.allowSelfSignedCertificate = false,
+    this.status = ConnectionStatus.offline,
   });
 
   final UuidValue id;
@@ -20,6 +22,8 @@ class ConnectionViewModel {
   String remoteAddress;
   String username;
   String password;
+  String rootPath;
+  bool allowSelfSignedCertificate;
   bool isPinned;
   ConnectionStatus status;
 }

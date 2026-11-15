@@ -9,15 +9,14 @@ void main() {
       final result = converter.fromJson('hello');
 
       expect(result, const NotRequiredValue<String>('hello'));
-      expect(result.value, 'hello');
+      expect(result?.value, 'hello');
     });
 
-    test('fromJson wraps null value', () {
+    test('fromJson returns null for null input', () {
       const converter = NotRequiredValueConverter<String>();
       final result = converter.fromJson(null);
 
-      expect(result, const NotRequiredValue<String>(null));
-      expect(result.value, isNull);
+      expect(result, isNull);
     });
 
     test('toJson extracts non-null value', () {
