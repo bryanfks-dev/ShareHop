@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:forui_lucide/forui_lucide.dart';
 
-const _imageExtensions = {
+const _kImageExtensions = {
   'png',
   'jpg',
   'jpeg',
@@ -22,7 +22,7 @@ const _imageExtensions = {
   'eps',
 };
 
-const _videoExtensions = {
+const _kVideoExtensions = {
   'mp4',
   'mkv',
   'mov',
@@ -39,7 +39,7 @@ const _videoExtensions = {
   'vob',
 };
 
-const _audioExtensions = {
+const _kAudioExtensions = {
   'mp3',
   'wav',
   'flac',
@@ -54,7 +54,7 @@ const _audioExtensions = {
   'midi',
 };
 
-const _documentExtensions = {
+const _kDocumentExtensions = {
   'txt',
   'md',
   'markdown',
@@ -70,7 +70,7 @@ const _documentExtensions = {
   'mobi',
 };
 
-const _spreadsheetExtensions = {
+const _kSpreadsheetExtensions = {
   'xls',
   'xlsx',
   'csv',
@@ -81,7 +81,7 @@ const _spreadsheetExtensions = {
   'xlsb',
 };
 
-const _archiveExtensions = {
+const _kArchiveExtensions = {
   'zip',
   'rar',
   '7z',
@@ -100,7 +100,7 @@ const _archiveExtensions = {
   'rpm',
 };
 
-const _codeExtensions = {
+const _kCodeExtensions = {
   'dart',
   'js',
   'mjs',
@@ -147,7 +147,7 @@ const _codeExtensions = {
   'asm',
 };
 
-const _jsonExtensions = {
+const _kJsonExtensions = {
   'json',
   'json5',
   'jsonc',
@@ -156,7 +156,7 @@ const _jsonExtensions = {
   'geojson',
 };
 
-const _scriptExtensions = {
+const _kScriptExtensions = {
   'sh',
   'bash',
   'zsh',
@@ -167,7 +167,7 @@ const _scriptExtensions = {
   'psm1',
 };
 
-const _configExtensions = {
+const _kConfigExtensions = {
   'yaml',
   'yml',
   'toml',
@@ -181,7 +181,7 @@ const _configExtensions = {
   'gitignore',
 };
 
-const _keyExtensions = {
+const _kKeyExtensions = {
   'key',
   'pem',
   'cer',
@@ -193,9 +193,16 @@ const _keyExtensions = {
   'csr',
 };
 
-const _databaseExtensions = {'db', 'sqlite', 'sqlite3', 'sql', 'mdb', 'accdb'};
+const _kDatabaseExtensions = {
+  'db',
+  'sqlite',
+  'sqlite3',
+  'sql',
+  'mdb',
+  'accdb',
+};
 
-const _fontExtensions = {'ttf', 'otf', 'woff', 'woff2', 'eot'};
+const _kFontExtensions = {'ttf', 'otf', 'woff', 'woff2', 'eot'};
 
 IconData resolveFileIcon({
   required String? fileNameOrExtension,
@@ -210,43 +217,43 @@ IconData resolveFileIcon({
     return fallback;
   }
 
-  if (_imageExtensions.contains(ext)) {
+  if (_kImageExtensions.contains(ext)) {
     return FLucideIcons.fileImage;
   }
-  if (_videoExtensions.contains(ext)) {
+  if (_kVideoExtensions.contains(ext)) {
     return FLucideIcons.fileVideo;
   }
-  if (_audioExtensions.contains(ext)) {
+  if (_kAudioExtensions.contains(ext)) {
     return FLucideIcons.fileMusic;
   }
-  if (_documentExtensions.contains(ext)) {
+  if (_kDocumentExtensions.contains(ext)) {
     return FLucideIcons.fileText;
   }
-  if (_spreadsheetExtensions.contains(ext)) {
+  if (_kSpreadsheetExtensions.contains(ext)) {
     return FLucideIcons.fileSpreadsheet;
   }
-  if (_archiveExtensions.contains(ext)) {
+  if (_kArchiveExtensions.contains(ext)) {
     return FLucideIcons.fileArchive;
   }
-  if (_codeExtensions.contains(ext)) {
+  if (_kCodeExtensions.contains(ext)) {
     return FLucideIcons.fileCode;
   }
-  if (_jsonExtensions.contains(ext)) {
+  if (_kJsonExtensions.contains(ext)) {
     return FLucideIcons.fileJson;
   }
-  if (_scriptExtensions.contains(ext)) {
+  if (_kScriptExtensions.contains(ext)) {
     return FLucideIcons.fileTerminal;
   }
-  if (_configExtensions.contains(ext)) {
+  if (_kConfigExtensions.contains(ext)) {
     return FLucideIcons.fileSliders;
   }
-  if (_keyExtensions.contains(ext)) {
+  if (_kKeyExtensions.contains(ext)) {
     return FLucideIcons.fileKey;
   }
-  if (_databaseExtensions.contains(ext)) {
+  if (_kDatabaseExtensions.contains(ext)) {
     return FLucideIcons.database;
   }
-  if (_fontExtensions.contains(ext)) {
+  if (_kFontExtensions.contains(ext)) {
     return FLucideIcons.fileType;
   }
   if (ext == 'lock') {

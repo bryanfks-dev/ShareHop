@@ -44,6 +44,7 @@ class LandspaceWorkspaceHandoffScreen extends HookWidget {
                           'Turn your Phone. Work both sides.',
                           textAlign: .center,
                           style: theme.typography.display.xl.copyWith(
+                            color: theme.colors.foreground,
                             height: 1.1,
                           ),
                         ),
@@ -52,7 +53,10 @@ class LandspaceWorkspaceHandoffScreen extends HookWidget {
                           'Production on the right, while preserving your '
                           'current connection context.',
                           textAlign: .center,
-                          style: theme.typography.body.xs.copyWith(height: 1.5),
+                          style: theme.typography.body.xs.copyWith(
+                            color: theme.colors.mutedForeground,
+                            height: 1.5,
+                          ),
                         ),
                       ],
                     ),
@@ -72,9 +76,17 @@ class LandspaceWorkspaceHandoffScreen extends HookWidget {
                               size: 20,
                             ),
                           ),
-                          title: const Text('Device stays on the left'),
-                          subtitle: const Text(
+                          title: Text(
+                            'Device stays on the left',
+                            style: theme.typography.body.sm.copyWith(
+                              color: theme.colors.foreground,
+                            ),
+                          ),
+                          subtitle: Text(
                             'Pick local files without leaving the workspace.',
+                            style: theme.typography.body.xs2.copyWith(
+                              color: theme.colors.mutedForeground,
+                            ),
                           ),
                         ),
                         FTile(
@@ -87,9 +99,17 @@ class LandspaceWorkspaceHandoffScreen extends HookWidget {
                             ),
                             child: const Icon(FLucideIcons.server, size: 20),
                           ),
-                          title: const Text('Production stays on the right'),
-                          subtitle: const Text(
+                          title: Text(
+                            'Production stays on the right',
+                            style: theme.typography.body.sm.copyWith(
+                              color: theme.colors.foreground,
+                            ),
+                          ),
+                          subtitle: Text(
                             'Your secure session and path remain open.',
+                            style: theme.typography.body.xs2.copyWith(
+                              color: theme.colors.mutedForeground,
+                            ),
                           ),
                         ),
                         FTile(
@@ -105,10 +125,18 @@ class LandspaceWorkspaceHandoffScreen extends HookWidget {
                               size: 20,
                             ),
                           ),
-                          title: const Text('Transfer in either direction'),
-                          subtitle: const Text(
+                          title: Text(
+                            'Transfer in either direction',
+                            style: theme.typography.body.sm.copyWith(
+                              color: theme.colors.foreground,
+                            ),
+                          ),
+                          subtitle: Text(
                             'Select items, review size, then move them with '
                             'one action.',
+                            style: theme.typography.body.xs2.copyWith(
+                              color: theme.colors.mutedForeground,
+                            ),
                           ),
                         ),
                       ],
@@ -120,7 +148,12 @@ class LandspaceWorkspaceHandoffScreen extends HookWidget {
                           size: .lg,
                           onPress: handleOnPressOpenWorkspace,
                           prefix: const Icon(FLucideIcons.columns2),
-                          child: const Text('Open landspace workspace'),
+                          child: Text(
+                            'Open landspace workspace',
+                            style: theme.typography.body.md.copyWith(
+                              color: theme.colors.primaryForeground,
+                            ),
+                          ),
                         ),
                         FButton(
                           size: .lg,
@@ -138,7 +171,12 @@ class LandspaceWorkspaceHandoffScreen extends HookWidget {
                           ),
                           onPress: handleOnPressNotNow,
                           variant: .ghost,
-                          child: const Text('Not now'),
+                          child: Text(
+                            'Not now',
+                            style: theme.typography.body.md.copyWith(
+                              color: theme.colors.mutedForeground,
+                            ),
+                          ),
                         ),
                       ],
                     ),

@@ -12,9 +12,6 @@ class ConnectionMapper {
     return ConnectionModel.fromJson(row).copyWith(password: password);
   }
 
-  ConnectionModel mapRowToConnectionModel(Map<String, dynamic> row) =>
-      toConnectionModel(row);
-
   ConnectionViewModel toConnectionViewModel(
     ConnectionModel connection, {
     bool isPinned = false,

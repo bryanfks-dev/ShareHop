@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
-import 'package:sharehop/data/dto/storage_status_dto.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
+import 'package:sharehop/presentation/view_models/storage_status_view_model.dart';
 
 class StorageUsageCard extends StatelessWidget {
   const new({
@@ -11,7 +11,7 @@ class StorageUsageCard extends StatelessWidget {
     super.key,
   });
 
-  final StorageStatusDto? storageStatus;
+  final StorageStatusViewModel? storageStatus;
   final bool isLoading;
   final VoidCallback? onRefresh;
 
@@ -20,20 +20,20 @@ class StorageUsageCard extends StatelessWidget {
     final theme = context.theme;
 
     final usedFormatted = storageStatus != null
-        ? StorageStatusDto.formatBytes(bytes: storageStatus!.usedBytes)
+        ? StorageStatusViewModel.formatBytes(bytes: storageStatus!.usedBytes)
         : '';
     final usedString = storageStatus != null
         ? '$usedFormatted used'
         : '436 GB used';
 
     final availableString = storageStatus != null
-        ? StorageStatusDto.formatBytes(bytes: storageStatus!.freeBytes)
+        ? StorageStatusViewModel.formatBytes(bytes: storageStatus!.freeBytes)
         : '64 GB';
 
     final progressValue = storageStatus?.usedPercentage ?? (436 / 500);
 
     final totalFormatted = storageStatus != null
-        ? StorageStatusDto.formatBytes(bytes: storageStatus!.totalBytes)
+        ? StorageStatusViewModel.formatBytes(bytes: storageStatus!.totalBytes)
         : '';
     final summaryString = storageStatus != null
         ? '${(storageStatus!.usedPercentage * 100).toInt()}% of '

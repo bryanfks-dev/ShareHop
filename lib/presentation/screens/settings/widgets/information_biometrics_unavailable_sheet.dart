@@ -63,7 +63,12 @@ class _InformationBiometricsUnavailableSheetContent extends StatelessWidget {
                   FButton(
                     size: .sm,
                     onPress: handleOnPressDismiss,
-                    child: const Text('OK'),
+                    child: Text(
+                      'OK',
+                      style: theme.typography.body.sm.copyWith(
+                        color: theme.colors.primaryForeground,
+                      ),
+                    ),
                   ),
                 ],
               ),

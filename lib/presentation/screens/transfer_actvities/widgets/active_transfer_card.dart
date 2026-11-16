@@ -1,36 +1,74 @@
 import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
+import 'package:sharehop/core/models/file_transfer_history_model.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
 import 'package:sharehop/presentation/theme/theme.dart';
+import 'package:sharehop/presentation/utils/date_formatter.dart';
+import 'package:sharehop/presentation/utils/file_icon_resolver.dart';
+import 'package:sharehop/presentation/utils/file_size_formatter.dart';
 
 class ActiveTransferCard extends StatelessWidget {
   const new({
-    this.fileName = 'product-demo-final.mp4',
-    this.path = 'On My iPhone → Production / releases',
+    this.transfer,
+    this.fileName,
+    this.path,
     this.progress = 0.72,
-    this.progressStats = '72% · 132.9 of 184.7 MB · 132.9 of 184.7 MB',
-    this.timeRemaining = '6 sec left',
-    this.securityLabel = 'Encrypted SFTP',
-    this.batchIndexText = '1 of 3 files',
+    this.progressStats,
+    this.timeRemaining,
+    this.securityLabel,
+    this.batchIndexText,
+    this.icon,
     this.onPausePress,
+    this.onCancelPress,
     super.key,
   });
 
-  final String fileName;
-  final String path;
+  final FileTransferHistoryModel? transfer;
+  final String? fileName;
+  final String? path;
   final double progress;
-  final String progressStats;
-  final String timeRemaining;
-  final String securityLabel;
-  final String batchIndexText;
+  final String? progressStats;
+  final String? timeRemaining;
+  final String? securityLabel;
+  final String? batchIndexText;
+  final IconData? icon;
   final VoidCallback? onPausePress;
+  final VoidCallback? onCancelPress;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
 
+    final effectiveFileName =
+        fileName ?? transfer?.fileName ?? 'product-demo-final.mp4';
+    final effectivePath =
+        path ??
+        (transfer != null
+            ? '${transfer!.sourceName} → ${transfer!.destinationName}'
+            : 'On My iPhone → Production / releases');
+    final effectiveProgressStats =
+        progressStats ??
+        (transfer != null
+            ? formatFileSize(bytes: transfer!.fileSize)
+            : '72% · 132.9 of 184.7 MB · 132.9 of 184.7 MB');
+    final effectiveTimeRemaining =
+        timeRemaining ??
+        (transfer != null
+            ? formatTimeAgo(date: transfer!.updatedAt)
+            : '6 sec left');
+    final effectiveSecurityLabel =
+        securityLabel ??
+        (transfer != null ? 'Encrypted Transfer' : 'Encrypted SFTP');
+    final effectiveBatchIndexText =
+        batchIndexText ?? (transfer != null ? 'Active' : '1 of 3 files');
+    final effectiveIcon =
+        icon ??
+        (transfer != null
+            ? transfer!.fileName.fileIcon
+            : FLucideIcons.fileVideo);
+
     void handleOnPressPause() {
-      onPausePress?.call();
+      (onPausePress ?? onCancelPress)?.call();
     }
 
     return FCard(
@@ -53,7 +91,7 @@ class ActiveTransferCard extends StatelessWidget {
                       borderRadius: theme.style.borderRadius.lg,
                     ),
                     child: Icon(
-                      FLucideIcons.fileVideo,
+                      effectiveIcon,
                       color: theme.colors.destructive,
                       size: theme.style.iconStyle.size,
                     ),
@@ -65,7 +103,7 @@ class ActiveTransferCard extends StatelessWidget {
                       spacing: Spacing.xs3,
                       children: [
                         Text(
-                          fileName,
+                          effectiveFileName,
                           maxLines: 1,
                           overflow: .ellipsis,
                           style: theme.typography.body.sm.copyWith(
@@ -74,7 +112,7 @@ class ActiveTransferCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          path,
+                          effectivePath,
                           maxLines: 1,
                           overflow: .ellipsis,
                           style: theme.typography.body.xs2.copyWith(
@@ -103,7 +141,7 @@ class ActiveTransferCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          progressStats,
+                          effectiveProgressStats,
                           maxLines: 1,
                           overflow: .ellipsis,
                           style: theme.typography.body.xs2.copyWith(
@@ -113,7 +151,7 @@ class ActiveTransferCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        timeRemaining,
+                        effectiveTimeRemaining,
                         style: theme.typography.body.xs2.copyWith(
                           color: theme.colors.mutedForeground,
                         ),
@@ -135,7 +173,7 @@ class ActiveTransferCard extends StatelessWidget {
                         color: theme.colors.app.accentTeal,
                       ),
                       Text(
-                        securityLabel,
+                        effectiveSecurityLabel,
                         style: theme.typography.body.xs2.copyWith(
                           color: theme.colors.mutedForeground,
                         ),
@@ -143,7 +181,7 @@ class ActiveTransferCard extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    batchIndexText,
+                    effectiveBatchIndexText,
                     style: theme.typography.body.xs2.copyWith(
                       color: theme.colors.mutedForeground,
                     ),

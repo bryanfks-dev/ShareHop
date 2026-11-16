@@ -32,13 +32,24 @@ class ChangeConnectionProtocolSelector extends StatelessWidget {
           fontWeight: .w600,
         ),
       ),
-      subtitle: Text(value.hint),
+      subtitle: Text(
+        value.hint,
+        style: theme.typography.body.xs2.copyWith(
+          color: theme.colors.mutedForeground,
+        ),
+      ),
       suffix: IntrinsicWidth(
         child: FButton(
           variant: .ghost,
           size: .xs,
           onPress: handleOnPress,
-          child: const Text('Change'),
+          child: Text(
+            'Change',
+            style: theme.typography.body.xs.copyWith(
+              color: theme.colors.primary,
+              fontWeight: .w600,
+            ),
+          ),
         ),
       ),
     );

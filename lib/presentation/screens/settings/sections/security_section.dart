@@ -11,6 +11,7 @@ class SecuritySection extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = context.theme;
     final appConfig = ref.watch(settingsControllerProvider);
     final appConfigController = ref.watch(settingsControllerProvider.notifier);
 
@@ -32,7 +33,12 @@ class SecuritySection extends HookConsumerWidget {
 
         showFToast(
           context: context,
-          title: const Text('Biometric lock enabled'),
+          title: Text(
+            'Biometric lock enabled',
+            style: theme.typography.body.sm.copyWith(
+              color: theme.colors.foreground,
+            ),
+          ),
         );
       } on Object {
         // If authentication is cancelled or errors, state remains unchanged

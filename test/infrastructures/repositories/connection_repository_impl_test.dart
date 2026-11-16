@@ -5,10 +5,8 @@ import 'package:sharehop/core/enums/connection_protocol.dart';
 import 'package:sharehop/core/errors/connection.dart';
 import 'package:sharehop/core/models/connection_model.dart';
 import 'package:sharehop/core/models/encrypted_value_model.dart';
-import 'package:sharehop/data/dto/connection_dto.dart';
 import 'package:sharehop/data/mapper/connection_mapper.dart';
 import 'package:sharehop/data/mapper/encrypted_value_mapper.dart';
-import 'package:sharehop/data/utils/not_required_value.dart';
 import 'package:sharehop/infrastructures/database/manager.dart';
 import 'package:sharehop/infrastructures/repositories/connection/repository_impl.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -196,7 +194,7 @@ void main() {
     });
 
     test(
-      'update modifies existing connection in SQLite table with partial fields',
+      'update modifies existing connection in SQLite table',
       () async {
         final created = await repository.create(
           createTestModel(
@@ -206,14 +204,13 @@ void main() {
           ),
         );
 
-        final updated = await repository.update(
-          connection: ConnectionRevisionDto(
-            id: created.id.uuid,
-            displayName: const NotRequiredValue('Updated Name'),
-            remoteAddress: const NotRequiredValue('https://new.example.com'),
-            allowSelfSignedCertificate: const NotRequiredValue(true),
-          ),
+        final toUpdate = created.copyWith(
+          displayName: 'Updated Name',
+          remoteAddress: 'https://new.example.com',
+          allowSelfSignedCertificate: true,
         );
+
+        final updated = await repository.update(toUpdate);
 
         expect(updated, isNotNull);
         expect(updated?.displayName, 'Updated Name');
@@ -238,7 +235,7 @@ void main() {
     );
 
     test(
-      'update updates password when provided via NotRequiredValue',
+      'update updates password when provided in connection',
       () async {
         final created = await repository.create(
           createTestModel(
@@ -248,12 +245,12 @@ void main() {
           ),
         );
 
-        final updated = await repository.update(
-          connection: ConnectionRevisionDto(
-            id: created.id.uuid,
-            password: const NotRequiredValue('new_secret_password'),
-          ),
+        final updatedPassword = created.password!.copyWith(
+          cipherText: 'new_secret_password',
         );
+        final toUpdate = created.copyWith(password: updatedPassword);
+
+        final updated = await repository.update(toUpdate);
 
         expect(updated, isNotNull);
         expect(updated?.displayName, 'WebDAV Server');
@@ -262,12 +259,8 @@ void main() {
     );
 
     test('update returns null if connection does not exist', () async {
-      final updated = await repository.update(
-        connection: ConnectionRevisionDto(
-          id: const Uuid().v7obj().uuid,
-          displayName: const NotRequiredValue('New Name'),
-        ),
-      );
+      final nonExistent = createTestModel();
+      final updated = await repository.update(nonExistent);
 
       expect(updated, isNull);
     });

@@ -1,42 +1,24 @@
 import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
-import 'package:sharehop/presentation/theme/spacing.dart';
+import 'package:sharehop/presentation/widgets/primitives/empty_state.dart';
 
 class ConnectionListEmptyState extends StatelessWidget {
-  const new({super.key});
+  const new({
+    this.title = 'No pinned connections',
+    this.description =
+        'Tap Manage to pin your favorite connections for quick access here.',
+    super.key,
+  });
+
+  final String title;
+  final String description;
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.theme;
-
-    return Center(
-      child: Padding(
-        padding: const .symmetric(vertical: Spacing.xl),
-        child: Column(
-          mainAxisAlignment: .center,
-          spacing: Spacing.sm,
-          children: [
-            Icon(
-              FLucideIcons.link2Off,
-              size: 48,
-              color: theme.colors.mutedForeground,
-            ),
-            Text(
-              'No pinned connections',
-              style: theme.typography.display.xs.copyWith(
-                color: theme.colors.foreground,
-                fontWeight: .w600,
-              ),
-            ),
-            Text(
-              'You can pin your favorite connections here.',
-              style: theme.typography.body.xs.copyWith(
-                color: theme.colors.mutedForeground,
-              ),
-            ),
-          ],
-        ),
-      ),
+    return EmptyState.card(
+      icon: FLucideIcons.pinOff,
+      title: title,
+      description: description,
     );
   }
 }

@@ -27,10 +27,7 @@ class _FakeConnRepo implements ConnectionRepository {
     return connection;
   }
   @override
-  Future<ConnectionModel?> update({
-    required ConnectionRevisionDto connection,
-  }) async =>
-      null;
+  Future<ConnectionModel?> update(ConnectionModel connection) async => null;
   @override
   Future<void> remove(UuidValue id) async {
     connections.removeWhere((c) => c.id == id);

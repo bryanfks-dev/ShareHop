@@ -6,7 +6,11 @@ import 'package:sharehop/core/repositories/pinned_connection_repository.dart';
 import 'package:sharehop/core/services/connection_service.dart';
 import 'package:sharehop/core/use_cases/check_connection_status_use_case.dart';
 import 'package:sharehop/core/use_cases/create_connection_use_case.dart';
+import 'package:sharehop/core/use_cases/delete_connection_use_case.dart';
+import 'package:sharehop/core/use_cases/get_connections_use_case.dart';
+import 'package:sharehop/core/use_cases/get_pinned_connection_ids_use_case.dart';
 import 'package:sharehop/core/use_cases/pin_connection_use_case.dart';
+import 'package:sharehop/core/use_cases/unpin_connection_use_case.dart';
 import 'package:sharehop/core/use_cases/update_connection_use_case.dart';
 import 'package:sharehop/data/mapper/connection_credential_mapper.dart';
 import 'package:sharehop/data/mapper/connection_mapper.dart';
@@ -64,6 +68,30 @@ CreateConnectionUseCase createConnectionUseCase(Ref ref) =>
 PinConnectionUseCase pinConnectionUseCase(Ref ref) => PinConnectionUseCase(
   pinnedConnectionRepository: ref.watch(pinnedConnectionRepositoryProvider),
 );
+
+@Riverpod(keepAlive: true)
+UnpinConnectionUseCase unpinConnectionUseCase(Ref ref) =>
+    UnpinConnectionUseCase(
+      pinnedConnectionRepository: ref.watch(pinnedConnectionRepositoryProvider),
+    );
+
+@Riverpod(keepAlive: true)
+GetConnectionsUseCase getConnectionsUseCase(Ref ref) => GetConnectionsUseCase(
+  connectionRepository: ref.watch(connectionRepositoryProvider),
+);
+
+@Riverpod(keepAlive: true)
+GetPinnedConnectionIdsUseCase getPinnedConnectionIdsUseCase(Ref ref) =>
+    GetPinnedConnectionIdsUseCase(
+      pinnedConnectionRepository: ref.watch(pinnedConnectionRepositoryProvider),
+    );
+
+@Riverpod(keepAlive: true)
+DeleteConnectionUseCase deleteConnectionUseCase(Ref ref) =>
+    DeleteConnectionUseCase(
+      connectionRepository: ref.watch(connectionRepositoryProvider),
+      pinnedConnectionRepository: ref.watch(pinnedConnectionRepositoryProvider),
+    );
 
 @Riverpod(keepAlive: true)
 UpdateConnectionUseCase updateConnectionUseCase(Ref ref) =>

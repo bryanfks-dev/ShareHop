@@ -14,18 +14,36 @@ class FileTransferHistoryState {
     this.histories = const [],
     this.selectedStatus,
     this.searchQuery = '',
+    this.selectedConnection,
     this.isLoading = false,
   });
 
   final List<FileTransferHistoryModel> histories;
   final FileTransferStatus? selectedStatus;
   final String searchQuery;
+  final String? selectedConnection;
   final bool isLoading;
+
+  List<FileTransferHistoryModel> get filteredHistories {
+    if (selectedConnection == null || selectedConnection!.isEmpty) {
+      return histories;
+    }
+    final connectionLower = selectedConnection!.toLowerCase();
+    return histories.where((item) {
+      final s = item.sourceName.toLowerCase();
+      final d = item.destinationName.toLowerCase();
+      return s == connectionLower ||
+          d == connectionLower ||
+          s.contains(connectionLower) ||
+          d.contains(connectionLower);
+    }).toList();
+  }
 
   FileTransferHistoryState copyWith({
     List<FileTransferHistoryModel>? histories,
     FileTransferStatus? Function()? selectedStatus,
     String? searchQuery,
+    String? Function()? selectedConnection,
     bool? isLoading,
   }) {
     return FileTransferHistoryState(
@@ -34,6 +52,9 @@ class FileTransferHistoryState {
           ? selectedStatus()
           : this.selectedStatus,
       searchQuery: searchQuery ?? this.searchQuery,
+      selectedConnection: selectedConnection != null
+          ? selectedConnection()
+          : this.selectedConnection,
       isLoading: isLoading ?? this.isLoading,
     );
   }
@@ -68,6 +89,7 @@ class FileTransferHistoryController extends _$FileTransferHistoryController {
         histories: results,
         selectedStatus: currentStatus,
         searchQuery: currentQuery,
+        selectedConnection: stateOrNull?.selectedConnection,
       );
     } on Object catch (e, st) {
       log(
@@ -88,6 +110,151 @@ class FileTransferHistoryController extends _$FileTransferHistoryController {
       isLoading: true,
     );
     await _loadHistories(status: status, clearStatus: status == null);
+  }
+
+  Future<void> filterByConnection(String? connection) async {
+    state = (stateOrNull ?? const FileTransferHistoryState()).copyWith(
+      selectedConnection: () => connection,
+    );
+  }
+
+  Future<void> cancelTransfer(UuidValue id) async {
+    try {
+      final updateUseCase = ref.read(updateFileTransferHistoryUseCaseProvider);
+      final current = stateOrNull?.histories ?? [];
+      final item = current.where((e) => e.id == id).firstOrNull;
+      if (item != null) {
+        final updated = item.copyWith(status: .canceled, updatedAt: .now());
+        await updateUseCase(history: updated);
+        final updatedList = current
+            .map((e) => e.id == id ? updated : e)
+            .toList();
+        state = (stateOrNull ?? const FileTransferHistoryState()).copyWith(
+          histories: updatedList,
+        );
+      }
+    } on Object catch (e, st) {
+      log(
+        'Failed to cancel transfer',
+        name: 'FileTransferHistoryController',
+        error: e,
+        stackTrace: st,
+      );
+    }
+  }
+
+  Future<void> cancelAllActive({String? connection}) async {
+    try {
+      final updateUseCase = ref.read(updateFileTransferHistoryUseCaseProvider);
+      final current = stateOrNull?.histories ?? [];
+      final now = DateTime.now();
+      final connLower = connection?.toLowerCase();
+      final updatedList = <FileTransferHistoryModel>[];
+      for (final item in current) {
+        final matchesConn =
+            connLower == null ||
+            item.sourceName.toLowerCase() == connLower ||
+            item.destinationName.toLowerCase() == connLower ||
+            item.sourceName.toLowerCase().contains(connLower) ||
+            item.destinationName.toLowerCase().contains(connLower);
+        if (item.status == FileTransferStatus.inProgress && matchesConn) {
+          final updated = item.copyWith(
+            status: FileTransferStatus.canceled,
+            updatedAt: now,
+          );
+          await updateUseCase(history: updated);
+          updatedList.add(updated);
+        } else {
+          updatedList.add(item);
+        }
+      }
+      state = (stateOrNull ?? const FileTransferHistoryState()).copyWith(
+        histories: updatedList,
+      );
+    } on Object catch (e, st) {
+      log(
+        'Failed to cancel all active transfers',
+        name: 'FileTransferHistoryController',
+        error: e,
+        stackTrace: st,
+      );
+    }
+  }
+
+  Future<void> cancelAllQueued({String? connection}) async {
+    try {
+      final updateUseCase = ref.read(updateFileTransferHistoryUseCaseProvider);
+      final current = stateOrNull?.histories ?? [];
+      final now = DateTime.now();
+      final connLower = connection?.toLowerCase();
+      final updatedList = <FileTransferHistoryModel>[];
+      for (final item in current) {
+        final matchesConn =
+            connLower == null ||
+            item.sourceName.toLowerCase() == connLower ||
+            item.destinationName.toLowerCase() == connLower ||
+            item.sourceName.toLowerCase().contains(connLower) ||
+            item.destinationName.toLowerCase().contains(connLower);
+        if (item.status == FileTransferStatus.pending && matchesConn) {
+          final updated = item.copyWith(
+            status: FileTransferStatus.canceled,
+            updatedAt: now,
+          );
+          await updateUseCase(history: updated);
+          updatedList.add(updated);
+        } else {
+          updatedList.add(item);
+        }
+      }
+      state = (stateOrNull ?? const FileTransferHistoryState()).copyWith(
+        histories: updatedList,
+      );
+    } on Object catch (e, st) {
+      log(
+        'Failed to cancel all queued transfers',
+        name: 'FileTransferHistoryController',
+        error: e,
+        stackTrace: st,
+      );
+    }
+  }
+
+  Future<void> clearCompleted({String? connection}) async {
+    try {
+      final deleteUseCase = ref.read(deleteFileTransferHistoryUseCaseProvider);
+      final current = stateOrNull?.histories ?? [];
+      final connLower = connection?.toLowerCase();
+      final toDelete = current.where((item) {
+        final isCompletedType =
+            item.status == FileTransferStatus.completed ||
+            item.status == FileTransferStatus.failed ||
+            item.status == FileTransferStatus.canceled;
+        final matchesConn =
+            connLower == null ||
+            item.sourceName.toLowerCase() == connLower ||
+            item.destinationName.toLowerCase() == connLower ||
+            item.sourceName.toLowerCase().contains(connLower) ||
+            item.destinationName.toLowerCase().contains(connLower);
+        return isCompletedType && matchesConn;
+      }).toList();
+
+      for (final item in toDelete) {
+        await deleteUseCase(id: item.id);
+      }
+      final remaining = current
+          .where((item) => !toDelete.contains(item))
+          .toList();
+      state = (stateOrNull ?? const FileTransferHistoryState()).copyWith(
+        histories: remaining,
+      );
+    } on Object catch (e, st) {
+      log(
+        'Failed to clear completed transfers',
+        name: 'FileTransferHistoryController',
+        error: e,
+        stackTrace: st,
+      );
+    }
   }
 
   Future<void> setSearchQuery(String query) async {

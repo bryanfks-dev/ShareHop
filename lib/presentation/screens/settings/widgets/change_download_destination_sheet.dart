@@ -7,23 +7,23 @@ import 'package:sharehop/presentation/theme/spacing.dart';
 Future<void> showChangeDownloadDestinationSheet(
   BuildContext context, {
   required String currentPath,
-  required ValueChanged<String> onSaved,
+  required ValueChanged<String> onSave,
 }) async {
   await showFSheet<void>(
     context: context,
     side: .btt,
     builder: (sheetContext) => _ChangeDownloadDestinationSheetContent(
       currentPath: currentPath,
-      onSaved: onSaved,
+      onSave: onSave,
     ),
   );
 }
 
 class _ChangeDownloadDestinationSheetContent extends HookWidget {
-  const new({required this.currentPath, required this.onSaved});
+  const new({required this.currentPath, required this.onSave});
 
   final String currentPath;
-  final ValueChanged<String> onSaved;
+  final ValueChanged<String> onSave;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class _ChangeDownloadDestinationSheetContent extends HookWidget {
     void handleOnPressSave() {
       final trimmed = controller.text.trim();
       if (trimmed.isNotEmpty) {
-        onSaved(trimmed);
+        onSave(trimmed);
       }
       context.navigator.pop();
     }
@@ -92,12 +92,22 @@ class _ChangeDownloadDestinationSheetContent extends HookWidget {
                     variant: .outline,
                     size: .sm,
                     onPress: handleOnPressCancel,
-                    child: const Text('Cancel'),
+                    child: Text(
+                      'Cancel',
+                      style: theme.typography.body.sm.copyWith(
+                        color: theme.colors.foreground,
+                      ),
+                    ),
                   ),
                   FButton(
                     size: .sm,
                     onPress: handleOnPressSave,
-                    child: const Text('Save'),
+                    child: Text(
+                      'Save',
+                      style: theme.typography.body.sm.copyWith(
+                        color: theme.colors.primaryForeground,
+                      ),
+                    ),
                   ),
                 ],
               ),

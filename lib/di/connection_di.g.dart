@@ -438,6 +438,201 @@ final class PinConnectionUseCaseProvider
 String _$pinConnectionUseCaseHash() =>
     r'25e96e30039fc5d0f0a3e25f435ec322e1aad570';
 
+@ProviderFor(unpinConnectionUseCase)
+final unpinConnectionUseCaseProvider = UnpinConnectionUseCaseProvider._();
+
+final class UnpinConnectionUseCaseProvider
+    extends
+        $FunctionalProvider<
+          UnpinConnectionUseCase,
+          UnpinConnectionUseCase,
+          UnpinConnectionUseCase
+        >
+    with $Provider<UnpinConnectionUseCase> {
+  UnpinConnectionUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'unpinConnectionUseCaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$unpinConnectionUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<UnpinConnectionUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  UnpinConnectionUseCase create(Ref ref) {
+    return unpinConnectionUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UnpinConnectionUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UnpinConnectionUseCase>(value),
+    );
+  }
+}
+
+String _$unpinConnectionUseCaseHash() =>
+    r'a189988ad841de0d09c9f177e175391c39d36a2a';
+
+@ProviderFor(getConnectionsUseCase)
+final getConnectionsUseCaseProvider = GetConnectionsUseCaseProvider._();
+
+final class GetConnectionsUseCaseProvider
+    extends
+        $FunctionalProvider<
+          GetConnectionsUseCase,
+          GetConnectionsUseCase,
+          GetConnectionsUseCase
+        >
+    with $Provider<GetConnectionsUseCase> {
+  GetConnectionsUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getConnectionsUseCaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getConnectionsUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetConnectionsUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetConnectionsUseCase create(Ref ref) {
+    return getConnectionsUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetConnectionsUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetConnectionsUseCase>(value),
+    );
+  }
+}
+
+String _$getConnectionsUseCaseHash() =>
+    r'f2fd524ba792d5487913ffd44a8745cc9ed16e3d';
+
+@ProviderFor(getPinnedConnectionIdsUseCase)
+final getPinnedConnectionIdsUseCaseProvider =
+    GetPinnedConnectionIdsUseCaseProvider._();
+
+final class GetPinnedConnectionIdsUseCaseProvider
+    extends
+        $FunctionalProvider<
+          GetPinnedConnectionIdsUseCase,
+          GetPinnedConnectionIdsUseCase,
+          GetPinnedConnectionIdsUseCase
+        >
+    with $Provider<GetPinnedConnectionIdsUseCase> {
+  GetPinnedConnectionIdsUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getPinnedConnectionIdsUseCaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getPinnedConnectionIdsUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetPinnedConnectionIdsUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetPinnedConnectionIdsUseCase create(Ref ref) {
+    return getPinnedConnectionIdsUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetPinnedConnectionIdsUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetPinnedConnectionIdsUseCase>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$getPinnedConnectionIdsUseCaseHash() =>
+    r'97a8d78172f73f2e3f9027a627d5d40d188b8c2e';
+
+@ProviderFor(deleteConnectionUseCase)
+final deleteConnectionUseCaseProvider = DeleteConnectionUseCaseProvider._();
+
+final class DeleteConnectionUseCaseProvider
+    extends
+        $FunctionalProvider<
+          DeleteConnectionUseCase,
+          DeleteConnectionUseCase,
+          DeleteConnectionUseCase
+        >
+    with $Provider<DeleteConnectionUseCase> {
+  DeleteConnectionUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'deleteConnectionUseCaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$deleteConnectionUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<DeleteConnectionUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  DeleteConnectionUseCase create(Ref ref) {
+    return deleteConnectionUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(DeleteConnectionUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<DeleteConnectionUseCase>(value),
+    );
+  }
+}
+
+String _$deleteConnectionUseCaseHash() =>
+    r'da9f8bf927e76643a3d5ae6b70707ee38a2caf77';
+
 @ProviderFor(updateConnectionUseCase)
 final updateConnectionUseCaseProvider = UpdateConnectionUseCaseProvider._();
 

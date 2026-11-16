@@ -1,11 +1,10 @@
 import 'package:sharehop/core/enums/connection_protocol.dart';
 import 'package:sharehop/core/errors/connection.dart';
 import 'package:sharehop/core/models/connection_model.dart';
+import 'package:sharehop/core/models/encrypted_value_model.dart';
 import 'package:sharehop/core/repositories/app_config_repository.dart';
 import 'package:sharehop/core/repositories/connection_repository.dart';
 import 'package:sharehop/core/security/secret_cipher.dart';
-import 'package:sharehop/data/dto/connection_dto.dart';
-import 'package:sharehop/data/utils/not_required_value.dart';
 import 'package:uuid/uuid_value.dart';
 
 class UpdateConnectionUseCase {
@@ -29,28 +28,49 @@ class UpdateConnectionUseCase {
     bool? allowSelfSignedCertificate,
     ConnectionProtocol protocol = ConnectionProtocol.webdav,
   }) async {
+    final existing = await _connectionRepository.getOne(id);
+    if (existing == null) {
+      throw UpdateConnectionFailedError();
+    }
+
     final key = await _appConfigRepository.getEncryptionKey();
     final secretCipher = _secretCipherFactory(key);
     final encryptedPassword = await secretCipher.encrypt(password);
 
-    final revision = ConnectionRevisionDto(
-      id: id.uuid,
-      protocol: NotRequiredValue(protocol),
-      remoteAddress: NotRequiredValue(remoteAddress),
-      rootPath: NotRequiredValue(rootPath),
-      username: NotRequiredValue(username),
-      password: NotRequiredValue(encryptedPassword.cipherText),
-      displayName: NotRequiredValue(
-        displayName != null && displayName.isNotEmpty
-            ? displayName
-            : remoteAddress,
-      ),
-      allowSelfSignedCertificate: allowSelfSignedCertificate != null
-          ? NotRequiredValue(allowSelfSignedCertificate)
-          : null,
+    final now = DateTime.now().toUtc();
+    final updatedPassword = (existing.password ??
+            EncryptedValueModel(
+              id: existing.passwordId,
+              salt: encryptedPassword.salt,
+              nonce: encryptedPassword.nonce,
+              cipherText: encryptedPassword.cipherText,
+              mac: encryptedPassword.mac,
+              createdAt: now,
+              updatedAt: now,
+            ))
+        .copyWith(
+          salt: encryptedPassword.salt,
+          nonce: encryptedPassword.nonce,
+          cipherText: encryptedPassword.cipherText,
+          mac: encryptedPassword.mac,
+          updatedAt: now,
+        );
+
+    final updatedConnection = existing.copyWith(
+      protocol: protocol,
+      displayName: displayName != null && displayName.isNotEmpty
+          ? displayName
+          : remoteAddress,
+      remoteAddress: remoteAddress,
+      username: username,
+      password: updatedPassword,
+      rootPath: rootPath,
+      allowSelfSignedCertificate:
+          allowSelfSignedCertificate ?? existing.allowSelfSignedCertificate,
+      updatedAt: now,
     );
 
-    final updated = await _connectionRepository.update(connection: revision);
+    final updated = await _connectionRepository.update(updatedConnection);
     if (updated == null) {
       throw UpdateConnectionFailedError();
     }

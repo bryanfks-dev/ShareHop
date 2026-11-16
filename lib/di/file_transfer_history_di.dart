@@ -3,6 +3,7 @@ import 'package:sharehop/core/repositories/file_transfer_history_repository.dart
 import 'package:sharehop/core/use_cases/clear_file_transfer_history_use_case.dart';
 import 'package:sharehop/core/use_cases/delete_file_transfer_history_use_case.dart';
 import 'package:sharehop/core/use_cases/get_file_transfer_histories_use_case.dart';
+import 'package:sharehop/core/use_cases/update_file_transfer_history_use_case.dart';
 import 'package:sharehop/data/mapper/file_transfer_history_mapper.dart';
 import 'package:sharehop/infrastructures/repositories/file_transfer_history/repository_impl.dart';
 
@@ -33,5 +34,11 @@ ClearFileTransferHistoryUseCase clearFileTransferHistoryUseCase(Ref ref) =>
 @Riverpod(keepAlive: true)
 DeleteFileTransferHistoryUseCase deleteFileTransferHistoryUseCase(Ref ref) =>
     DeleteFileTransferHistoryUseCase(
+      repository: ref.watch(fileTransferHistoryRepositoryProvider),
+    );
+
+@Riverpod(keepAlive: true)
+UpdateFileTransferHistoryUseCase updateFileTransferHistoryUseCase(Ref ref) =>
+    UpdateFileTransferHistoryUseCase(
       repository: ref.watch(fileTransferHistoryRepositoryProvider),
     );

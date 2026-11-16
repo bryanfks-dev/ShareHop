@@ -35,9 +35,13 @@ class QuickActionCard extends StatelessWidget {
         ? theme.colors.primaryForeground
         : theme.colors.primary;
 
-    final titleColor = theme.colors.app.white;
+    final titleColor = isPrimary
+        ? theme.colors.app.white
+        : theme.colors.foreground;
 
-    final subtitleColor = theme.colors.app.white;
+    final subtitleColor = isPrimary
+        ? theme.colors.app.white
+        : theme.colors.foreground;
 
     return FTappable(
       onPress: onPress,

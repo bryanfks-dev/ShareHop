@@ -23,7 +23,7 @@ class SettingsSection extends StatelessWidget {
         Text(
           title,
           style: theme.typography.display.xs2.copyWith(
-            color: theme.colors.mutedForeground,
+            color: theme.colors.foreground,
             fontWeight: .w700,
           ),
         ),

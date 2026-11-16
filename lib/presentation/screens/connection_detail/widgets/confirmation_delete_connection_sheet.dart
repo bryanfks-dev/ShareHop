@@ -78,13 +78,23 @@ class _ConfirmationDeleteConnectionSheetContent extends StatelessWidget {
                     variant: .destructive,
                     size: .sm,
                     onPress: handleOnPressConfirm,
-                    child: const Text('Delete'),
+                    child: Text(
+                      'Delete',
+                      style: theme.typography.body.sm.copyWith(
+                        color: theme.colors.destructive,
+                      ),
+                    ),
                   ),
                   FButton(
                     variant: .outline,
                     size: .sm,
                     onPress: handleOnPressCancel,
-                    child: const Text('Cancel'),
+                    child: Text(
+                      'Cancel',
+                      style: theme.typography.body.sm.copyWith(
+                        color: theme.colors.foreground,
+                      ),
+                    ),
                   ),
                 ],
               ),

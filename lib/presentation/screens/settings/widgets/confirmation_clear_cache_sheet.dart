@@ -73,13 +73,23 @@ class _ConfirmationClearCacheSheetContent extends StatelessWidget {
                     variant: .destructive,
                     size: .sm,
                     onPress: handleOnPressConfirm,
-                    child: const Text('Clear'),
+                    child: Text(
+                      'Clear',
+                      style: theme.typography.body.sm.copyWith(
+                        color: theme.colors.destructiveForeground,
+                      ),
+                    ),
                   ),
                   FButton(
                     variant: .outline,
                     size: .sm,
                     onPress: handleOnPressCancel,
-                    child: const Text('Cancel'),
+                    child: Text(
+                      'Cancel',
+                      style: theme.typography.body.sm.copyWith(
+                        color: theme.colors.foreground,
+                      ),
+                    ),
                   ),
                 ],
               ),

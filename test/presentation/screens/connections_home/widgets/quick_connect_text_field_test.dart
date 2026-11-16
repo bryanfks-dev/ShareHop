@@ -56,7 +56,8 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(AddConnectionScreen), findsOneWidget);
-        expect(find.text('https://dav.myhost.com'), findsOneWidget);
+        expect(find.text('https://'), findsWidgets);
+        expect(find.text('dav.myhost.com'), findsWidgets);
       },
     );
 
@@ -73,7 +74,8 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(AddConnectionScreen), findsOneWidget);
-        expect(find.text('https://storage.cloud.org/files'), findsOneWidget);
+        expect(find.text('https://'), findsWidgets);
+        expect(find.text('storage.cloud.org/files'), findsOneWidget);
       },
     );
 
@@ -95,10 +97,8 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(AddConnectionScreen), findsOneWidget);
-        expect(
-          find.text('http://dav.box.com/remote.php/webdav'),
-          findsOneWidget,
-        );
+        expect(find.text('http://'), findsWidgets);
+        expect(find.text('dav.box.com/remote.php/webdav'), findsOneWidget);
         expect(find.text('alice'), findsOneWidget);
         expect(find.text('secret123'), findsOneWidget);
       },

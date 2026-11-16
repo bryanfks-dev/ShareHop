@@ -37,11 +37,11 @@ class _ChangeSimultaneousTransfersLimitSheetContent extends HookConsumerWidget {
       }
     }
 
-    void handleOnSelectLimit({required int limit}) {
+    void handleOnSelectLimit(int limit) {
       unawaited(handleOnPressLimit(limit: limit));
     }
 
-    const limits = [1, 2, 3, 4, 5];
+    const kLimits = [1, 2, 3, 4, 5];
 
     return Container(
       width: double.maxFinite,
@@ -72,11 +72,11 @@ class _ChangeSimultaneousTransfersLimitSheetContent extends HookConsumerWidget {
                 mainAxisSize: .min,
                 spacing: Spacing.md,
                 children: [
-                  for (final limit in limits)
+                  for (final limit in kLimits)
                     _ChangeSimultaneousTransfersLimitSheetItem(
                       limit: limit,
                       value: innerSelectedLimit.value == limit,
-                      onSelect: (val) => handleOnSelectLimit(limit: val),
+                      onSelect: handleOnSelectLimit,
                     ),
                 ],
               ),

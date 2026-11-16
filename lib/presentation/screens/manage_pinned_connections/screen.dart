@@ -9,7 +9,12 @@ import 'package:sharehop/presentation/screens/manage_pinned_connections/widgets/
 import 'package:sharehop/presentation/theme/spacing.dart';
 
 class ManagePinnedConnectionsScreen extends StatelessWidget {
-  const new({super.key});
+  const new({
+    this.controller,
+    super.key,
+  });
+
+  final FPopoverController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +36,7 @@ class ManagePinnedConnectionsScreen extends StatelessWidget {
       header: ManagePinnedHeader(
         onPressDone: handleOnPressDone,
         onPressAddConnection: handleOnPressAddConnection,
+        controller: controller,
       ),
       child: SafeArea(
         child: SingleChildScrollView(

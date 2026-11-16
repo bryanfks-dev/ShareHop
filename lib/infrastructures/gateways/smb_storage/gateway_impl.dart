@@ -4,14 +4,14 @@ import 'dart:io';
 
 import 'package:sharehop/core/gateways/smb_storage_gateway.dart';
 import 'package:sharehop/core/models/connection_model.dart';
-import 'package:sharehop/data/dto/storage_status_dto.dart';
+import 'package:sharehop/core/value_objects/storage_status_vo.dart';
 import 'package:sharehop/infrastructures/gateways/smb_storage/error.dart';
 
 class SmbStorageGatewayImpl implements SmbStorageGateway {
   const new();
 
   @override
-  Future<StorageStatusDto> getStatus({
+  Future<StorageStatusVO> getStatus({
     required ConnectionModel connection,
     String path = '/',
   }) async {
@@ -28,11 +28,9 @@ class SmbStorageGatewayImpl implements SmbStorageGateway {
         // Socket probe may fail if server is offline or unreachable
       }
 
-      // Return storage capacity metrics (for Studio NAS / SMB: 500 GB total, 64 GB free)
-      return StorageStatusDto(
-        totalBytes: 500 * 1024 * 1024 * 1024,
-        freeBytes: 64 * 1024 * 1024 * 1024,
-        updatedAt: DateTime.now(),
+      return const StorageStatusVO(
+        maximumCapacity: 500 * 1024 * 1024 * 1024,
+        usedCapacity: 64 * 1024 * 1024 * 1024,
       );
     } on Exception catch (e) {
       log(

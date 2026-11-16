@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:sharehop/core/gateways/web_dav_storage_gateway.dart';
-import 'package:sharehop/data/dto/storage_status_dto.dart';
+import 'package:sharehop/core/value_objects/storage_status_vo.dart';
 import 'package:sharehop/data/dto/web_dav_credential_dto.dart';
 import 'package:sharehop/infrastructures/gateways/web_dav_storage/error.dart';
 import 'package:sharehop/infrastructures/web_dav/web_dav_client_manager.dart';
@@ -194,9 +194,7 @@ class WebDavStorageGatewayImpl implements WebDavStorageGateway {
   }
 
   @override
-  Future<void> testConnection({
-    required WebDavCredentialDto credential,
-  }) async {
+  Future<void> testConnection({required WebDavCredentialDto credential}) async {
     try {
       await clientManager.useClientWithDisposal(
         (client) => client.ping(),
@@ -211,13 +209,13 @@ class WebDavStorageGatewayImpl implements WebDavStorageGateway {
   }
 
   @override
-  Future<StorageStatusDto> getStatus({
+  Future<StorageStatusVO> getStatus({
     required WebDavCredentialDto credential,
     String path = '/',
   }) async {
     try {
       return await clientManager.useClientWithDisposal((client) async {
-        const quotaXmlStr = '''
+        const kQuotaXmlStr = '''
 <d:propfind xmlns:d="DAV:">
   <d:prop>
     <d:quota-available-bytes/>
@@ -233,7 +231,7 @@ class WebDavStorageGatewayImpl implements WebDavStorageGateway {
           client,
           normalizedPath,
           false,
-          quotaXmlStr,
+          kQuotaXmlStr,
         );
 
         final xmlData = response.data.toString();
@@ -263,17 +261,22 @@ class WebDavStorageGatewayImpl implements WebDavStorageGateway {
         final usedBytes = rawUsed < 0 ? 0 : rawUsed;
         final totalBytes = availableBytes + usedBytes;
 
-        return StorageStatusDto(
-          totalBytes: totalBytes,
-          freeBytes: availableBytes,
-          updatedAt: DateTime.now(),
+        return StorageStatusVO(
+          maximumCapacity: totalBytes.toDouble(),
+          usedCapacity: usedBytes.toDouble(),
         );
       }, credential: credential);
     } on WebDavOperationFailedError {
       rethrow;
     } on Exception catch (e) {
-      log('Failed to get storage status for path: $path', error: e);
+      log('Failed to get storage attribute for path: $path', error: e);
       throw WebDavOperationFailedError(message: 'Failed to get storage status');
     }
   }
+
+  @override
+  Future<StorageStatusVO> getStorageAttribute({
+    required WebDavCredentialDto credential,
+    String path = '/',
+  }) => getStatus(credential: credential, path: path);
 }

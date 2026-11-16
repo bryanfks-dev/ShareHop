@@ -37,7 +37,15 @@ class _ConnectionInformationSheetContent extends StatelessWidget {
     Future<void> handleOnCopy(String label, String value) async {
       await Clipboard.setData(ClipboardData(text: value));
       if (context.mounted) {
-        showFToast(context: context, title: Text('$label copied to clipboard'));
+        showFToast(
+          context: context,
+          title: Text(
+            '$label copied to clipboard',
+            style: theme.typography.body.sm.copyWith(
+              color: theme.colors.foreground,
+            ),
+          ),
+        );
       }
     }
 
@@ -159,18 +167,59 @@ class _ConnectionInformationSheetContent extends StatelessWidget {
                     ),
                   ),
                   _ConnectionInformationDetailTile(
-                    label: 'Protocol',
-                    value: connection.protocol.shortName,
+                    label: 'Root Path',
+                    value: connection.rootPath.isNotEmpty
+                        ? connection.rootPath
+                        : '/',
+                    onCopy: () => handleOnCopy(
+                      'Root path',
+                      connection.rootPath.isNotEmpty
+                          ? connection.rootPath
+                          : '/',
+                    ),
                   ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: .end,
-                children: [
-                  FButton(
-                    size: .sm,
-                    onPress: handleOnPressClose,
-                    child: const Text('Close'),
+                  _ConnectionInformationDetailTile(
+                    label: 'Protocol',
+                    value: connection.protocol.displayName,
+                  ),
+                  _ConnectionInformationDetailTile(
+                    label: 'Security',
+                    valueWidget: Row(
+                      mainAxisSize: .min,
+                      spacing: Spacing.xs,
+                      children: [
+                        Icon(
+                          connection.isSecure
+                              ? FLucideIcons.lock
+                              : FLucideIcons.lockOpen,
+                          size: 14,
+                          color: connection.isSecure
+                              ? theme.colors.app.success
+                              : theme.colors.mutedForeground,
+                        ),
+                        Text(
+                          connection.isSecure ? 'Secured' : 'Not secured',
+                          style: theme.typography.body.xs.copyWith(
+                            color: connection.isSecure
+                                ? theme.colors.app.success
+                                : theme.colors.mutedForeground,
+                            fontWeight: .w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  _ConnectionInformationDetailTile(
+                    label: 'Server Certificate Validation',
+                    value: connection.validateServerCertificate
+                        ? 'Enabled'
+                        : 'Disabled',
+                  ),
+                  _ConnectionInformationDetailTile(
+                    label: 'Allow Self-Signed Certificate',
+                    value: connection.allowSelfSignedCertificate
+                        ? 'Allowed'
+                        : 'Not allowed',
                   ),
                 ],
               ),

@@ -92,25 +92,16 @@ class FakeConnectionRepository implements ConnectionRepository {
       connections.where((c) => c.id == id).firstOrNull;
 
   @override
-  Future<ConnectionModel?> update({
-    required ConnectionRevisionDto connection,
-  }) async {
+  Future<ConnectionModel?> update(ConnectionModel connection) async {
     if (shouldThrow) {
       throw UpdateConnectionFailedError();
     }
-    final index = connections.indexWhere((c) => c.id.uuid == connection.id);
+    final index = connections.indexWhere((c) => c.id == connection.id);
     if (index == -1) {
       return null;
     }
-    final existing = connections[index];
-    final updated = existing.copyWith(
-      displayName: connection.displayName?.value ?? existing.displayName,
-      remoteAddress: connection.remoteAddress?.value ?? existing.remoteAddress,
-      rootPath: connection.rootPath?.value ?? existing.rootPath,
-      username: connection.username?.value ?? existing.username,
-    );
-    connections[index] = updated;
-    return updated;
+    connections[index] = connection;
+    return connection;
   }
 
   @override

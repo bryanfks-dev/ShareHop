@@ -3,8 +3,8 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sharehop/core/enums/connection_protocol.dart';
 import 'package:sharehop/core/gateways/web_dav_storage_gateway.dart';
+import 'package:sharehop/core/value_objects/storage_status_vo.dart';
 import 'package:sharehop/data/dto/connection_credential_dto.dart';
-import 'package:sharehop/data/dto/storage_status_dto.dart';
 import 'package:sharehop/data/dto/web_dav_credential_dto.dart';
 import 'package:sharehop/infrastructures/gateways/web_dav_storage/error.dart';
 import 'package:sharehop/infrastructures/services/connection_service_impl.dart';
@@ -56,10 +56,16 @@ class FakeWebDavStorageGateway implements WebDavStorageGateway {
   }) async => throw UnimplementedError();
 
   @override
-  Future<StorageStatusDto> getStatus({
+  Future<StorageStatusVO> getStatus({
     required WebDavCredentialDto credential,
     String path = '/',
-  }) async => const StorageStatusDto(totalBytes: 100, freeBytes: 50);
+  }) async => const StorageStatusVO(maximumCapacity: 100, usedCapacity: 50);
+
+  @override
+  Future<StorageStatusVO> getStorageAttribute({
+    required WebDavCredentialDto credential,
+    String path = '/',
+  }) async => const StorageStatusVO(maximumCapacity: 100, usedCapacity: 50);
 
   @override
   Future<List<File>> list({

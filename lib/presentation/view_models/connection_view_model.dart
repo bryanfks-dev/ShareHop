@@ -13,6 +13,7 @@ class ConnectionViewModel {
     required this.isPinned,
     this.rootPath = '/',
     this.allowSelfSignedCertificate = false,
+    this.validateServerCertificate = true,
     this.status = ConnectionStatus.offline,
   });
 
@@ -24,6 +25,21 @@ class ConnectionViewModel {
   String password;
   String rootPath;
   bool allowSelfSignedCertificate;
+  bool validateServerCertificate;
   bool isPinned;
   ConnectionStatus status;
+
+  bool get isSecure {
+    return switch (protocol) {
+      ConnectionProtocol.sftp || ConnectionProtocol.ftps => true,
+      ConnectionProtocol.webdav =>
+        !remoteAddress.toLowerCase().startsWith('http://'),
+      ConnectionProtocol.ftp ||
+      ConnectionProtocol.smb ||
+      ConnectionProtocol.nfs =>
+        false,
+    };
+  }
+
+  bool get isSecured => isSecure;
 }

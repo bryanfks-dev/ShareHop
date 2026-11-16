@@ -10,7 +10,6 @@ import 'package:sharehop/core/security/secret_cipher.dart';
 import 'package:sharehop/core/services/connection_service.dart';
 import 'package:sharehop/core/use_cases/check_connection_status_use_case.dart';
 import 'package:sharehop/data/dto/connection_credential_dto.dart';
-import 'package:sharehop/data/dto/connection_dto.dart';
 import 'package:sharehop/data/dto/web_dav_credential_dto.dart';
 import 'package:sharehop/data/utils/encrypted_value.dart';
 import 'package:sharehop/presentation/view_models/connection_view_model.dart';
@@ -55,11 +54,11 @@ class FakeAppConfigRepository implements AppConfigRepository {
 class FakeSecretCipher implements SecretCipher {
   @override
   Future<EncryptedValue> encrypt(String text) async => EncryptedValue(
-        salt: 's',
-        nonce: 'n',
-        cipherText: 'encrypted_$text',
-        mac: 'm',
-      );
+    salt: 's',
+    nonce: 'n',
+    cipherText: 'encrypted_$text',
+    mac: 'm',
+  );
 
   @override
   Future<String> decrypt(EncryptedValue value) async =>
@@ -89,9 +88,7 @@ class FakeConnectionRepository implements ConnectionRepository {
   Future<Set<UuidValue>> checkIfExists(Set<UuidValue> ids) async => {};
 
   @override
-  Future<ConnectionModel?> update({
-    required ConnectionRevisionDto connection,
-  }) =>
+  Future<ConnectionModel?> update(ConnectionModel connection) =>
       throw UnimplementedError();
 }
 

@@ -52,8 +52,11 @@ class ConnectionDetailHeader extends ConsumerWidget {
           context: context,
           title: Text(
             status == ConnectionStatus.online
-                ? 'Connection is online'
-                : 'Connection is offline',
+                ? '${connection.displayName} is online'
+                : '${connection.displayName} is offline',
+            style: theme.typography.body.sm.copyWith(
+              color: theme.colors.foreground,
+            ),
           ),
         );
       }
@@ -66,9 +69,8 @@ class ConnectionDetailHeader extends ConsumerWidget {
       }
       context.navigator.push(
         MaterialPageRoute<void>(
-          builder: (routeContext) => EditConnectionScreen(
-            connection: connection,
-          ),
+          builder: (routeContext) =>
+              EditConnectionScreen(connection: connection),
         ),
       );
     }
@@ -78,31 +80,44 @@ class ConnectionDetailHeader extends ConsumerWidget {
         onDelete!();
         return;
       }
+
+      Future<void> handleOnConfirmDelete() async {
+        try {
+          await ref
+              .read(managePinnedConnectionsControllerProvider.notifier)
+              .deleteConnection(connection.id);
+
+          if (context.mounted) {
+            showFToast(
+              context: context,
+              title: Text(
+                'Connection deleted successfully',
+                style: theme.typography.body.sm.copyWith(
+                  color: theme.colors.foreground,
+                ),
+              ),
+            );
+            context.navigator.pop();
+          }
+        } on Exception catch (_) {
+          if (context.mounted) {
+            showFToast(
+              context: context,
+              title: Text(
+                'Failed to delete connection',
+                style: theme.typography.body.sm.copyWith(
+                  color: theme.colors.destructive,
+                ),
+              ),
+            );
+          }
+        }
+      }
+
       await showConfirmationDeleteConnectionSheet(
         context,
         connectionName: connection.displayName,
-        onConfirm: () async {
-          try {
-            await ref
-                .read(managePinnedConnectionsControllerProvider.notifier)
-                .deleteConnection(connection.id);
-
-            if (context.mounted) {
-              showFToast(
-                context: context,
-                title: const Text('Connection deleted successfully'),
-              );
-              context.navigator.pop();
-            }
-          } on Exception catch (_) {
-            if (context.mounted) {
-              showFToast(
-                context: context,
-                title: const Text('Failed to delete connection'),
-              );
-            }
-          }
-        },
+        onConfirm: handleOnConfirmDelete,
       );
     }
 
@@ -152,37 +167,60 @@ class ConnectionDetailHeader extends ConsumerWidget {
           control: .managed(controller: controller),
           menuAnchor: .topRight,
           childAnchor: .bottomRight,
-          menuBuilder: (menuContext, controller, _) => [
-            FItemGroup(
-              children: [
-                FItem(
-                  prefix: const Icon(FLucideIcons.activity),
-                  title: const Text('Check connection'),
-                  onPress: () {
-                    unawaited(controller.hide());
-                    unawaited(handleOnCheckConnection());
-                  },
-                ),
-                FItem(
-                  prefix: const Icon(FLucideIcons.pencil),
-                  title: const Text('Edit connection'),
-                  onPress: () {
-                    unawaited(controller.hide());
-                    handleOnEdit();
-                  },
-                ),
-                FItem(
-                  variant: .destructive,
-                  prefix: const Icon(FLucideIcons.trash2),
-                  title: const Text('Delete connection'),
-                  onPress: () {
-                    unawaited(controller.hide());
-                    unawaited(handleOnDelete());
-                  },
-                ),
-              ],
-            ),
-          ],
+          menuBuilder: (menuContext, controller, _) {
+            void handleOnPressCheckConnection() {
+              unawaited(controller.hide());
+              unawaited(handleOnCheckConnection());
+            }
+
+            void handleOnPressEditConnection() {
+              unawaited(controller.hide());
+              handleOnEdit();
+            }
+
+            void handleOnPressDeleteConnection() {
+              unawaited(controller.hide());
+              unawaited(handleOnDelete());
+            }
+
+            return [
+              FItemGroup(
+                children: [
+                  FItem(
+                    prefix: const Icon(FLucideIcons.activity),
+                    title: Text(
+                      'Check connection',
+                      style: theme.typography.body.xs.copyWith(
+                        color: theme.colors.foreground,
+                      ),
+                    ),
+                    onPress: handleOnPressCheckConnection,
+                  ),
+                  FItem(
+                    prefix: const Icon(FLucideIcons.pencil),
+                    title: Text(
+                      'Edit connection',
+                      style: theme.typography.body.xs.copyWith(
+                        color: theme.colors.foreground,
+                      ),
+                    ),
+                    onPress: handleOnPressEditConnection,
+                  ),
+                  FItem(
+                    variant: .destructive,
+                    prefix: const Icon(FLucideIcons.trash2),
+                    title: Text(
+                      'Delete connection',
+                      style: theme.typography.body.xs.copyWith(
+                        color: theme.colors.destructive,
+                      ),
+                    ),
+                    onPress: handleOnPressDeleteConnection,
+                  ),
+                ],
+              ),
+            ];
+          },
           builder: (buttonContext, controller, _) => FButton.icon(
             size: .sm,
             onPress: controller.toggle,

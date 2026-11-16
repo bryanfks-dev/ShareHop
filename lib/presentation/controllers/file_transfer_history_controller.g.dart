@@ -47,7 +47,7 @@ final class FileTransferHistoryControllerProvider
 }
 
 String _$fileTransferHistoryControllerHash() =>
-    r'7bceac787b696e0dcdb8f8eee3d785d5ccf6e43d';
+    r'c4b94ac69b3f6186516c8fcd4d431edc17eebf79';
 
 abstract class _$FileTransferHistoryController
     extends $Notifier<FileTransferHistoryState> {

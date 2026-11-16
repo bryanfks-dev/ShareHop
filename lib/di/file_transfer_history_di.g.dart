@@ -260,3 +260,54 @@ final class DeleteFileTransferHistoryUseCaseProvider
 
 String _$deleteFileTransferHistoryUseCaseHash() =>
     r'0691baf168090cb76470316e04e9bce20ad710c8';
+
+@ProviderFor(updateFileTransferHistoryUseCase)
+final updateFileTransferHistoryUseCaseProvider =
+    UpdateFileTransferHistoryUseCaseProvider._();
+
+final class UpdateFileTransferHistoryUseCaseProvider
+    extends
+        $FunctionalProvider<
+          UpdateFileTransferHistoryUseCase,
+          UpdateFileTransferHistoryUseCase,
+          UpdateFileTransferHistoryUseCase
+        >
+    with $Provider<UpdateFileTransferHistoryUseCase> {
+  UpdateFileTransferHistoryUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'updateFileTransferHistoryUseCaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$updateFileTransferHistoryUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<UpdateFileTransferHistoryUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  UpdateFileTransferHistoryUseCase create(Ref ref) {
+    return updateFileTransferHistoryUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UpdateFileTransferHistoryUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UpdateFileTransferHistoryUseCase>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$updateFileTransferHistoryUseCaseHash() =>
+    r'dd98e41c878ea8b701f80adc177ccd305a123d0f';

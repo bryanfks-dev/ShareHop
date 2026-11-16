@@ -29,6 +29,80 @@ void main() {
       expect(model.rootPath, '/');
       expect(model.isPinned, isTrue);
       expect(model.status, ConnectionStatus.offline);
+      expect(model.allowSelfSignedCertificate, isFalse);
+      expect(model.validateServerCertificate, isTrue);
+      expect(model.isSecure, isTrue);
+      expect(model.isSecured, isTrue);
+    });
+
+    test('isSecure computes correctly based on protocol and address', () {
+      final httpsDav = ConnectionViewModel(
+        id: id1,
+        protocol: ConnectionProtocol.webdav,
+        displayName: 'HTTPS DAV',
+        remoteAddress: 'https://dav.example.com',
+        username: 'user',
+        password: 'pwd',
+        isPinned: false,
+      );
+      expect(httpsDav.isSecure, isTrue);
+      expect(httpsDav.isSecured, isTrue);
+
+      final httpDav = ConnectionViewModel(
+        id: id1,
+        protocol: ConnectionProtocol.webdav,
+        displayName: 'HTTP DAV',
+        remoteAddress: 'http://dav.example.com',
+        username: 'user',
+        password: 'pwd',
+        isPinned: false,
+      );
+      expect(httpDav.isSecure, isFalse);
+      expect(httpDav.isSecured, isFalse);
+
+      final sftp = ConnectionViewModel(
+        id: id1,
+        protocol: ConnectionProtocol.sftp,
+        displayName: 'SFTP',
+        remoteAddress: 'sftp.example.com',
+        username: 'user',
+        password: 'pwd',
+        isPinned: false,
+      );
+      expect(sftp.isSecure, isTrue);
+
+      final ftps = ConnectionViewModel(
+        id: id1,
+        protocol: ConnectionProtocol.ftps,
+        displayName: 'FTPS',
+        remoteAddress: 'ftps.example.com',
+        username: 'user',
+        password: 'pwd',
+        isPinned: false,
+      );
+      expect(ftps.isSecure, isTrue);
+
+      final ftp = ConnectionViewModel(
+        id: id1,
+        protocol: ConnectionProtocol.ftp,
+        displayName: 'FTP',
+        remoteAddress: 'ftp.example.com',
+        username: 'user',
+        password: 'pwd',
+        isPinned: false,
+      );
+      expect(ftp.isSecure, isFalse);
+
+      final smb = ConnectionViewModel(
+        id: id1,
+        protocol: ConnectionProtocol.smb,
+        displayName: 'SMB',
+        remoteAddress: '192.168.1.10',
+        username: 'user',
+        password: 'pwd',
+        isPinned: false,
+      );
+      expect(smb.isSecure, isFalse);
     });
 
     test('mutable properties can be modified', () {

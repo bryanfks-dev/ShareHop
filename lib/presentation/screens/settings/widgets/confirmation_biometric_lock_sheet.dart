@@ -81,12 +81,22 @@ class _ConfirmationBiometricLockSheetContent extends StatelessWidget {
                     variant: .outline,
                     size: .sm,
                     onPress: handleOnPressCancel,
-                    child: const Text('Cancel'),
+                    child: Text(
+                      'Cancel',
+                      style: theme.typography.body.sm.copyWith(
+                        color: theme.colors.foreground,
+                      ),
+                    ),
                   ),
                   FButton(
                     size: .sm,
                     onPress: handleOnPressProceed,
-                    child: const Text('Proceed'),
+                    child: Text(
+                      'Proceed',
+                      style: theme.typography.body.sm.copyWith(
+                        color: theme.colors.primaryForeground,
+                      ),
+                    ),
                   ),
                 ],
               ),

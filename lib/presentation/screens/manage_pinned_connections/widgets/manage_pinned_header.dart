@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:sharehop/presentation/extensions/router/navigator_extension.dart';
@@ -8,11 +10,13 @@ class ManagePinnedHeader extends StatelessWidget {
   const new({
     required this.onPressDone,
     this.onPressAddConnection,
+    this.controller,
     super.key,
   });
 
   final VoidCallback onPressDone;
   final VoidCallback? onPressAddConnection;
+  final FPopoverController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -72,16 +76,43 @@ class ManagePinnedHeader extends StatelessWidget {
         ],
       ),
       suffixes: [
-        FButton.icon(
-          size: .sm,
-          semanticsLabel: 'Add connection',
-          onPress: handleOnPressAddConnection,
-          style: .delta(
-            decoration: .delta([
-              .all(const .shapeDelta(shape: CircleBorder())),
-            ]),
+        FPopoverMenu(
+          control: .managed(controller: controller),
+          menuAnchor: .topRight,
+          childAnchor: .bottomRight,
+          menuBuilder: (menuContext, controller, _) {
+            void handleOnPressAdd() {
+              unawaited(controller.hide());
+              handleOnPressAddConnection();
+            }
+
+            return [
+              FItemGroup(
+                children: [
+                  FItem(
+                    prefix: const Icon(FLucideIcons.plus),
+                    title: Text(
+                      'Add connection',
+                      style: theme.typography.body.xs.copyWith(
+                        color: theme.colors.foreground,
+                      ),
+                    ),
+                    onPress: handleOnPressAdd,
+                  ),
+                ],
+              ),
+            ];
+          },
+          builder: (buttonContext, controller, _) => FButton.icon(
+            size: .sm,
+            onPress: controller.toggle,
+            style: .delta(
+              decoration: .delta([
+                .all(const .shapeDelta(shape: CircleBorder())),
+              ]),
+            ),
+            child: const Icon(FLucideIcons.ellipsis),
           ),
-          child: const Icon(FLucideIcons.plus),
         ),
       ],
     );

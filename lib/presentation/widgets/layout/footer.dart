@@ -12,7 +12,7 @@ class Footer extends StatelessWidget {
   final NavigationTab selectedNavigationTab;
   final void Function(NavigationTab)? onNavigationTabChange;
 
-  void handleOnChangeNavigationTab({required int index}) {
+  void handleOnChangeNavigationTab(int index) {
     onNavigationTabChange?.call(NavigationTab.values[index]);
   }
 
@@ -25,7 +25,7 @@ class Footer extends StatelessWidget {
       style: .delta(decoration: .boxDelta(color: theme.colors.card)),
       index: index,
       safeAreaBottom: true,
-      onChange: (idx) => handleOnChangeNavigationTab(index: idx),
+      onChange: handleOnChangeNavigationTab,
       children: const [
         FBottomNavigationBarItem(
           icon: Icon(FLucideIcons.server),

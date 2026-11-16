@@ -96,9 +96,7 @@ class FakeConnectionRepository implements ConnectionRepository {
       connections.where((c) => c.id == id).firstOrNull;
 
   @override
-  Future<ConnectionModel?> update({
-    required ConnectionRevisionDto connection,
-  }) async => null;
+  Future<ConnectionModel?> update(ConnectionModel connection) async => null;
 
   @override
   Future<void> remove(UuidValue id) async {

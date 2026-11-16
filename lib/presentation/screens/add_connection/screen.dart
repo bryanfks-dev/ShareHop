@@ -33,9 +33,9 @@ class AddConnectionScreen extends HookWidget {
     final selectedConnectionProtocol =
         useState<ConnectionProtocol>(initialProtocol);
 
-    void handleOnChangeConnectionProtocol({
-      required ConnectionProtocol connectionProtocol,
-    }) {
+    void handleOnChangeConnectionProtocol(
+      ConnectionProtocol connectionProtocol,
+    ) {
       selectedConnectionProtocol.value = connectionProtocol;
     }
 
@@ -50,8 +50,7 @@ class AddConnectionScreen extends HookWidget {
             children: [
               ChangeConnectionProtocolSelector(
                 value: selectedConnectionProtocol.value,
-                onChange: (val) =>
-                    handleOnChangeConnectionProtocol(connectionProtocol: val),
+                onChange: handleOnChangeConnectionProtocol,
               ),
               if (selectedConnectionProtocol.value == .webdav)
                 WebDavForm(
@@ -73,16 +72,17 @@ class AddConnectionScreen extends HookWidget {
                         '${selectedConnectionProtocol.value.displayName} '
                         'is not supported yet',
                         style: theme.typography.display.xs.copyWith(
+                          color: theme.colors.foreground,
                           fontWeight: .w600,
                         ),
                       ),
                       Text(
                         'Currently only WebDAV protocol is supported. '
                         'Please select WebDAV to configure your connection.',
+                        textAlign: .center,
                         style: theme.typography.body.sm.copyWith(
                           color: theme.colors.mutedForeground,
                         ),
-                        textAlign: .center,
                       ),
                     ],
                   ),

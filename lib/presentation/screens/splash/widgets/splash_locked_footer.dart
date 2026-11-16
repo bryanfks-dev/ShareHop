@@ -15,6 +15,8 @@ class SplashLockedFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     void handleOnPress() {
       onPressUnlock();
     }
@@ -28,7 +30,12 @@ class SplashLockedFooter extends StatelessWidget {
           prefix: isLoading
               ? const FCircularProgress(size: .sm)
               : const Icon(FLucideIcons.lock, size: 16),
-          child: const Text('Unlock ShareHop'),
+          child: Text(
+            'Unlock ShareHop',
+            style: theme.typography.body.sm.copyWith(
+              color: theme.colors.primaryForeground,
+            ),
+          ),
         ),
         const Trademark(),
       ],

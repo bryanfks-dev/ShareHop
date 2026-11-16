@@ -1,28 +1,24 @@
 import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
+import 'package:sharehop/presentation/widgets/primitives/empty_state.dart';
 
 class ManageOtherConnectionsEmptyState extends StatelessWidget {
-  const new({super.key});
+  const new({
+    this.title = 'No other connections available',
+    this.description =
+        'Add a new connection or switch filter to see other connections.',
+    super.key,
+  });
+
+  final String title;
+  final String description;
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.theme;
-
-    return FTileGroup(
-      children: [
-        FTile(
-          title: Center(
-            child: Text(
-              'No other connections available.',
-              textAlign: .center,
-              style: theme.typography.body.xs2.copyWith(
-                color: theme.colors.mutedForeground,
-                height: 1.4,
-              ),
-            ),
-          ),
-        ),
-      ],
+    return EmptyState.card(
+      icon: FLucideIcons.network,
+      title: title,
+      description: description,
     );
   }
 }

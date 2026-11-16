@@ -42,9 +42,7 @@ class FakeConnectionRepository implements ConnectionRepository {
       connection;
 
   @override
-  Future<ConnectionModel?> update({
-    required ConnectionRevisionDto connection,
-  }) async => null;
+  Future<ConnectionModel?> update(ConnectionModel connection) async => null;
 
   @override
   Future<void> batchRemove(Set<UuidValue> ids) async {}
@@ -255,7 +253,10 @@ void main() {
         await tester.tap(find.text('Check connection'));
         await tester.pumpAndSettle();
 
-        expect(find.text('Connection is online'), findsOneWidget);
+        expect(
+          find.text('${testConnection.displayName} is online'),
+          findsOneWidget,
+        );
       },
     );
 

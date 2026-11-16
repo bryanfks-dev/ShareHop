@@ -35,6 +35,7 @@ class WebDavForm extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = context.theme;
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final displayNameController = useTextEditingController(
       text: connection?.displayName ?? initialDisplayName ?? '',
@@ -121,8 +122,18 @@ class WebDavForm extends HookConsumerWidget {
               : 'Failed to save connection';
           showFToast(
             context: context,
-            title: const Text('Operation failed'),
-            description: Text(errorMessage),
+            title: Text(
+              'Operation failed',
+              style: theme.typography.body.sm.copyWith(
+                color: theme.colors.destructive,
+              ),
+            ),
+            description: Text(
+              errorMessage,
+              style: theme.typography.body.xs2.copyWith(
+                color: theme.colors.mutedForeground,
+              ),
+            ),
           );
         }
       }
@@ -150,9 +161,9 @@ class WebDavForm extends HookConsumerWidget {
                 authenticationMethodTabController,
             validateCertificate: validateCertificate.value,
             allowSelfSigned: allowSelfSigned.value,
-            onValidateCertificateChanged: (val) =>
+            onChangeValidateCertificate: (val) =>
                 handleOnChangeValidateCertificate(value: val),
-            onAllowSelfSignedChanged: (val) =>
+            onChangeAllowSelfSigned: (val) =>
                 handleOnChangeAllowSelfSigned(value: val),
             enabled: !isLoading,
           ),

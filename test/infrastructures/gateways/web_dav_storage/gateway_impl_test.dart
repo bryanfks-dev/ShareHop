@@ -103,9 +103,9 @@ void main() {
 
         final status = await service.getStatus(credential: credential);
 
-        expect(status.freeBytes, 68719476736);
-        expect(status.usedBytes, 468159184896);
-        expect(status.totalBytes, 536878661632);
+        expect(status.freeCapacity, 68719476736.0);
+        expect(status.usedCapacity, 468159184896.0);
+        expect(status.maximumCapacity, 536878661632.0);
         expect(fakeDio.capturedPath, '/');
         expect(fakeDio.capturedDepth, isFalse);
       },
@@ -134,9 +134,9 @@ void main() {
       );
 
       expect(fakeDio.capturedPath, '/files');
-      expect(status.totalBytes, 3000);
-      expect(status.freeBytes, 1000);
-      expect(status.usedBytes, 2000);
+      expect(status.maximumCapacity, 3000.0);
+      expect(status.freeCapacity, 1000.0);
+      expect(status.usedCapacity, 2000.0);
     });
 
     test('handles negative available bytes gracefully', () async {
@@ -158,9 +158,9 @@ void main() {
 
       final status = await service.getStatus(credential: credential);
 
-      expect(status.freeBytes, 0);
-      expect(status.usedBytes, 5000);
-      expect(status.totalBytes, 5000);
+      expect(status.freeCapacity, 0.0);
+      expect(status.usedCapacity, 5000.0);
+      expect(status.maximumCapacity, 5000.0);
     });
 
     test(
@@ -193,6 +193,149 @@ void main() {
 
       expect(
         () => service.getStatus(credential: credential),
+        throwsA(isA<WebDavOperationFailedError>()),
+      );
+    });
+  });
+
+  group('WebDavStorageGatewayImpl.getStorageAttribute', () {
+    late FakeWdDio fakeDio;
+    late webdav.Client fakeClient;
+    late FakeWebDavClientManager fakeClientManager;
+    late WebDavStorageGatewayImpl service;
+
+    final credential = WebDavCredentialDto(
+      url: Uri.parse('https://example.com/dav'),
+      username: 'user',
+      password: 'password',
+    );
+
+    setUp(() {
+      fakeDio = FakeWdDio();
+      fakeClient = webdav.Client(
+        uri: 'https://example.com/dav',
+        c: fakeDio,
+        auth: const webdav.Auth(user: '', pwd: ''),
+      );
+      fakeClientManager = FakeWebDavClientManager(fakeClient);
+      service = WebDavStorageGatewayImpl(clientManager: fakeClientManager);
+    });
+
+    test(
+      'returns parsed StorageVO when response contains quota bytes',
+      () async {
+        fakeDio.propfindResponse = Response(
+          requestOptions: RequestOptions(path: '/'),
+          statusCode: 207,
+          data: '''
+<?xml version="1.0" encoding="utf-8" ?>
+<D:multistatus xmlns:D="DAV:">
+  <D:response>
+    <D:propstat>
+      <D:prop>
+        <D:quota-available-bytes>68719476736</D:quota-available-bytes>
+        <D:quota-used-bytes>468159184896</D:quota-used-bytes>
+      </D:prop>
+      <D:status>HTTP/1.1 200 OK</D:status>
+    </D:propstat>
+  </D:response>
+</D:multistatus>''',
+        );
+
+        final storage = await service.getStorageAttribute(
+          credential: credential,
+        );
+
+        expect(storage.maximumCapacity, 536878661632.0);
+        expect(storage.usedCapacity, 468159184896.0);
+        expect(storage.freeCapacity, 68719476736.0);
+        expect(fakeDio.capturedPath, '/');
+        expect(fakeDio.capturedDepth, isFalse);
+      },
+    );
+
+    test('normalizes custom path correctly', () async {
+      fakeDio.propfindResponse = Response(
+        requestOptions: RequestOptions(path: '/files'),
+        statusCode: 207,
+        data: '''
+<d:multistatus xmlns:d="DAV:">
+  <d:response>
+    <d:propstat>
+      <d:prop>
+        <d:quota-available-bytes>1000</d:quota-available-bytes>
+        <d:quota-used-bytes>2000</d:quota-used-bytes>
+      </d:prop>
+    </d:propstat>
+  </d:response>
+</d:multistatus>''',
+      );
+
+      final storage = await service.getStorageAttribute(
+        credential: credential,
+        path: 'files',
+      );
+
+      expect(fakeDio.capturedPath, '/files');
+      expect(storage.maximumCapacity, 3000.0);
+      expect(storage.usedCapacity, 2000.0);
+      expect(storage.freeCapacity, 1000.0);
+    });
+
+    test('handles negative available bytes gracefully', () async {
+      fakeDio.propfindResponse = Response(
+        requestOptions: RequestOptions(path: '/'),
+        statusCode: 207,
+        data: '''
+<d:multistatus xmlns:d="DAV:">
+  <d:response>
+    <d:propstat>
+      <d:prop>
+        <d:quota-available-bytes>-3</d:quota-available-bytes>
+        <d:quota-used-bytes>5000</d:quota-used-bytes>
+      </d:prop>
+    </d:propstat>
+  </d:response>
+</d:multistatus>''',
+      );
+
+      final storage = await service.getStorageAttribute(credential: credential);
+
+      expect(storage.freeCapacity, 0.0);
+      expect(storage.usedCapacity, 5000.0);
+      expect(storage.maximumCapacity, 5000.0);
+    });
+
+    test(
+      'throws WebDavOperationFailedError when quota properties missing',
+      () async {
+        fakeDio.propfindResponse = Response(
+          requestOptions: RequestOptions(path: '/'),
+          statusCode: 207,
+          data: '''
+<d:multistatus xmlns:d="DAV:">
+  <d:response>
+    <d:propstat>
+      <d:prop>
+        <d:displayname>Test</d:displayname>
+      </d:prop>
+    </d:propstat>
+  </d:response>
+</d:multistatus>''',
+        );
+
+        expect(
+          () => service.getStorageAttribute(credential: credential),
+          throwsA(isA<WebDavOperationFailedError>()),
+        );
+      },
+    );
+
+    test('throws WebDavOperationFailedError when request fails', () async {
+      fakeDio.shouldThrow = true;
+
+      expect(
+        () => service.getStorageAttribute(credential: credential),
         throwsA(isA<WebDavOperationFailedError>()),
       );
     });

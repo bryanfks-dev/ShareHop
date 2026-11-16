@@ -32,10 +32,7 @@ class FakeConnectionRepository implements ConnectionRepository {
   }
 
   @override
-  Future<ConnectionModel?> update({
-    required ConnectionRevisionDto connection,
-  }) async =>
-      null;
+  Future<ConnectionModel?> update(ConnectionModel connection) async => null;
 
   @override
   Future<void> remove(UuidValue id) async {

@@ -8,7 +8,6 @@ import 'package:sharehop/core/repositories/app_config_repository.dart';
 import 'package:sharehop/core/repositories/connection_repository.dart';
 import 'package:sharehop/core/security/secret_cipher.dart';
 import 'package:sharehop/core/use_cases/update_connection_use_case.dart';
-import 'package:sharehop/data/dto/connection_dto.dart';
 import 'package:sharehop/data/utils/encrypted_value.dart';
 import 'package:uuid/uuid.dart';
 
@@ -73,7 +72,7 @@ class FakeSecretCipher implements SecretCipher {
 }
 
 class FakeConnectionRepository implements ConnectionRepository {
-  ConnectionRevisionDto? lastRevision;
+  ConnectionModel? lastUpdatedConnection;
   ConnectionModel? returnModel;
 
   @override
@@ -87,10 +86,8 @@ class FakeConnectionRepository implements ConnectionRepository {
   Future<ConnectionModel?> getOne(UuidValue id) async => returnModel;
 
   @override
-  Future<ConnectionModel?> update({
-    required ConnectionRevisionDto connection,
-  }) async {
-    lastRevision = connection;
+  Future<ConnectionModel?> update(ConnectionModel connection) async {
+    lastUpdatedConnection = connection;
     return returnModel;
   }
 
@@ -158,26 +155,26 @@ void main() {
       );
 
       expect(result, testModel);
-      expect(connectionRepository.lastRevision, isNotNull);
-      expect(connectionRepository.lastRevision!.id, testId.uuid);
+      expect(connectionRepository.lastUpdatedConnection, isNotNull);
+      expect(connectionRepository.lastUpdatedConnection!.id, testId);
       expect(
-        connectionRepository.lastRevision!.displayName?.value,
+        connectionRepository.lastUpdatedConnection!.displayName,
         'Updated Server',
       );
       expect(
-        connectionRepository.lastRevision!.remoteAddress?.value,
+        connectionRepository.lastUpdatedConnection!.remoteAddress,
         'https://new.server.io',
       );
       expect(
-        connectionRepository.lastRevision!.username?.value,
+        connectionRepository.lastUpdatedConnection!.username,
         'newuser',
       );
       expect(
-        connectionRepository.lastRevision!.rootPath?.value,
+        connectionRepository.lastUpdatedConnection!.rootPath,
         '/newpath',
       );
       expect(
-        connectionRepository.lastRevision!.password?.value,
+        connectionRepository.lastUpdatedConnection!.password?.cipherText,
         'encrypted-newpass',
       );
     });

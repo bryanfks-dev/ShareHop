@@ -9,6 +9,8 @@ class CompletedTransferTile extends StatelessWidget with FTileMixin {
     required this.subtitle,
     required this.icon,
     this.statusLabel = 'Completed',
+    this.statusIcon,
+    this.statusColor,
     this.iconColor,
     this.iconBackgroundColor,
     this.onPress,
@@ -19,6 +21,8 @@ class CompletedTransferTile extends StatelessWidget with FTileMixin {
   final String subtitle;
   final IconData icon;
   final String statusLabel;
+  final IconData? statusIcon;
+  final Color? statusColor;
   final Color? iconColor;
   final Color? iconBackgroundColor;
   final VoidCallback? onPress;
@@ -29,6 +33,8 @@ class CompletedTransferTile extends StatelessWidget with FTileMixin {
 
     final effectiveIconColor = iconColor ?? theme.colors.mutedForeground;
     final effectiveIconBgColor = iconBackgroundColor ?? theme.colors.muted;
+    final effectiveStatusIcon = statusIcon ?? FLucideIcons.circleCheck;
+    final effectiveStatusColor = statusColor ?? theme.colors.app.success;
 
     return FTile(
       onPress: onPress,
@@ -67,14 +73,14 @@ class CompletedTransferTile extends StatelessWidget with FTileMixin {
         spacing: Spacing.xs,
         children: [
           Icon(
-            FLucideIcons.circleCheck,
+            effectiveStatusIcon,
             size: 14,
-            color: theme.colors.app.success,
+            color: effectiveStatusColor,
           ),
           Text(
             statusLabel,
             style: theme.typography.body.xs2.copyWith(
-              color: theme.colors.app.success,
+              color: effectiveStatusColor,
               fontWeight: .w600,
             ),
           ),

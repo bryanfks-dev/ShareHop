@@ -40,9 +40,8 @@ void main() {
 
       final status = await gateway.getStatus(connection: connection);
 
-      expect(status.totalBytes, 500 * 1024 * 1024 * 1024);
-      expect(status.freeBytes, 64 * 1024 * 1024 * 1024);
-      expect(status.updatedAt, isNotNull);
+      expect(status.maximumCapacity, 500 * 1024 * 1024 * 1024);
+      expect(status.usedCapacity, 64 * 1024 * 1024 * 1024);
     });
   });
 }

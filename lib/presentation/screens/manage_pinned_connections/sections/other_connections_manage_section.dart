@@ -28,7 +28,12 @@ class OtherConnectionsManageSection extends ConsumerWidget {
       if (!success && context.mounted) {
         showFToast(
           context: context,
-          title: const Text('You can only pin up to 6 connections.'),
+          title: Text(
+            'You can only pin up to 6 connections.',
+            style: theme.typography.body.sm.copyWith(
+              color: theme.colors.foreground,
+            ),
+          ),
         );
       }
     }
@@ -41,9 +46,7 @@ class OtherConnectionsManageSection extends ConsumerWidget {
       );
     }
 
-    void handleOnPressFilterProtocol({
-      required ConnectionProtocol? protocol,
-    }) {
+    void handleOnPressFilterProtocol({required ConnectionProtocol? protocol}) {
       ref
           .read(managePinnedConnectionsControllerProvider.notifier)
           .filterByProtocol(protocol);
@@ -57,7 +60,7 @@ class OtherConnectionsManageSection extends ConsumerWidget {
         Text(
           'Other Connections (${other.length})',
           style: theme.typography.display.xs2.copyWith(
-            color: theme.colors.mutedForeground,
+            color: theme.colors.foreground,
             fontWeight: .w700,
             letterSpacing: 0.5,
           ),

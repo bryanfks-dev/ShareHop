@@ -13,6 +13,7 @@ class StorageSection extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = context.theme;
     final appConfig = ref.watch(settingsControllerProvider);
     final appConfigController = ref.watch(settingsControllerProvider.notifier);
 
@@ -25,7 +26,7 @@ class StorageSection extends HookConsumerWidget {
       return null;
     }, const []);
 
-    Future<void> handleOnSaveDownloadDestination({required String path}) async {
+    Future<void> handleOnSaveDownloadDestination(String path) async {
       await appConfigController.setDownloadDestinationPath(path: path);
     }
 
@@ -35,7 +36,12 @@ class StorageSection extends HookConsumerWidget {
       if (context.mounted) {
         showFToast(
           context: context,
-          title: const Text('Cache cleared successfully'),
+          title: Text(
+            'Cache cleared successfully',
+            style: theme.typography.body.sm.copyWith(
+              color: theme.colors.foreground,
+            ),
+          ),
         );
       }
     }
@@ -44,7 +50,7 @@ class StorageSection extends HookConsumerWidget {
       await showChangeDownloadDestinationSheet(
         context,
         currentPath: downloadDestination,
-        onSaved: (path) => handleOnSaveDownloadDestination(path: path),
+        onSave: handleOnSaveDownloadDestination,
       );
     }
 

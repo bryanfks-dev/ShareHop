@@ -71,7 +71,10 @@ class _ChangeConnectionProtocolSheetContent extends HookWidget {
             children: [
               Text(
                 'Select Connection Protocol',
-                style: theme.typography.display.sm.copyWith(fontWeight: .w600),
+                style: theme.typography.display.sm.copyWith(
+                  color: theme.colors.foreground,
+                  fontWeight: .w600,
+                ),
               ),
               Column(
                 mainAxisSize: .min,
@@ -120,8 +123,18 @@ class _ChangeConnectionProtocolSheetItem extends StatelessWidget {
         borderRadius: theme.style.borderRadius.md,
       ),
       child: FRadio(
-        label: Text(connectionProtocol.displayName),
-        description: Text(connectionProtocol.hint),
+        label: Text(
+          connectionProtocol.displayName,
+          style: theme.typography.body.xs.copyWith(
+            color: theme.colors.foreground,
+          ),
+        ),
+        description: Text(
+          connectionProtocol.hint,
+          style: theme.typography.body.xs2.copyWith(
+            color: theme.colors.mutedForeground,
+          ),
+        ),
         value: value,
         onChange: (val) => handleOnChange(value: val),
       ),

@@ -5,6 +5,7 @@ import 'package:sharehop/core/repositories/file_transfer_history_repository.dart
 import 'package:sharehop/core/use_cases/clear_file_transfer_history_use_case.dart';
 import 'package:sharehop/core/use_cases/delete_file_transfer_history_use_case.dart';
 import 'package:sharehop/core/use_cases/get_file_transfer_histories_use_case.dart';
+import 'package:sharehop/core/use_cases/update_file_transfer_history_use_case.dart';
 import 'package:uuid/uuid.dart';
 
 class _FakeFileTransferHistoryRepository
@@ -68,9 +69,9 @@ void main() {
     fileMimeType: 'application/pdf',
     sourceName: 'A',
     destinationName: 'B',
-    status: FileTransferStatus.completed,
-    createdAt: DateTime.now(),
-    updatedAt: DateTime.now(),
+    status: .completed,
+    createdAt: .now(),
+    updatedAt: .now(),
   );
   final item2 = FileTransferHistoryModel(
     id: id2,
@@ -79,9 +80,9 @@ void main() {
     fileMimeType: 'image/jpeg',
     sourceName: 'B',
     destinationName: 'C',
-    status: FileTransferStatus.failed,
-    createdAt: DateTime.now(),
-    updatedAt: DateTime.now(),
+    status: .failed,
+    createdAt: .now(),
+    updatedAt: .now(),
   );
 
   setUp(() {
@@ -93,20 +94,31 @@ void main() {
   });
 
   group('FileTransferHistoryUseCases', () {
+    test('UpdateFileTransferHistoryUseCase updates existing item', () async {
+      final updateUseCase = UpdateFileTransferHistoryUseCase(
+        repository: repository,
+      );
+      final updated = item1.copyWith(status: FileTransferStatus.canceled);
+      await updateUseCase(history: updated);
+      expect(repository.items.first.status, FileTransferStatus.canceled);
+    });
     test(
       'GetFileTransferHistoriesUseCase retrieves items with filter',
       () async {
-      final all = await getUseCase();
-      expect(all.length, 2);
+        final all = await getUseCase();
+        expect(all.length, 2);
 
-      final completed = await getUseCase(status: FileTransferStatus.completed);
-      expect(completed.length, 1);
-      expect(completed.first.id, id1);
+        final completed = await getUseCase(
+          status: FileTransferStatus.completed,
+        );
+        expect(completed.length, 1);
+        expect(completed.first.id, id1);
 
-      final searched = await getUseCase(searchQuery: 'photo');
-      expect(searched.length, 1);
-      expect(searched.first.id, id2);
-    });
+        final searched = await getUseCase(searchQuery: 'photo');
+        expect(searched.length, 1);
+        expect(searched.first.id, id2);
+      },
+    );
 
     test('DeleteFileTransferHistoryUseCase removes single item', () async {
       await deleteUseCase(id: id1);

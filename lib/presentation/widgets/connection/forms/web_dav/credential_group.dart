@@ -31,7 +31,12 @@ class WebDavFormCredentialGroup extends StatelessWidget {
             padding: const .only(left: 16, right: 8),
             child: Icon(FLucideIcons.user, color: theme.colors.mutedForeground),
           ),
-          label: const Text('Username'),
+          label: Text(
+            'Username',
+            style: theme.typography.body.xs.copyWith(
+              color: theme.colors.foreground,
+            ),
+          ),
           hint: 'Example username',
         ),
         FTextFormField.password(
@@ -44,7 +49,12 @@ class WebDavFormCredentialGroup extends StatelessWidget {
             ),
           ),
           enabled: enabled,
-          label: const Text('Password or app password'),
+          label: Text(
+            'Password or app password',
+            style: theme.typography.body.xs.copyWith(
+              color: theme.colors.foreground,
+            ),
+          ),
           hint: '••••••••••••',
           validator: FormBuilderValidators.compose([
             FormBuilderValidators.required(

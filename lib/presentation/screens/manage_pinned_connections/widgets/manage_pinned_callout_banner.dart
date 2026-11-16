@@ -32,7 +32,7 @@ class ManagePinnedCalloutBanner extends StatelessWidget {
       ),
       title: Text(
         'Pinned items appear on Home for fast access. '
-        'Drag to reorder, unpin, or edit a connection.',
+        'Unpin or edit a connection.',
         style: theme.typography.body.xs2.copyWith(
           color: theme.colors.foreground,
           fontWeight: .w400,

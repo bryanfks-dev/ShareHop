@@ -24,14 +24,13 @@ class ManagePinnedConnectionsController
 
   Future<void> _loadConnections() async {
     try {
-      final connectionRepository = ref.read(connectionRepositoryProvider);
-      final pinnedConnectionRepository =
-          ref.read(pinnedConnectionRepositoryProvider);
+      final getConnectionsUseCase = ref.read(getConnectionsUseCaseProvider);
+      final getPinnedConnectionIdsUseCase =
+          ref.read(getPinnedConnectionIdsUseCaseProvider);
       final connectionMapper = ref.read(connectionMapperProvider);
 
-      final allConnections = await connectionRepository.getAll();
-      final pinnedIds =
-          await pinnedConnectionRepository.getPinnedConnectionIds();
+      final allConnections = await getConnectionsUseCase.call();
+      final pinnedIds = await getPinnedConnectionIdsUseCase.call();
 
       final pinned = <ConnectionViewModel>[];
       final other = <ConnectionViewModel>[];
@@ -83,8 +82,9 @@ class ManagePinnedConnectionsController
   }
 
   Future<void> deleteConnection(UuidValue id) async {
-    await ref.read(pinnedConnectionRepositoryProvider).unpin(id);
-    await ref.read(connectionRepositoryProvider).remove(id);
+    await ref
+        .read(deleteConnectionUseCaseProvider)
+        .call(connectionId: id);
     await refresh();
   }
 
@@ -167,8 +167,8 @@ class ManagePinnedConnectionsController
 
     unawaited(
       ref
-          .read(pinnedConnectionRepositoryProvider)
-          .unpin(id)
+          .read(unpinConnectionUseCaseProvider)
+          .call(connectionId: id)
           .catchError((Object error, StackTrace st) {
             log(
               'Failed to persist unpinned connection',

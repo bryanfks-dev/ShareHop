@@ -31,8 +31,8 @@ class WebDavFormSecurityGroup extends StatelessWidget {
     this.authenticationMethodTabController,
     this.validateCertificate = true,
     this.allowSelfSigned = false,
-    this.onValidateCertificateChanged,
-    this.onAllowSelfSignedChanged,
+    this.onChangeValidateCertificate,
+    this.onChangeAllowSelfSigned,
     this.enabled = true,
     super.key,
   });
@@ -40,8 +40,8 @@ class WebDavFormSecurityGroup extends StatelessWidget {
   final FTabController? authenticationMethodTabController;
   final bool validateCertificate;
   final bool allowSelfSigned;
-  final ValueChanged<bool>? onValidateCertificateChanged;
-  final ValueChanged<bool>? onAllowSelfSignedChanged;
+  final ValueChanged<bool>? onChangeValidateCertificate;
+  final ValueChanged<bool>? onChangeAllowSelfSigned;
   final bool enabled;
 
   @override
@@ -49,19 +49,19 @@ class WebDavFormSecurityGroup extends StatelessWidget {
     final theme = context.theme;
 
     void handleOnChangeValidateCertificate({required bool value}) {
-      onValidateCertificateChanged?.call(value);
+      onChangeValidateCertificate?.call(value);
     }
 
     void handleOnPressValidateCertificate() {
-      onValidateCertificateChanged?.call(!validateCertificate);
+      onChangeValidateCertificate?.call(!validateCertificate);
     }
 
     void handleOnChangeAllowSelfSigned({required bool value}) {
-      onAllowSelfSignedChanged?.call(value);
+      onChangeAllowSelfSigned?.call(value);
     }
 
     void handleOnPressAllowSelfSigned() {
-      onAllowSelfSignedChanged?.call(!allowSelfSigned);
+      onChangeAllowSelfSigned?.call(!allowSelfSigned);
     }
 
     final authenticationMethodEntries = kWebDavFormSecurityAuthenticationMethods
@@ -81,7 +81,10 @@ class WebDavFormSecurityGroup extends StatelessWidget {
           children: [
             Text(
               'Authentication method',
-              style: theme.typography.body.xs.copyWith(fontWeight: .w500),
+              style: theme.typography.body.xs.copyWith(
+                color: theme.colors.foreground,
+                fontWeight: .w500,
+              ),
             ),
             FTabs(
               control: .managed(controller: authenticationMethodTabController),
@@ -128,11 +131,23 @@ class WebDavFormSecurityGroup extends StatelessWidget {
             ),
           ),
           enabled: enabled,
-          title: const Text('Validate server certificate'),
-          subtitle: const Text('Reject expired or mismatched certificates'),
+          title: Text(
+            'Validate server certificate',
+            style: theme.typography.body.xs.copyWith(
+              color: theme.colors.foreground,
+              fontWeight: .w600,
+            ),
+          ),
+          subtitle: Text(
+            'Reject expired or mismatched certificates',
+            style: theme.typography.body.xs2.copyWith(
+              color: theme.colors.mutedForeground,
+            ),
+          ),
           suffix: FSwitch(
             value: validateCertificate,
-            onChange: (val) => handleOnChangeValidateCertificate(value: val),
+            onChange: (val) =>
+                handleOnChangeValidateCertificate(value: val),
           ),
           onPress: handleOnPressValidateCertificate,
         ),
@@ -156,8 +171,19 @@ class WebDavFormSecurityGroup extends StatelessWidget {
             ),
           ),
           enabled: enabled,
-          title: const Text('Allow self-signed certificate'),
-          subtitle: const Text('Only enable for a server you trust'),
+          title: Text(
+            'Allow self-signed certificate',
+            style: theme.typography.body.xs.copyWith(
+              color: theme.colors.foreground,
+              fontWeight: .w600,
+            ),
+          ),
+          subtitle: Text(
+            'Only enable for a server you trust',
+            style: theme.typography.body.xs2.copyWith(
+              color: theme.colors.mutedForeground,
+            ),
+          ),
           suffix: FSwitch(
             value: allowSelfSigned,
             onChange: (val) => handleOnChangeAllowSelfSigned(value: val),
@@ -178,7 +204,12 @@ class _WebDavFormSecurityAuthenticationMethodTabEntry {
     final theme = context.theme;
 
     return FTabEntry.entry(
-      label: Text(value.label),
+      label: Text(
+        value.label,
+        style: theme.typography.body.xs.copyWith(
+          color: theme.colors.foreground,
+        ),
+      ),
       child: Row(
         crossAxisAlignment: .start,
         children: [

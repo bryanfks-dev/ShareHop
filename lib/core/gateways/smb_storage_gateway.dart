@@ -1,8 +1,8 @@
 import 'package:sharehop/core/models/connection_model.dart';
-import 'package:sharehop/data/dto/storage_status_dto.dart';
+import 'package:sharehop/core/value_objects/storage_status_vo.dart';
 
 abstract interface class SmbStorageGateway {
-  Future<StorageStatusDto> getStatus({
+  Future<StorageStatusVO> getStatus({
     required ConnectionModel connection,
     String path = '/',
   });

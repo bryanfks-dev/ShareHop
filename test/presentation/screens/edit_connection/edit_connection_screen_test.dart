@@ -8,7 +8,6 @@ import 'package:sharehop/core/models/connection_model.dart';
 import 'package:sharehop/core/repositories/app_config_repository.dart';
 import 'package:sharehop/core/repositories/connection_repository.dart';
 import 'package:sharehop/core/security/secret_cipher.dart';
-import 'package:sharehop/data/dto/connection_dto.dart';
 import 'package:sharehop/data/utils/encrypted_value.dart';
 import 'package:sharehop/di/app_config_di.dart';
 import 'package:sharehop/di/connection_di.dart';
@@ -72,7 +71,7 @@ class FakeSecretCipher implements SecretCipher {
 }
 
 class FakeConnectionRepository implements ConnectionRepository {
-  ConnectionRevisionDto? lastRevision;
+  ConnectionModel? lastUpdatedConnection;
 
   @override
   Future<ConnectionModel> create(ConnectionModel connection) =>
@@ -82,25 +81,25 @@ class FakeConnectionRepository implements ConnectionRepository {
   Future<List<ConnectionModel>> getAll() async => [];
 
   @override
-  Future<ConnectionModel?> getOne(UuidValue id) => throw UnimplementedError();
-
-  @override
-  Future<ConnectionModel?> update({
-    required ConnectionRevisionDto connection,
-  }) async {
-    lastRevision = connection;
+  Future<ConnectionModel?> getOne(UuidValue id) async {
     final now = DateTime.now().toUtc();
     return ConnectionModel(
-      id: UuidValue.fromString(connection.id),
+      id: id,
       protocol: ConnectionProtocol.webdav,
-      displayName: connection.displayName?.value ?? 'Updated Server',
-      remoteAddress: connection.remoteAddress?.value ?? 'https://dav.test',
-      username: connection.username?.value ?? 'user',
+      displayName: 'My WebDAV Server',
+      remoteAddress: 'https://webdav.myhost.com',
+      username: 'john_doe',
       passwordId: const Uuid().v7obj(),
-      rootPath: connection.rootPath?.value ?? '/',
+      rootPath: '/remote.php/webdav',
       createdAt: now,
       updatedAt: now,
     );
+  }
+
+  @override
+  Future<ConnectionModel?> update(ConnectionModel connection) async {
+    lastUpdatedConnection = connection;
+    return connection;
   }
 
   @override
@@ -158,7 +157,8 @@ void main() {
 
       expect(find.text('Edit connection'), findsOneWidget);
       expect(find.text('My WebDAV Server'), findsWidgets);
-      expect(find.text('https://webdav.myhost.com'), findsOneWidget);
+      expect(find.text('https://'), findsWidgets);
+      expect(find.text('webdav.myhost.com'), findsOneWidget);
       expect(find.text('john_doe'), findsOneWidget);
       expect(find.text('/remote.php/webdav'), findsOneWidget);
       expect(find.text('supersecretpassword'), findsOneWidget);
@@ -209,9 +209,9 @@ void main() {
       await tester.tap(saveButton);
       await tester.pumpAndSettle();
 
-      expect(fakeRepo.lastRevision, isNotNull);
-      expect(fakeRepo.lastRevision!.id, testConnection.id.uuid);
-      expect(fakeRepo.lastRevision!.displayName?.value, 'Renamed Server');
+      expect(fakeRepo.lastUpdatedConnection, isNotNull);
+      expect(fakeRepo.lastUpdatedConnection!.id, testConnection.id);
+      expect(fakeRepo.lastUpdatedConnection!.displayName, 'Renamed Server');
       expect(find.byType(EditConnectionScreen), findsNothing);
     });
   });

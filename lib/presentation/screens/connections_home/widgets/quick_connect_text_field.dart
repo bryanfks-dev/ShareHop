@@ -37,13 +37,17 @@ class QuickConnectTextField extends HookWidget {
       );
     }
 
+    void handleOnSubmitConnect(String _) {
+      handleOnPressConnect();
+    }
+
     return FTextField(
       control: .managed(controller: textController),
       style: const .delta(
         contentPadding: .value(EdgeInsetsGeometry.symmetric(vertical: 14)),
       ),
       hint: 'Host or server address',
-      onSubmit: (_) => handleOnPressConnect(),
+      onSubmit: handleOnSubmitConnect,
       prefixBuilder: (context, _, _) => Padding(
         padding: const .only(left: 12, right: 8),
         child: Icon(FLucideIcons.link, color: theme.colors.mutedForeground),
@@ -55,7 +59,12 @@ class QuickConnectTextField extends HookWidget {
             variant: .secondary,
             size: .xs,
             onPress: handleOnPressConnect,
-            child: const Text('Connect'),
+            child: Text(
+              'Connect',
+              style: theme.typography.body.xs.copyWith(
+                color: theme.colors.foreground,
+              ),
+            ),
           ),
         ),
       ),

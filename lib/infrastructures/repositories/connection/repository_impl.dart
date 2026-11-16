@@ -5,7 +5,6 @@ import 'package:sharehop/core/errors/connection.dart';
 import 'package:sharehop/core/models/connection_model.dart';
 import 'package:sharehop/core/models/encrypted_value_model.dart';
 import 'package:sharehop/core/repositories/connection_repository.dart';
-import 'package:sharehop/data/dto/connection_dto.dart';
 import 'package:sharehop/data/mapper/connection_mapper.dart';
 import 'package:sharehop/infrastructures/database/manager.dart';
 import 'package:sqflite/sqflite.dart';
@@ -158,88 +157,46 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
   }
 
   @override
-  Future<ConnectionModel?> update({
-    required ConnectionRevisionDto connection,
-  }) async {
-    log('Update connection started', name: 'ConnectionRepositoryImpl.update');
+  Future<ConnectionModel?> update(ConnectionModel connection) async {
+    log(
+      'Update connection started with id ${connection.id}',
+      name: 'ConnectionRepositoryImpl.update',
+    );
 
-    final UuidValue uuid;
-    try {
-      uuid = UuidValue.fromString(connection.id);
-    } on FormatException {
-      return null;
-    }
-
-    final existing = await getOne(uuid);
+    final existing = await getOne(connection.id);
     if (existing == null) {
       return null;
     }
 
     try {
       final db = await DatabaseManager.instance.database;
-      final now = DateTime.now().toUtc();
 
       await db.transaction((txn) async {
-        if (connection.password?.value != null) {
-          final updatedPassword =
-              (existing.password ??
-                      EncryptedValueModel(
-                        id: existing.passwordId,
-                        salt: '',
-                        nonce: '',
-                        cipherText: connection.password!.value!,
-                        mac: '',
-                        createdAt: now,
-                        updatedAt: now,
-                      ))
-                  .copyWith(
-                    cipherText: connection.password!.value!,
-                    updatedAt: now,
-                  );
-
+        if (connection.password != null) {
           await txn.insert(
             EncryptedValueModel.tableName,
-            updatedPassword.toJson(),
+            connection.password!.toJson(),
             conflictAlgorithm: ConflictAlgorithm.replace,
           );
         }
 
-        final values = <String, dynamic>{'updated_at': now.toIso8601String()};
-
-        if (connection.displayName?.value != null) {
-          values['display_name'] = connection.displayName!.value;
-        }
-        if (connection.remoteAddress?.value != null) {
-          values['remote_address'] = connection.remoteAddress!.value;
-        }
-        if (connection.username?.value != null) {
-          values['username'] = connection.username!.value;
-        }
-        if (connection.protocol?.value != null) {
-          values['protocol'] = connection.protocol!.value!.name;
-        }
-        if (connection.rootPath?.value != null) {
-          values['root_path'] = connection.rootPath!.value;
-        }
-        if (connection.allowSelfSignedCertificate?.value != null) {
-          values['allow_self_signed_certificate'] =
-              connection.allowSelfSignedCertificate!.value! ? 1 : 0;
-        }
-
         await txn.update(
           ConnectionModel.tableName,
-          values,
+          connection.toJson(),
           where: 'id = ?',
-          whereArgs: [uuid.uuid],
+          whereArgs: [connection.id.uuid],
         );
       });
 
-      log('Update connection done', name: 'ConnectionRepositoryImpl.update');
+      log(
+        'Update connection with id ${connection.id} done',
+        name: 'ConnectionRepositoryImpl.update',
+      );
 
-      return await getOne(uuid);
+      return await getOne(connection.id);
     } on Exception catch (e, st) {
       log(
-        'Update connection failed',
+        'Update connection with id ${connection.id} failed',
         name: 'ConnectionRepositoryImpl.update',
         error: e,
         stackTrace: st,

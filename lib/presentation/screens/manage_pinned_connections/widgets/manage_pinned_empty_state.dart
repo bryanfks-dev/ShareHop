@@ -1,29 +1,23 @@
 import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
+import 'package:sharehop/presentation/widgets/primitives/empty_state.dart';
 
 class ManagePinnedEmptyState extends StatelessWidget {
-  const new({super.key});
+  const new({
+    this.title = 'No pinned connections',
+    this.description = 'Tap the pin icon below to pin a connection.',
+    super.key,
+  });
+
+  final String title;
+  final String description;
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.theme;
-
-    return FTileGroup(
-      children: [
-        FTile(
-          title: Center(
-            child: Text(
-              'No pinned connections.\n'
-              'Tap the pin icon below to pin a connection.',
-              textAlign: .center,
-              style: theme.typography.body.xs2.copyWith(
-                color: theme.colors.mutedForeground,
-                height: 1.4,
-              ),
-            ),
-          ),
-        ),
-      ],
+    return EmptyState.card(
+      icon: FLucideIcons.pinOff,
+      title: title,
+      description: description,
     );
   }
 }

@@ -40,7 +40,7 @@ class PinnedConnectionsManageSection extends ConsumerWidget {
         Text(
           'Pinned (${pinned.length})',
           style: theme.typography.display.xs2.copyWith(
-            color: theme.colors.mutedForeground,
+            color: theme.colors.foreground,
             fontWeight: .w700,
             letterSpacing: 0.5,
           ),

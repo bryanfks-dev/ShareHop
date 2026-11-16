@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -156,14 +158,13 @@ void main() {
       expect(find.text('Manage pinned'), findsOneWidget);
       expect(find.text('Connections shown on Home'), findsOneWidget);
       expect(find.byIcon(FLucideIcons.chevronLeft), findsOneWidget);
-      expect(find.byIcon(FLucideIcons.plus), findsOneWidget);
-      expect(find.bySemanticsLabel('Add connection'), findsOneWidget);
+      expect(find.byIcon(FLucideIcons.ellipsis), findsOneWidget);
 
       // Callout banner
       expect(
         find.text(
           'Pinned items appear on Home for fast access. '
-          'Drag to reorder, unpin, or edit a connection.',
+          'Unpin or edit a connection.',
         ),
         findsOneWidget,
       );
@@ -253,24 +254,28 @@ void main() {
       },
     );
 
-    testWidgets(
-      'tapping Add connection button in header navigates to '
-      'AddConnectionScreen',
-      (tester) async {
-        await tester.pumpWidget(
-          _buildTestWidget(const ManagePinnedConnectionsScreen()),
-        );
-        await tester.pumpAndSettle();
+    testWidgets('tapping Add connection button in menu navigates to '
+        'AddConnectionScreen', (tester) async {
+      await tester.pumpWidget(
+        _buildTestWidget(const ManagePinnedConnectionsScreen()),
+      );
+      await tester.pumpAndSettle();
 
-        final addButton = find.bySemanticsLabel('Add connection');
-        expect(addButton, findsOneWidget);
+      final moreButton = find.byIcon(FLucideIcons.ellipsis);
+      expect(moreButton, findsOneWidget);
 
-        await tester.tap(addButton);
-        await tester.pumpAndSettle();
+      await tester.tap(moreButton);
+      await tester.pumpAndSettle();
 
-        expect(find.byType(AddConnectionScreen), findsOneWidget);
-      },
-    );
+      final addConnectionItem = find.text('Add connection');
+      expect(addConnectionItem, findsOneWidget);
+      expect(find.byIcon(FLucideIcons.plus), findsOneWidget);
+
+      await tester.tap(addConnectionItem);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AddConnectionScreen), findsOneWidget);
+    });
 
     testWidgets(
       'ManagePinnedHeader triggers onPressDone and onPressAddConnection',
@@ -292,40 +297,73 @@ void main() {
         await tester.pumpAndSettle();
         expect(doneCalled, isTrue);
 
-        await tester.tap(find.bySemanticsLabel('Add connection'));
+        await tester.tap(find.byIcon(FLucideIcons.ellipsis));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.text('Add connection'));
         await tester.pumpAndSettle();
         expect(addCalled, isTrue);
       },
     );
 
-    testWidgets(
-      'renders ManagePinnedEmptyState with default text',
-      (tester) async {
-        await tester.pumpWidget(
-          _buildTestWidget(const ManagePinnedEmptyState()),
-        );
-        await tester.pumpAndSettle();
+    testWidgets('has access to controller and controls popover menu', (
+      tester,
+    ) async {
+      final popoverController = FPopoverController(vsync: const TestVSync());
 
-        expect(
-          find.text(
-            'No pinned connections.\n'
-            'Tap the pin icon below to pin a connection.',
+      await tester.pumpWidget(
+        _buildTestWidget(
+          ManagePinnedHeader(
+            onPressDone: () {},
+            controller: popoverController,
           ),
-          findsOneWidget,
-        );
-      },
-    );
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Add connection'), findsNothing);
+
+      unawaited(popoverController.show());
+      await tester.pumpAndSettle();
+
+      expect(find.text('Add connection'), findsOneWidget);
+
+      unawaited(popoverController.hide());
+      await tester.pumpAndSettle();
+
+      expect(find.text('Add connection'), findsNothing);
+
+      popoverController.dispose();
+    });
+
+    testWidgets('renders ManagePinnedEmptyState with default text and icon', (
+      tester,
+    ) async {
+      await tester.pumpWidget(_buildTestWidget(const ManagePinnedEmptyState()));
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(FLucideIcons.pinOff), findsOneWidget);
+      expect(find.text('No pinned connections'), findsOneWidget);
+      expect(
+        find.text('Tap the pin icon below to pin a connection.'),
+        findsOneWidget,
+      );
+    });
 
     testWidgets(
-      'renders ManageOtherConnectionsEmptyState with default text',
+      'renders ManageOtherConnectionsEmptyState with default text and icon',
       (tester) async {
         await tester.pumpWidget(
           _buildTestWidget(const ManageOtherConnectionsEmptyState()),
         );
         await tester.pumpAndSettle();
 
+        expect(find.byIcon(FLucideIcons.network), findsOneWidget);
+        expect(find.text('No other connections available'), findsOneWidget);
         expect(
-          find.text('No other connections available.'),
+          find.text(
+            'Add a new connection or switch filter to see other connections.',
+          ),
           findsOneWidget,
         );
       },
@@ -465,30 +503,27 @@ void main() {
       },
     );
 
-    testWidgets(
-      'resets filter when All filter chip is tapped',
-      (tester) async {
-        await tester.pumpWidget(
-          _buildTestWidget(const ManagePinnedConnectionsScreen()),
-        );
-        await tester.pumpAndSettle();
+    testWidgets('resets filter when All filter chip is tapped', (tester) async {
+      await tester.pumpWidget(
+        _buildTestWidget(const ManagePinnedConnectionsScreen()),
+      );
+      await tester.pumpAndSettle();
 
-        final ftpChip = find.bySemanticsLabel('Filter by FTP');
-        await tester.tap(ftpChip);
-        await tester.pumpAndSettle();
+      final ftpChip = find.bySemanticsLabel('Filter by FTP');
+      await tester.tap(ftpChip);
+      await tester.pumpAndSettle();
 
-        expect(find.text('Legacy media'), findsOneWidget);
-        expect(find.text('Finance secure'), findsNothing);
+      expect(find.text('Legacy media'), findsOneWidget);
+      expect(find.text('Finance secure'), findsNothing);
 
-        // Tap All filter chip
-        final allChip = find.bySemanticsLabel('Filter by All');
-        await tester.tap(allChip);
-        await tester.pumpAndSettle();
+      // Tap All filter chip
+      final allChip = find.bySemanticsLabel('Filter by All');
+      await tester.tap(allChip);
+      await tester.pumpAndSettle();
 
-        expect(find.text('Legacy media'), findsOneWidget);
-        expect(find.text('Finance secure'), findsOneWidget);
-      },
-    );
+      expect(find.text('Legacy media'), findsOneWidget);
+      expect(find.text('Finance secure'), findsOneWidget);
+    });
   });
 }
 

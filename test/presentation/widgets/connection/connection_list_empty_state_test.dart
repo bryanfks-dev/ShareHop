@@ -17,17 +17,26 @@ Widget _buildTestWidget(Widget child) {
 
 void main() {
   group('ConnectionListEmptyState', () {
-    testWidgets('renders empty state messages and icon', (tester) async {
-      await tester.pumpWidget(
-        _buildTestWidget(const ConnectionListEmptyState()),
-      );
+    testWidgets(
+      'renders empty state tile group with message, icon, and action'
+      ' description',
+      (tester) async {
+        await tester.pumpWidget(
+          _buildTestWidget(const ConnectionListEmptyState()),
+        );
 
-      expect(find.text('No pinned connections'), findsOneWidget);
-      expect(
-        find.text('You can pin your favorite connections here.'),
-        findsOneWidget,
-      );
-      expect(find.byIcon(FLucideIcons.link2Off), findsOneWidget);
-    });
+        expect(find.byType(FTileGroup), findsOneWidget);
+        expect(find.byType(FTile), findsOneWidget);
+        expect(find.byIcon(FLucideIcons.pinOff), findsOneWidget);
+        expect(find.text('No pinned connections'), findsOneWidget);
+        expect(
+          find.text(
+            'Tap Manage to pin your favorite connections for quick access '
+            'here.',
+          ),
+          findsOneWidget,
+        );
+      },
+    );
   });
 }

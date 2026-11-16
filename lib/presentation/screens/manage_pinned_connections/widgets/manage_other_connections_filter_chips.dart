@@ -25,7 +25,7 @@ class ManageOtherConnectionsFilterChips extends StatelessWidget {
     }
 
     return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
+      scrollDirection: .horizontal,
       child: Row(
         spacing: Spacing.xs,
         children: [
