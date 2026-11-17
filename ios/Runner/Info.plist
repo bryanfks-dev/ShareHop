@@ -6,6 +6,19 @@
     <key>NSFaceIDUsageDescription</key>
     <string
         >We need access to Face ID to unlock your application data securely.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To upload and transfer photos, please allow permission to access your photo library.</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>ShareMedia-$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+			</array>
+		</dict>
+	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true />
 	<key>CFBundleDevelopmentRegion</key>
