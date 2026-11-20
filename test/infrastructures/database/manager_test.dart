@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sharehop/infrastructures/database/manager.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -11,6 +13,9 @@ void main() {
   tearDown(() async {
     await DatabaseManager.instance.close();
     DatabaseManager.databaseForTesting = null;
+    DatabaseManager.enableWorkbench = true;
+    DatabaseManager.wipeOnDevMode = true;
+    await WorkbenchServer.instance.stop();
   });
 
   group('DatabaseManager', () {
@@ -47,8 +52,48 @@ void main() {
       final databases = WorkbenchServer.instance.databases;
       expect(databases.containsKey('sharehop'), isTrue);
       expect(databases['sharehop']?.name, 'ShareHop');
+
+      var attempts = 0;
+      while (!WorkbenchServer.instance.isRunning && attempts < 50) {
+        await Future<void>.delayed(const Duration(milliseconds: 10));
+        attempts++;
+      }
       expect(WorkbenchServer.instance.isRunning, isTrue);
     });
+
+    test(
+      'init does not register with sqflite_dev workbench when '
+      'enableWorkbench is false',
+      () async {
+        await DatabaseManager.instance.init(
+          filePath: inMemoryDatabasePath,
+          enableWorkbench: false,
+        );
+
+        final databases = WorkbenchServer.instance.databases;
+        expect(databases.containsKey('sharehop'), isFalse);
+        expect(WorkbenchServer.instance.isRunning, isFalse);
+      },
+    );
+
+    test(
+      'init skips workbench server registration gracefully when debug port is '
+      'already in use',
+      () async {
+        final dummySocket =
+            await ServerSocket.bind(InternetAddress.anyIPv4, 5554);
+
+        try {
+          await DatabaseManager.instance.init(
+            filePath: inMemoryDatabasePath,
+          );
+
+          expect(WorkbenchServer.instance.isRunning, isFalse);
+        } finally {
+          await dummySocket.close();
+        }
+      },
+    );
 
     test('database getter initializes database lazily when not set', () async {
       final db = await DatabaseManager.instance.init(

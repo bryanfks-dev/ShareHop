@@ -13,7 +13,6 @@ import 'package:sharehop/core/repositories/pinned_connection_repository.dart';
 import 'package:sharehop/core/services/connection_service.dart';
 import 'package:sharehop/core/use_cases/check_connection_status_use_case.dart';
 import 'package:sharehop/data/dto/connection_credential_dto.dart';
-import 'package:sharehop/data/dto/connection_dto.dart';
 import 'package:sharehop/di/app_config_di.dart';
 import 'package:sharehop/di/connection_di.dart';
 import 'package:sharehop/presentation/screens/connection_detail/screen.dart';

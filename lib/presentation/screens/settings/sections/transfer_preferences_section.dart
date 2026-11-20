@@ -19,12 +19,6 @@ class TransferPreferencesSection extends HookConsumerWidget {
       await appConfigController.setIsWifiOnlyTransfersEnabled(enabled: value);
     }
 
-    Future<void> handleOnChangeBackgroundTransfers({
-      required bool value,
-    }) async {
-      await appConfigController.setIsBackgroundTransfersEnabled(enabled: value);
-    }
-
     Future<void> handleOnPressSimultaneousTransfers() async =>
         await showChangeSimultaneousTransfersLimitSheet(context);
 
@@ -40,11 +34,6 @@ class TransferPreferencesSection extends HookConsumerWidget {
           title: 'Wi-Fi only transfers',
           value: appConfig.value?.isWifiOnlyTransfersEnabled ?? true,
           onChange: (value) => handleOnChangeWifiOnlyTransfers(value: value),
-        ),
-        SettingsSectionTileWithSwitchSuffix(
-          title: 'Background transfers',
-          value: appConfig.value?.isBackgroundTransfersEnabled ?? true,
-          onChange: (value) => handleOnChangeBackgroundTransfers(value: value),
         ),
         SettingsSectionTileWithTextSuffix(
           onPress: handleOnPressSimultaneousTransfers,

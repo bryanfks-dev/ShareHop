@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
@@ -20,13 +21,18 @@ class DatabaseManager {
 
   static const String _kDatabaseFilePath = 'sharehop.db';
   static const int _kDatabaseVersion = 2;
+  static const int _kWebDebugPort = 5554;
 
-  @visibleForTesting
   static bool wipeOnDevMode = true;
+
+  static bool enableWorkbench = true;
 
   Future<Database> get database => init();
 
-  Future<Database> init({String? filePath}) async {
+  Future<Database> init({
+    String? filePath,
+    bool? enableWorkbench,
+  }) async {
     if (_databaseForTesting != null) {
       return _databaseForTesting!;
     }
@@ -38,15 +44,53 @@ class DatabaseManager {
     );
     _database = await _initFuture;
 
-    if (kDebugMode) {
-      WorkbenchHelper.autoEnable(
-        _database!,
-        webDebugPort: 5554,
-        webDebugName: 'ShareHop',
-      );
+    final shouldEnableWorkbench =
+        enableWorkbench ?? DatabaseManager.enableWorkbench;
+
+    if (!kIsWeb && kDebugMode && shouldEnableWorkbench) {
+      await _enableWorkbenchSafely(db: _database!);
     }
 
     return _database!;
+  }
+
+  Future<void> _enableWorkbenchSafely({required Database db}) async {
+    final isPortAvailable = WorkbenchServer.instance.isRunning ||
+        await _isPortAvailable(port: _kWebDebugPort);
+    if (!isPortAvailable) {
+      log(
+        'sqflite_dev: Port $_kWebDebugPort is already in use. '
+        'Skipping workbench server.',
+        name: 'DatabaseManager',
+      );
+      return;
+    }
+
+    try {
+      WorkbenchHelper.autoEnable(
+        db,
+        webDebugPort: _kWebDebugPort,
+        webDebugName: 'ShareHop',
+      );
+    } on Object catch (e) {
+      log(
+        'sqflite_dev: Failed to enable workbench: $e',
+        name: 'DatabaseManager',
+      );
+    }
+  }
+
+  static Future<bool> _isPortAvailable({required int port}) async {
+    try {
+      final socket = await ServerSocket.bind(
+        InternetAddress.anyIPv4,
+        port,
+      );
+      await socket.close();
+      return true;
+    } on Object {
+      return false;
+    }
   }
 
   Future<Database> _initializeDatabase({required String filePath}) async {

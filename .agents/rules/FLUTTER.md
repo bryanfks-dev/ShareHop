@@ -87,3 +87,15 @@ Exceptions:
 ## Builder Widget
 
 - USE `Builder` widget if there are multiple conditionally rendered widgets in the same widget tree.
+
+## Title Naming
+
+- ALWAYS use TitleCase for Title, DO NOT make the all the title word capitalized.
+
+## Sheet Widget
+
+- ALWAYS create ONLY one function to display the sheet, while the sheet content written in the same file, but marked it as private widget by adding `_` at the beginning of the widget name.
+- DO NOT include `X` or close button.
+- ALWAYS use two times the theme page top padding for the sheet vertical padding.
+- ALWAYS add `SizedBox(height: Spacing.xs2)` between button and form.
+- Sheet title ALWAYS typed in sentence case, e.g. `Select an item`, `Select date filter`.

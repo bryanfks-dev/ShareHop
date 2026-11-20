@@ -92,7 +92,7 @@ void main() {
     // Verify sections and values are rendered
     expect(find.text('Transfer Preferences'), findsOneWidget);
     expect(find.text('Wi-Fi only transfers'), findsOneWidget);
-    expect(find.text('Background transfers'), findsOneWidget);
+    expect(find.text('Background transfers'), findsNothing);
     expect(find.text('Simultaneous transfers'), findsOneWidget);
     expect(find.text('4 transfers'), findsOneWidget);
     expect(find.text('File conflicts'), findsOneWidget);

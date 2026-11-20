@@ -10,7 +10,6 @@ import 'package:sharehop/core/repositories/app_config_repository.dart';
 import 'package:sharehop/core/repositories/connection_repository.dart';
 import 'package:sharehop/core/repositories/pinned_connection_repository.dart';
 import 'package:sharehop/core/security/secret_cipher.dart';
-import 'package:sharehop/data/dto/connection_dto.dart';
 import 'package:sharehop/data/utils/encrypted_value.dart';
 import 'package:sharehop/di/app_config_di.dart';
 import 'package:sharehop/di/connection_di.dart';

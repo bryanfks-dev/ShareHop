@@ -7,7 +7,6 @@ import 'package:sharehop/core/models/encrypted_value_model.dart';
 import 'package:sharehop/core/models/pinned_connection_model.dart';
 import 'package:sharehop/core/repositories/connection_repository.dart';
 import 'package:sharehop/core/repositories/pinned_connection_repository.dart';
-import 'package:sharehop/data/dto/connection_dto.dart';
 import 'package:sharehop/di/connection_di.dart';
 import 'package:sharehop/presentation/controllers/manage_pinned_connections_controller.dart';
 import 'package:sharehop/presentation/view_models/connection_view_model.dart';

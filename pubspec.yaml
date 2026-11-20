@@ -49,7 +49,6 @@ dependencies:
   material_ui: ^1.6.0
   package_info_plus: ^10.2.2
   path: ^1.9.1
-  receive_sharing_intent: ^1.9.0
   riverpod: ^3.4.3
   riverpod_annotation: ^4.0.7
   shared_preferences: ^2.5.6
@@ -67,6 +66,7 @@ dev_dependencies:
   forui_cli: ^0.27.0
   freezed: ^4.0.2
   json_serializable: ^6.14.1
+  local_auth_platform_interface: ^1.1.0
   riverpod_generator: ^4.0.9
   sqflite_common_ffi: ^2.4.5
   sqflite_dev: ^2.3.1

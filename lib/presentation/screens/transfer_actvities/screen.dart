@@ -7,28 +7,13 @@ import 'package:sharehop/core/enums/file_transfer_status.dart';
 import 'package:sharehop/core/models/file_transfer_history_model.dart';
 import 'package:sharehop/presentation/controllers/file_transfer_history_controller.dart';
 import 'package:sharehop/presentation/controllers/manage_pinned_connections_controller.dart';
-import 'package:sharehop/presentation/extensions/router/navigator_extension.dart';
 import 'package:sharehop/presentation/screens/transfer_actvities/sections/active_transfers_section.dart';
 import 'package:sharehop/presentation/screens/transfer_actvities/sections/completed_transfers_section.dart';
 import 'package:sharehop/presentation/screens/transfer_actvities/sections/queued_transfers_section.dart';
 import 'package:sharehop/presentation/screens/transfer_actvities/widgets/connection_filter_dropdown.dart';
+import 'package:sharehop/presentation/screens/transfer_actvities/widgets/transfer_activities_more_sheet.dart';
 import 'package:sharehop/presentation/screens/transfer_actvities/widgets/transfers_header.dart';
 import 'package:sharehop/presentation/theme/spacing.dart';
-
-Future<void> showTransferActivitiesMoreSheet({
-  required BuildContext context,
-  required Future<void> Function() onPressClearAll,
-  required Future<void> Function() onPressRefresh,
-}) async {
-  await showFSheet<void>(
-    context: context,
-    side: .btt,
-    builder: (sheetContext) => _TransferActivitiesMoreSheet(
-      onPressClearAll: onPressClearAll,
-      onPressRefresh: onPressRefresh,
-    ),
-  );
-}
 
 class TransferActivitiesScreen extends ConsumerWidget {
   const new({super.key});
@@ -38,10 +23,12 @@ class TransferActivitiesScreen extends ConsumerWidget {
     final theme = context.theme;
 
     final historyState = ref.watch(fileTransferHistoryControllerProvider);
-    final historyController =
-        ref.watch(fileTransferHistoryControllerProvider.notifier);
-    final connectionsState =
-        ref.watch(managePinnedConnectionsControllerProvider);
+    final historyController = ref.watch(
+      fileTransferHistoryControllerProvider.notifier,
+    );
+    final connectionsState = ref.watch(
+      managePinnedConnectionsControllerProvider,
+    );
 
     final connectionNames = <String>{
       ...connectionsState.pinnedConnections.map((c) => c.displayName),
@@ -53,26 +40,20 @@ class TransferActivitiesScreen extends ConsumerWidget {
     }.toList()..sort();
 
     final transfers = historyState.filteredHistories;
-    final activeTransfers =
-        transfers
-            .where((t) => t.status == FileTransferStatus.inProgress)
-            .toList();
-    final queuedTransfers =
-        transfers
-            .where((t) => t.status == FileTransferStatus.pending)
-            .toList();
-    final completedTransfers =
-        transfers
-            .where(
-              (t) =>
-                  t.status == FileTransferStatus.completed ||
-                  t.status == FileTransferStatus.failed ||
-                  t.status == FileTransferStatus.canceled,
-            )
-            .toList();
-
-    final subtitle =
-        '${activeTransfers.length} active · ${queuedTransfers.length} queued';
+    final activeTransfers = transfers
+        .where((t) => t.status == FileTransferStatus.inProgress)
+        .toList();
+    final queuedTransfers = transfers
+        .where((t) => t.status == FileTransferStatus.pending)
+        .toList();
+    final completedTransfers = transfers
+        .where(
+          (t) =>
+              t.status == FileTransferStatus.completed ||
+              t.status == FileTransferStatus.failed ||
+              t.status == FileTransferStatus.canceled,
+        )
+        .toList();
 
     void handleOnChangeConnection(String? connection) {
       unawaited(historyController.filterByConnection(connection));
@@ -117,7 +98,7 @@ class TransferActivitiesScreen extends ConsumerWidget {
     void handleOnPressMore() {
       unawaited(
         showTransferActivitiesMoreSheet(
-          context: context,
+          context,
           onPressClearAll: handleOnPressClearAll,
           onPressRefresh: handleOnPressRefresh,
         ),
@@ -126,7 +107,8 @@ class TransferActivitiesScreen extends ConsumerWidget {
 
     return FScaffold(
       header: TransfersHeader(
-        subtitle: subtitle,
+        activeTransferCount: activeTransfers.length,
+        queueTransferCount: queuedTransfers.length,
         onMorePress: handleOnPressMore,
       ),
       child: SafeArea(
@@ -157,84 +139,6 @@ class TransferActivitiesScreen extends ConsumerWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _TransferActivitiesMoreSheet extends StatelessWidget {
-  const new({required this.onPressClearAll, required this.onPressRefresh});
-
-  final Future<void> Function() onPressClearAll;
-  final Future<void> Function() onPressRefresh;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = context.theme;
-
-    void handleOnPressRefresh() {
-      context.navigator.pop();
-      unawaited(onPressRefresh());
-    }
-
-    void handleOnPressClearAll() {
-      context.navigator.pop();
-      unawaited(onPressClearAll());
-    }
-
-    return Container(
-      width: double.maxFinite,
-      padding: .symmetric(
-        vertical: 2 * theme.style.pagePadding.top,
-        horizontal: theme.style.pagePadding.left,
-      ),
-      decoration: BoxDecoration(
-        color: theme.colors.card,
-        border: .all(color: theme.colors.border),
-        borderRadius: theme.style.borderRadius.xl,
-      ),
-      child: SafeArea(
-        child: Column(
-          mainAxisSize: .min,
-          crossAxisAlignment: .start,
-          spacing: Spacing.md,
-          children: [
-            Text(
-              'Transfer Options',
-              style: theme.typography.display.sm.copyWith(
-                color: theme.colors.foreground,
-                fontWeight: .w600,
-              ),
-            ),
-            FTileGroup(
-              children: [
-                FTile(
-                  prefix: const Icon(FLucideIcons.refreshCw),
-                  title: Text(
-                    'Refresh transfers',
-                    style: theme.typography.body.sm.copyWith(
-                      color: theme.colors.foreground,
-                    ),
-                  ),
-                  onPress: handleOnPressRefresh,
-                ),
-                FTile(
-                  prefix: Icon(
-                    FLucideIcons.trash2,
-                    color: theme.colors.destructive,
-                  ),
-                  title: Text(
-                    'Clear all history',
-                    style: theme.typography.body.sm.copyWith(
-                      color: theme.colors.destructive,
-                    ),
-                  ),
-                  onPress: handleOnPressClearAll,
-                ),
-              ],
-            ),
-          ],
         ),
       ),
     );

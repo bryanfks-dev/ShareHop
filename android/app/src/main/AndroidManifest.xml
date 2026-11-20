@@ -30,7 +30,19 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
 
+        <activity
+            android:name=".ShareActivity"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:taskAffinity=""
+            android:theme="@style/TranslucentTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize"
+            android:excludeFromRecents="true"
+        >
             <!-- Support sharing images into the app (e.g., from Gallery / Photos) -->
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />

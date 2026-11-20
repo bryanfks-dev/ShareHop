@@ -4,14 +4,14 @@ import 'package:sharehop/presentation/theme/spacing.dart';
 
 class TransfersHeader extends StatelessWidget {
   const new({
-    this.title = 'Transfers',
-    this.subtitle = '1 active · 2 queued',
+    required this.activeTransferCount,
+    required this.queueTransferCount,
     this.onMorePress,
     super.key,
   });
 
-  final String title;
-  final String subtitle;
+  final int activeTransferCount;
+  final int queueTransferCount;
   final VoidCallback? onMorePress;
 
   @override
@@ -29,14 +29,14 @@ class TransfersHeader extends StatelessWidget {
         spacing: Spacing.dot,
         children: [
           Text(
-            title,
+            'Transfers',
             style: theme.typography.display.md.copyWith(
               color: theme.colors.foreground,
               fontWeight: .w700,
             ),
           ),
           Text(
-            subtitle,
+            '$activeTransferCount active · $queueTransferCount queued',
             style: theme.typography.display.xs2.copyWith(
               color: theme.colors.mutedForeground,
               fontWeight: .w400,

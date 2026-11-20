@@ -42,7 +42,6 @@ class PinnedConnectionsManageSection extends ConsumerWidget {
           style: theme.typography.display.xs2.copyWith(
             color: theme.colors.foreground,
             fontWeight: .w700,
-            letterSpacing: 0.5,
           ),
         ),
         Builder(

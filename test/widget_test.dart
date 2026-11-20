@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sharehop/main.dart';
+import 'package:sharehop/presentation/widgets/application.dart';
 
 void main() {
   testWidgets('Application smoke test', (tester) async {
